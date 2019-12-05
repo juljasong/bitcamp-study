@@ -44,19 +44,19 @@
 # 소스 파일과 컴파일 결과 파일 분리 		
 [O]Maven 표준 디렉토리 구조를 만들 수 있다.		Maven 표준 디렉토리 구조에 맞춰 폴더를 생성
 [O]각 디렉토리의 용도를 이해한다.		
-[ ]프로젝트 디렉토리에서 소스 디렉토리에 있는 자바 소스 파일을 컴파일 할 수 있다.	src/main/java/Hello2.java	$ javac src/main/java/Hello2.java
-[ ]컴파일 할 때 컴파일 결과로 생성된 클래스 파일을 별도 디렉토리에 분리할 수 있다.	src/main/java/Hello2.java	$ javac -d bin/main src/main/java/Hello2.java
-[ ]다른 디렉토리에 있는 클래스 파일을 실행할 수 있다.	src/main/java/Hello2.java	$ java -classpath bin/main Hello2
+[O]프로젝트 디렉토리에서 소스 디렉토리에 있는 자바 소스 파일을 컴파일 할 수 있다.	src/main/java/Hello2.java	$ javac src/main/java/Hello2.java
+[O]컴파일 할 때 컴파일 결과로 생성된 클래스 파일을 별도 디렉토리에 분리할 수 있다.	src/main/java/Hello2.java	$ javac -d bin/main src/main/java/Hello2.java
+[O]다른 디렉토리에 있는 클래스 파일을 실행할 수 있다.	src/main/java/Hello2.java	$ java -classpath bin/main Hello2
 
 # 패키지와 소스 파일		
-[ ]패키지의 용도를 이해하고 패키지를 생성할 수 있다.	com.ohoracs.basic	src/main/java/com/ohoracs/basic 디렉토리 생성
-[ ]소스 파일에 작성한 코드가 패키지에 소속되게 할 수 있다.	src/main/java/com/ohoracs/basic/Hello3.java	
-[ ]패키지에 소속된 소스 파일의 적절한 디렉토리 경로와 왜 그 위치에 놓아야 하는지 이해한다.		
-[ ]컴파일 한 후 생성된 클래스 파일의 디렉토리 경로와 그 위치에 있어야 하는 이유를 안다.		
-[ ]패키지에 소속된 클래스 파일을 실행할 수 있다.	src/main/java/com/ohoracs/basic/Hello3.java	$ java -cp bin/main com.ohoracs.basic.Hello3
-[ ]패키지를 적용하지 않은 채로 그 소스 파일을 그냥 패키지 폴더에 둔다면 컴파일 할 때 어떤 문제가 발생하는지 안다.	src/main/java/com/ohoracs/basic/Hello4.java	
+[O]패키지의 용도를 이해하고 패키지를 생성할 수 있다.	com.ohoracs.basic	src/main/java/com/ohoracs/basic 디렉토리 생성
+[O]소스 파일에 작성한 코드가 패키지에 소속되게 할 수 있다.	src/main/java/com/ohoracs/basic/Hello3.java	
+[O]패키지에 소속된 소스 파일의 적절한 디렉토리 경로와 왜 그 위치에 놓아야 하는지 이해한다.		
+[O]컴파일 한 후 생성된 클래스 파일의 디렉토리 경로와 그 위치에 있어야 하는 이유를 안다.		
+[O]패키지에 소속된 클래스 파일을 실행할 수 있다.	src/main/java/com/ohoracs/basic/Hello3.java	$ java -cp bin/main com.ohoracs.basic.Hello3
+[O]패키지를 적용하지 않은 채로 그 소스 파일을 그냥 패키지 폴더에 둔다면 컴파일 할 때 어떤 문제가 발생하는지 안다.	src/main/java/com/ohoracs/basic/Hello4.java	
 
 # Gradle 빌드 도구		
-[ ]Gradle 빌드 도구를 이용하여 작업 폴더를 자바 프로젝트 폴더로 구성할 수 있다.	/프로젝트폴더	$ gradle init
-[ ]Gradle로 생성된 src 디렉토리의 구조를 이해하고 설명할 수 있다.	/src	
-[ ]src 디렉토리 외에 다른 디렉토리나 파일의 용도를 이해한다.		
+[O]Gradle 빌드 도구를 이용하여 작업 폴더를 자바 프로젝트 폴더로 구성할 수 있다.	/프로젝트폴더	$ gradle init
+[O]Gradle로 생성된 src 디렉토리의 구조를 이해하고 설명할 수 있다.	/src	
+[O]src 디렉토리 외에 다른 디렉토리나 파일의 용도를 이해한다.		
