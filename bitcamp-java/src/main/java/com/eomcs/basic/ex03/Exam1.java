@@ -1,4 +1,4 @@
-package com.ohoracs.basic.ex03;
+package com.eomcs.basic.ex03;
 // Literal
 
 public class Exam1 {
