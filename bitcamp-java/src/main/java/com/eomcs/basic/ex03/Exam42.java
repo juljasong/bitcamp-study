@@ -1,5 +1,5 @@
 package com.eomcs.basic.ex03;
-// 문자 리터럴
+// 문자 리터럴 - 문자코드를 이용해 문자 출력
 
 public class Exam42 {
 

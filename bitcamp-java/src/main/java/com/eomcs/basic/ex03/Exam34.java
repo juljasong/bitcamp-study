@@ -24,15 +24,16 @@ public class Exam34 {
     System.out.println(31415926.53589793); // 3.141592653589793E7 OK
     System.out.println(314159265358979.3); // 3.141592653589793E14 OK
 
+    //16자리인 경우 일부 부동소수점의 값이 제대로 저장되지 않음
     System.out.println(914159265358979.3); // 9.141592653589792E14 Error
     System.out.println(91415926.53589793); // 9.141592653589793E7 OK
     System.out.println(9.141592653589793); // 9.141592653589793 OK
 
-    System.out.println(91415926535897.9); 
-    System.out.println(91415926.5358979);
-    System.out.println(9.14159265358979);
-
-
+    //15자리인 경우 대부분 부동소수점의 값이 제대로 저장된다
+    System.out.println(91415926535897.9); // 9.14159265358979E13 OK
+    System.out.println(91415926.5358979); // 9.14159265358979E7 OK
+    System.out.println(9.14159265358979); // 9.14159265358979 OK
 
   }
 }
+// boolean 값을 다룰 때 메모리 크기 : JVM (4바이트)
