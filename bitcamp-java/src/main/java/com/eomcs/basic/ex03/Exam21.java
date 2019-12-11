@@ -17,7 +17,7 @@ public class Exam21 {
     System.out.println(0B01100100);
 
     //16진수 리터럴
-    System.out.println(0x_64);
+    //System.out.println(0x_64);
 
   }
 }

@@ -1,8 +1,5 @@
 package com.eomcs.basic.ex03;
 
-import sun.jvm.hotspot.tools.SysPropsDumper;
-
-
 public class Exam24 {
 
   public static void main(String[] args) {
