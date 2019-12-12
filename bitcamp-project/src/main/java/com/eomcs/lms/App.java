@@ -1,6 +1,8 @@
 package com.eomcs.lms;
 
+//import java.util.Date;
 import java.util.Scanner;
+import java.sql.Date;
 
 public class App {
     public static void main(String[] args) {
@@ -10,15 +12,17 @@ public class App {
       
       System.out.print("번호? ");
       int num = sc.nextInt(); // = 할당 연산자 == 비교 연산자
-      sc.nextLine();
+      sc.nextLine(); // nextInt() 뒤에 있는 엔터 날리기
       System.out.print("수업명? ");
       String title = sc.nextLine();
       System.out.print("설명? ");
       String description = sc.nextLine();
       System.out.print("시작일? ");
-      String startDate = sc.nextLine(); // 낙타Camel 표기법
+      // YYYY-MM-DD
+      Date startDate = Date.valueOf(sc.next());
+      //Date startDate = Date.valueOf(sc.next()); // 낙타Camel 표기법
       System.out.print("종료일? ");
-      String endDate = sc.nextLine();
+      Date endDate = Date.valueOf(sc.next());
       System.out.print("총수업시간? ");
       int totalHours = sc.nextInt();
       System.out.print("일수업시간? ");

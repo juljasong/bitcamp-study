@@ -1,11 +1,13 @@
 package com.bitcamp.myproject;
 
+import java.sql.Date;
 import java.util.Scanner;
 
 public class App {
   public static void main(String[] args) {
     
     Scanner sc = new Scanner(System.in);
+    
     System.out.print("품번 : ");
     int gameNum = sc.nextInt();
     sc.nextLine();
@@ -14,7 +16,8 @@ public class App {
     System.out.print("제작사 : ");
     String gameProduction = sc.nextLine();
     System.out.print("발매일 : ");
-    String gameDate = sc.nextLine();
+    Date gameDate = Date.valueOf(sc.next());
+    sc.nextLine();
     System.out.print("플랫폼 : ");
     String gamePlatform = sc.nextLine();
     System.out.print("장르 : ");

@@ -23,5 +23,6 @@ public class Exam16 {
     Thread t;
     java.sql.Date date;
     java.net.Socket socket;
+    int[] arr;
   }
 }

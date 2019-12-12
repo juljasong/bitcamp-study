@@ -1,5 +1,6 @@
 package com.bitcamp.myproject;
 
+import java.sql.Date;
 import java.util.Scanner;
 
 public class App2 {
@@ -15,13 +16,13 @@ public class App2 {
       System.out.print("회원명 : ");
       String userName = sc.nextLine();
       System.out.print("가입일 : ");
-      String userDate = sc.nextLine();
+      Date userResisteredDate = Date.valueOf(sc.nextLine());
       sc.close();
       System.out.println();
       System.out.printf("회원번호 : %d\n", userNum);
       System.out.printf("이메일 : %s\n", userEmail);
       System.out.printf("비밀번호 : %s\n", userPW);
       System.out.printf("회원명 : %s\n", userName);
-      System.out.printf("가입일 : %s\n", userDate);
+      System.out.printf("가입일 : %s\n", userResisteredDate);
     }
 }
