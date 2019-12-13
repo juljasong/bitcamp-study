@@ -22,18 +22,37 @@ public class Test01 {
     System.out.print("연산자(+,-,*,/)? ");
     String oper = sc.next();
     sc.close();
-    
-    if(oper.equals("+")) {
+    /*
+    if(oper.equals("+")) 
       System.out.printf("=> a + b = %d\n", a + b);
-    } else if (oper.equals("-")) {
+    else if (oper.equals("-")) 
       System.out.printf("=> a - b = %d\n", a - b);
-    } else if (oper.equals("*")) {
+    else if (oper.equals("*")) 
       System.out.printf("=> a * b = %d\n", a * b);
-    } else if (oper.equals("/")) {
+    else if (oper.equals("/")) {
       System.out.printf("=> a / b = %d\n", a / b);
-    } else {
+    else 
       System.out.println("잘못된 값 입력.");
+      return;
     }
-    
+    */
+
+    switch(oper){
+      case "+" :
+      System.out.printf("=> a + b = %d\n", a + b);
+      break;
+      case "-" : 
+      System.out.printf("=> a - b = %d\n", a - b);
+      break;
+      case "*" :
+      System.out.printf("=> a * b = %d\n", a * b);
+      break;
+      case "/" :
+      System.out.printf("=> a / b = %d\n", a / b);
+      break;
+      default : 
+      System.out.println("잘못된 값입니다.");
+      break;
+    }
   }
 }
