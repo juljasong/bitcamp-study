@@ -16,7 +16,7 @@ public class Exam06_1 {
         System.out.println(i++);
         // System.out.println(4);
         // i = i + 1;
-        System.out.println(i);
+        System.out.println(i); // 5
 
     }
 }

@@ -1,8 +1,8 @@
-package com.eomcs.basic.ex04.assignment;
+package com.eomcs.basic.ex05.assignment;
 
 import java.util.Scanner;
 
-public class Test121601 {
+public class Test01 {
 
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);

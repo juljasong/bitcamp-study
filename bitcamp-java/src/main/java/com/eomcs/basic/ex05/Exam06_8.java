@@ -5,6 +5,7 @@ public class Exam06_8 {
     public static void main(String[] args) {
         int i = 2;
         int result = ++i + ++i * ++i;
+        
         // 1) int result = 3 + 4 * 5;
         // 2) int result = 3 + 20;
         // 3) int result = 23;
