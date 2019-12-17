@@ -26,7 +26,7 @@ public class Test03 {
         j++;
       }
       
-      j = 0;
+      //j = 0;
       System.out.println();
     }
 

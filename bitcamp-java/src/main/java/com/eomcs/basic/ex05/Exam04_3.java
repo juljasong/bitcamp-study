@@ -6,8 +6,8 @@ public class Exam04_3 {
       // >> 비트 이동 연산자 사용법
    
       int i = 1; 
-      
       // 0000 0000 0000 0000 0000 0000 0000 0001 = 1
+      
       System.out.println(i << 1);
       // 0000 0000 0000 0000 0000 0000 0000 0010 = 2
       System.out.println(i << 2);
@@ -34,7 +34,8 @@ public class Exam04_3 {
       // 음수를 이동 : >>> 무조건 1로 채운다
       i = 0b11111111_11111111_11111111_10101001; // -87
       System.out.println(i); 
-      System.out.println(i >>> 1); 
+      
+      System.out.println(i >>> 1); //2147483604
       
       System.out.println(i >>> 2); 
       // 11_11111111_11111111_11111111_101010|01 => 1073741802

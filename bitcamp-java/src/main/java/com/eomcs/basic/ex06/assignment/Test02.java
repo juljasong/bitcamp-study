@@ -26,7 +26,7 @@ public class Test02 {
     i = 0;
     
     while (i < a-1) {
-      while (j < 4-i) {
+      while (j < a-i-1) {
         System.out.print("*");
         j++;
       } 
@@ -34,8 +34,5 @@ public class Test02 {
       i++;
       j = 0;
     }
-  
-
   }
-
 }
