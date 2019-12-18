@@ -14,22 +14,21 @@ public class Test03 {
     int i = 0;
     int j = 0;
     
-    while (i < a/2+1) { // 밑 변 a가 5일 때, a/2+1= 3줄 
-      
-      while (j < a/2-i) { // 
+    while (i < (a>>1)+1) { // 밑 변 a가 5일 때, a/2+1= 3줄 
+    
+      while (j < (a>>1)-i) { // 
         System.out.print(" ");
         j++;
       }
       i++;
-      while (j < a/2+i) { // j 이어서 ...
+      
+      while (j < (a>>1)+i) { // j 이어서 ...
         System.out.print("*");
         j++;
       }
       
-      //j = 0;
+      j = 0;
       System.out.println();
     }
-
   }
-
 }

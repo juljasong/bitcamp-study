@@ -5,28 +5,23 @@ import java.util.Scanner;
 import java.sql.Date;
 
 public class App {
-  
-  static final int size = 5000;
-  static int[] num = new int[size];
-  static String[] title = new String[size];
-  static String[] description = new String[size];
-  static Date[] startDate = new Date[size];
-  static Date[] endDate = new Date[size];
-  static int[] totalHours = new int[size];
-  static int[] dayHours = new int[size];
-  static int count = 0;
-  
-    public static void main(String[] args) {
-      
-      inputClass();
 
-      printClass();
 
-    }
+  public static void main(String[] args) {
 
-    private static void inputClass() {
-      Scanner sc = new Scanner(System.in);
-      for (int i = 0 ; i < size ; i++) {
+    final int SIZE = 5000;
+    int[] num = new int[SIZE];
+    String[] title = new String[SIZE];
+    String[] description = new String[SIZE];
+    Date[] startDate = new Date[SIZE];
+    Date[] endDate = new Date[SIZE];
+    int[] totalHours = new int[SIZE];
+    int[] dayHours = new int[SIZE];
+    int count = 0;
+
+    Scanner sc = new Scanner(System.in);
+
+    for (int i = 0 ; i < SIZE ; i++) {
       System.out.print("번호? ");
       num[i] = sc.nextInt();
       sc.nextLine();
@@ -51,16 +46,13 @@ public class App {
         continue;
       } else
         sc.close();
-        break;
-      }
+      break;
     }
-    
-    private static void printClass() {
-      System.out.println();
-      for (int i = 0 ; i < count ; i++) {
+
+    System.out.println();
+    for (int i = 0 ; i < count ; i++) {
       System.out.printf("%d, %s, %s ~ %s, %d\n", 
           num[i], title[i], startDate[i], endDate[i], totalHours[i]);
-      }
-
     }
+  }
 }

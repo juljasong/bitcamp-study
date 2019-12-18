@@ -5,41 +5,39 @@ import java.util.Scanner;
 
 public class App2 {
 
-  final static int size = 5000;
-  static User[] users = new User[size];
-  static int count = 0;
-
   public static void main(String[] args) {
-
-    inputUsers();
-    printUsers();
-
-  }
-
-  private static void inputUsers() {
+    final int SIZE = 100; 
+    int[] no = new int[SIZE];
+    String[] name = new String[SIZE];
+    String[] email = new String[SIZE];
+    String[] password = new String[SIZE];
+    String[] photo = new String[SIZE];
+    String[] tel = new String[SIZE];
+    Date[] registeredDate = new Date[SIZE];
 
     Scanner sc = new Scanner(System.in);
-
-    for (int i = 0 ; i < size ; i++) {
-      User u = new User();
+    int count = 0;
+    for (int i = 0 ; i < SIZE ; i++) {
       System.out.print("번호? ");
-      u.num = sc.nextInt();
+      no[i] = sc.nextInt();
       sc.nextLine();
       System.out.print("이름? ");
-      u.name = sc.nextLine();
+      name[i] = sc.nextLine();
       System.out.print("이메일? ");
-      u.email = sc.nextLine();
+      email[i] = sc.nextLine();
       System.out.print("암호? ");
-      u.pw = sc.nextLine();
+      password[i] = sc.nextLine();
       System.out.print("사진? ");
-      u.pic = sc.nextLine();
+      photo[i] = sc.nextLine();
       System.out.print("전화? ");
-      u.tel = sc.nextLine();
+      tel[i] = sc.nextLine();
       System.out.print("가입일? ");
-      u.registeredDate = Date.valueOf(sc.next());
+      registeredDate[i] = new Date(System.currentTimeMillis());
+      System.out.print(registeredDate[i]);
       System.out.println();
-      users[i] = u;
+
       count++;
+
       System.out.print("계속하시겠습니까?(Y/N) ");
       sc.nextLine();
       String res = sc.nextLine();
@@ -51,13 +49,10 @@ public class App2 {
         break;
       }
     }
-  }
-
-  private static void printUsers() {
-    for (int j = 0 ; j < count ; j++) {
-      User u1 = users[j];
+    for (int i = 0 ; i < count ; i++) {
       System.out.printf("%d, %s, %s, %s, %s\n", 
-          u1.num, u1.name, u1.email, u1.tel, u1.registeredDate);
+          no[i], name[i], email[i], tel[i], registeredDate[i]);
     }
+    
   }
 }
