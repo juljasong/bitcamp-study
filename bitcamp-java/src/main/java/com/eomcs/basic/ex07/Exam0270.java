@@ -26,7 +26,7 @@ public class Exam0270 {
   static void m2(int a, String... names) {} // OK!
 
   // 배열 파라미터는 여러 개 선언할 수 있다.
-  static void x1(String[] names, String[] names2) {}
+  static void x1(String[] names, String[] emails) {}
 
   // 배열 파리미터는 순서에 상관 없다.
   static void x2(String[] names, int a) {}
