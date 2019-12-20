@@ -1,178 +1,167 @@
 package com.eomcs.lms;
 
-import java.util.Scanner;
 import java.sql.Date;
+import java.util.Scanner;
 
 public class App {
 
-  static Scanner sc = new Scanner(System.in);
-/*
-  static class Lesson {
-    int num, totalHours, dayHours, count;
-    String title, description;
-    Date startDate, endDate;
-  }
-  static class User {
-    int no;
-    String name, email, password, photo, tel;
-    Date registeredDate;
-  }
-  static class Board {
-    int no, viewCount;
-    String title;
-    Date date;
-  }
-  */
-  static int lesson_count = 0;
-  static int member_count = 0;
-  static int board_count = 0;
-  static final int SIZE = 5000;
-  static Lesson[] lessons = new Lesson[SIZE];
-  static User[] users = new User[SIZE];
-  static Board[] boards = new Board[SIZE];
-
   public static void main(String[] args) {
 
+    Scanner keyboard = new Scanner(System.in);
+    
+    class Lesson {
+      int no;
+      String title;
+      String description;
+      Date startDate;
+      Date endDate;
+      int totalHours;
+      int dayHours;
+    }
+    
+    final int LESSON_SIZE = 100;
+    Lesson[] lessons = new Lesson[LESSON_SIZE];
+    int lessonCount = 0;
+    
+    
+    class Member {
+      int no;
+      String name;
+      String email;
+      String password;
+      String photo;
+      String tel;
+      Date registeredDate;
+    }
+
+    final int MEMBER_SIZE = 100;
+    Member[] members = new Member[MEMBER_SIZE];
+    int memberCount = 0;
+    
+    class Board {
+      int no;
+      String title;
+      Date date;
+      int viewCount;
+    }
+    
+    final int BOARD_SIZE = 100;
+    Board[] boards = new Board[BOARD_SIZE];
+    int boardCount = 0;
+    
     String command;
+    
     do {
-      System.out.print("명령> ");
-      command = sc.nextLine();
-      switch(command) {
-        case "/lesson/add" :
-          lessonAdd();
+      System.out.print("\n명령> ");
+      command = keyboard.nextLine();
+      
+      switch (command) {
+        case "/lesson/add":
+          Lesson lesson = new Lesson();
+          
+          System.out.print("번호? ");
+          lesson.no = keyboard.nextInt();
+
+          keyboard.nextLine(); 
+
+          System.out.print("수업명? ");
+          lesson.title = keyboard.nextLine();
+
+          System.out.print("설명? ");
+          lesson.description = keyboard.nextLine();
+
+          System.out.print("시작일? ");
+          lesson.startDate = Date.valueOf(keyboard.next());
+
+          System.out.print("종료일? ");
+          lesson.endDate = Date.valueOf(keyboard.next());
+
+          System.out.print("총수업시간? ");
+          lesson.totalHours = keyboard.nextInt();
+
+          System.out.print("일수업시간? ");
+          lesson.dayHours = keyboard.nextInt();
+          keyboard.nextLine(); 
+          
+          lessons[lessonCount++] = lesson;
+          System.out.println("저장하였습니다.");
+          
           break;
-        case "/lesson/list" :
-          lessonList();
+        case "/lesson/list":
+          for (int i = 0; i < lessonCount; i++) {
+            Lesson l = lessons[i];
+            System.out.printf("%d, %s, %s ~ %s, %d\n",
+                l.no, l.title, l.startDate, l.endDate, l.totalHours);
+          }
           break;
-        case "/member/add" :
-          memberAdd();
+        case "/member/add":
+          Member member = new Member();
+
+          System.out.print("번호? ");
+          member.no = keyboard.nextInt();
+          keyboard.nextLine(); // 줄바꿈 기호 제거용
+
+          System.out.print("이름? ");
+          member.name = keyboard.nextLine();
+
+          System.out.print("이메일? ");
+          member.email = keyboard.nextLine();
+
+          System.out.print("암호? ");
+          member.password = keyboard.nextLine();
+
+          System.out.print("사진? ");
+          member.photo = keyboard.nextLine();
+
+          System.out.print("전화? ");
+          member.tel = keyboard.nextLine();
+
+          member.registeredDate = new Date(System.currentTimeMillis());
+          
+          members[memberCount++] = member;
+          System.out.println("저장하였습니다.");
+          
           break;
-        case "/member/list" :
-          memberList();
+        case "/member/list":
+          for (int i = 0; i < memberCount; i++) {
+            Member m = members[i];
+            System.out.printf("%d, %s, %s, %s, %s\n", 
+                m.no, m.name, m.email, m.tel, m.registeredDate);
+          }
           break;
-        case "/board/add" :
-          boardAdd();
+        case "/board/add":
+          Board board = new Board();
+          
+          System.out.print("번호? ");
+          board.no = keyboard.nextInt();
+          keyboard.nextLine(); // 줄바꿈 기호 제거용
+
+          System.out.print("내용? ");
+          board.title = keyboard.nextLine();
+
+          board.date = new Date(System.currentTimeMillis());
+          board.viewCount = 0;
+          
+          boards[boardCount++] = board;
+          System.out.println("저장하였습니다.");
           break;
-        case "/board/list" :
-          boardList();
+        case "/board/list":
+          for (int i = 0; i < boardCount; i++) {
+            Board b = boards[i];
+            System.out.printf("%d, %s, %s, %d\n", 
+                b.no, b.title, b.date, b.viewCount);
+          }
           break;
-        default :
+        default:
           if (!command.equalsIgnoreCase("quit")) {
             System.out.println("실행할 수 없는 명령입니다.");
           }
       }
+      
     } while (!command.equalsIgnoreCase("quit"));
+    
     System.out.println("안녕!");
-    sc.close();
+    
+    keyboard.close();
   }
-
-  static void lessonAdd() {
-    for (int i = 0 ; i < SIZE ; ) {
-      lessons[i++] = new Lesson();
-    }
-    for (int i = 0 ; i < SIZE ; ) {
-      Lesson l = lessons[i++];
-      System.out.print("번호? ");
-      l.num = sc.nextInt();
-      sc.nextLine();
-      System.out.print("수업명? ");
-      l.title = sc.nextLine();
-      System.out.print("설명? ");
-      l.description = sc.nextLine();
-      System.out.print("시작일? ");
-      l.startDate = Date.valueOf(sc.next());
-      System.out.print("종료일? ");
-      l.endDate = Date.valueOf(sc.next());
-      System.out.print("총수업시간? ");
-      l.totalHours = sc.nextInt();
-      System.out.print("일수업시간? ");
-      l.dayHours = sc.nextInt();
-      sc.nextLine();
-      System.out.println();
-      lesson_count++;
-      System.out.println("저장하였습니다.");
-      System.out.println();
-      break;
-    }
-  }
-
-  static void lessonList() {
-    for (int i = 0 ; i < lesson_count ; ) {
-      Lesson l = lessons[i++];
-      System.out.printf("%d, %s, %s ~ %s, %d\n", 
-          l.num, l.title, l.startDate, l.endDate, l.totalHours);
-    }
-    System.out.println();
-  }
-
-  static void memberAdd() {
-    for (int i = 0 ; i < SIZE ; ) {
-      users[i++] = new User();
-    }
-    for (int i = 0 ; i < SIZE ; ) {
-      User u = users[i++];
-      System.out.print("번호? ");
-      u.no = sc.nextInt();
-      sc.nextLine();
-      System.out.print("이름? ");
-      u.name = sc.nextLine();
-      System.out.print("이메일? ");
-      u.email = sc.nextLine();
-      System.out.print("암호? ");
-      u.password = sc.nextLine();
-      System.out.print("사진? ");
-      u.photo = sc.nextLine();
-      System.out.print("전화? ");
-      u.tel = sc.nextLine();
-      System.out.print("가입일? ");
-      u.registeredDate = new Date(System.currentTimeMillis());
-      System.out.println(u.registeredDate);
-      System.out.println("저장하였습니다.");
-      System.out.println();
-      member_count++;
-      break;
-    }
-  }
-
-  static void memberList() {
-    for (int i = 0 ; i < member_count ; ) {
-      User u = users[i++];
-      System.out.printf("%d, %s, %s, %s, %s\n", 
-          u.no, u.name, u.email, u.tel, u.registeredDate);
-      sc.nextLine();
-    }
-  }
-
-  static void boardList() {
-    for (int i = 0; i < board_count; i++) {
-      Board board = boards[i];
-      System.out.printf("%d, %s, %s, %d\n", 
-          board.no, board.title, board.date, board.viewCount);
-      System.out.println();
-    }
-  }
-
-  static void boardAdd() {
-    for (int i = 0 ; i < SIZE ; ) {
-      boards[i++] = new Board();
-    }
-    for (int i = 0; i < SIZE; ) {
-      Board b = boards[i++];
-      System.out.print("번호? ");
-      b.no = sc.nextInt();
-      sc.nextLine(); 
-
-      System.out.print("내용? ");
-      b.title = sc.nextLine();
-
-      b.date = new Date(System.currentTimeMillis());
-      b.viewCount = 0;
-      System.out.println("저장하였습니다.");
-      System.out.println();
-
-      board_count++;
-      break;
-    }
-  }
-
 }
