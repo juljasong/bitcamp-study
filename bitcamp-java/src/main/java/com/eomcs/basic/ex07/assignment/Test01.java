@@ -13,8 +13,8 @@ public class Test01 {
   }
 
   static int max(int[] values) {
-    int max = Integer.MIN_VALUE;
-    for (int i = 0 ; i < values.length ; i++) {
+    int max = values[0];
+    for (int i = 1 ; i < values.length ; i++) {
       max = max > values[i] ? max : values[i];
     }
     return max;
