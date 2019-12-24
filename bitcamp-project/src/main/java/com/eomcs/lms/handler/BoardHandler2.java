@@ -4,13 +4,13 @@ import java.sql.Date;
 import java.util.Scanner;
 import com.eomcs.lms.domain.Board;
 
-public class BoardHandler {
-
+public class BoardHandler2 {
+  
   static final int SIZE = 5000;
   static int board_count = 0; 
   static Board[] boards = new Board[SIZE];
   public static Scanner sc;
-
+  
   public static void boardList() {
     for (int i = 0; i < board_count; i++) {
       Board board = boards[i];
@@ -33,7 +33,6 @@ public class BoardHandler {
     System.out.println();
     boards[board_count++] = b;
   }
-
   public static void detailBoard() {
     System.out.print("게시물 번호? ");
     int no = sc.nextInt();
@@ -56,5 +55,4 @@ public class BoardHandler {
     System.out.printf("조회수: %d\n", board.viewCount);
     System.out.println();
   }
-
 }
