@@ -2,11 +2,6 @@ package com.eomcs.lms;
 
 import java.util.Scanner;
 import com.eomcs.lms.handler.BoardHandler;
-import com.eomcs.lms.handler.BoardHandler2;
-import com.eomcs.lms.handler.BoardHandler3;
-import com.eomcs.lms.handler.BoardHandler4;
-import com.eomcs.lms.handler.BoardHandler5;
-import com.eomcs.lms.handler.BoardHandler6;
 import com.eomcs.lms.handler.LessonHandler;
 import com.eomcs.lms.handler.MemberHandler;
 
@@ -18,12 +13,17 @@ public class App {
     LessonHandler.sc = sc;
     BoardHandler.sc = sc;
     MemberHandler.sc = sc;
-    BoardHandler2.sc = sc;
-    BoardHandler3.sc = sc;
-    BoardHandler4.sc = sc;
-    BoardHandler5.sc = sc;
-    BoardHandler6.sc = sc;
-
+    
+    // BoardHandler 메소드가 사용할 메모리만 게시판 마다 따로 생성
+    BoardHandler 게시판1 = new BoardHandler();
+    BoardHandler 게시판2 = new BoardHandler();
+    BoardHandler 게시판3 = new BoardHandler();
+    BoardHandler 게시판4 = new BoardHandler();
+    BoardHandler 게시판5 = new BoardHandler();
+    BoardHandler 게시판6 = new BoardHandler();
+    MemberHandler mh = new MemberHandler();
+    LessonHandler lh = new LessonHandler();
+    
     String command;
     while (true) {
       System.out.print("명령> ");
@@ -31,70 +31,70 @@ public class App {
 
       switch(command) {
         case "/lesson/add" :
-          LessonHandler.lessonAdd();
+          LessonHandler.lessonAdd(lh);
           break;
         case "/lesson/list" :
-          LessonHandler.lessonList();
+          LessonHandler.lessonList(lh);
           break;
         case "/member/add" :
-          MemberHandler.memberAdd();
+          MemberHandler.memberAdd(mh);
           break;
         case "/member/list" :
-          MemberHandler.memberList();
+          MemberHandler.memberList(mh);
           break;
         case "/board/add" :
-          BoardHandler.boardAdd();
+          BoardHandler.boardAdd(게시판1);
           break;
         case "/board/list" :
-          BoardHandler.boardList();
+          BoardHandler.boardList(게시판1);
           break;
         case "/board/detail" :
-          BoardHandler.detailBoard();
+          BoardHandler.detailBoard(게시판1);
           break;
         case "/board2/add" :
-          BoardHandler2.boardAdd();
+          BoardHandler.boardAdd(게시판2);
           break;
         case "/board2/list" :
-          BoardHandler2.boardList();
+          BoardHandler.boardList(게시판2);
           break;
         case "/board2/detail" :
-          BoardHandler2.detailBoard();
+          BoardHandler.detailBoard(게시판2);
           break;
         case "/board3/add" :
-          BoardHandler3.boardAdd();
+          BoardHandler.boardAdd(게시판3);
           break;
         case "/board3/list" :
-          BoardHandler3.boardList();
+          BoardHandler.boardList(게시판3);
           break;
         case "/board3/detail" :
-          BoardHandler3.detailBoard();
+          BoardHandler.detailBoard(게시판3);
           break;
         case "/board4/add" :
-          BoardHandler4.boardAdd();
+          BoardHandler.boardAdd(게시판4);
           break;
         case "/board4/list" :
-          BoardHandler4.boardList();
+          BoardHandler.boardList(게시판4);
           break;
         case "/board4/detail" :
-          BoardHandler4.detailBoard();
+          BoardHandler.detailBoard(게시판4);
           break;
         case "/board5/add" :
-          BoardHandler5.boardAdd();
+          BoardHandler.boardAdd(게시판5);
           break;
         case "/board5/list" :
-          BoardHandler5.boardList();
+          BoardHandler.boardList(게시판5);
           break;
         case "/board5/detail" :
-          BoardHandler5.detailBoard();
+          BoardHandler.detailBoard(게시판5);
           break;
         case "/board6/add" :
-          BoardHandler6.boardAdd();
+          BoardHandler.boardAdd(게시판6);
           break;
         case "/board6/list" :
-          BoardHandler6.boardList();
+          BoardHandler.boardList(게시판6);
           break;
         case "/board6/detail" :
-          BoardHandler6.detailBoard();
+          BoardHandler.detailBoard(게시판6);
           break;
         case "quit" :
           System.out.println("안녕!");

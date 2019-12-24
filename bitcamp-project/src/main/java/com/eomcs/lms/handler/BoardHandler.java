@@ -5,22 +5,28 @@ import java.util.Scanner;
 import com.eomcs.lms.domain.Board;
 
 public class BoardHandler {
-
+  
+  // 인스턴스 필드(non-static field) => new 명령 실행해야 생성되는 변수
+  // 개별적으로 관리되어야 하는 값일 경우
+  int board_count = 0; 
+  Board[] boards = new Board[SIZE];
+  
+  // 클래스 필드(static field) => Method Area에 클래스 코드가 로딩될 때 자동 생성 
+  // 공통으로 관리되어야 하는 값일 경우
   static final int SIZE = 5000;
-  static int board_count = 0; 
-  static Board[] boards = new Board[SIZE];
   public static Scanner sc;
-
-  public static void boardList() {
-    for (int i = 0; i < board_count; i++) {
-      Board board = boards[i];
+  
+  // 클래스 메소드 => 인스턴스 없이 호출하는 메소드, 인스턴스를 사용하려면 파라미터를 통해 호출할 때 외부에서 받아야 함
+  public static void boardList(BoardHandler boardHandler) {
+    for (int i = 0; i < boardHandler.board_count; i++) {
+      Board board = boardHandler.boards[i];
       System.out.printf("%d, %s, %s, %d\n", 
           board.no, board.title, board.date, board.viewCount);
     }
     System.out.println();
   }
 
-  public static void boardAdd() {
+  public static void boardAdd(BoardHandler boardHandler) {
     Board b = new Board();
     System.out.print("번호? ");
     b.no = sc.nextInt();
@@ -31,18 +37,18 @@ public class BoardHandler {
     b.viewCount = 0;
     System.out.println("저장하였습니다.");
     System.out.println();
-    boards[board_count++] = b;
+    boardHandler.boards[boardHandler.board_count++] = b;
   }
 
-  public static void detailBoard() {
+  public static void detailBoard(BoardHandler boardHandler) {
     System.out.print("게시물 번호? ");
     int no = sc.nextInt();
     sc.nextLine();
 
     Board board = null;
-    for (int i = 0; i < board_count ; i++) {
-      if(boards[i].no == no) {
-        board = boards[i];
+    for (int i = 0; i < boardHandler.board_count ; i++) {
+      if(boardHandler.boards[i].no == no) {
+        board = boardHandler.boards[i];
         break;
       }
       if (board == null) {

@@ -6,12 +6,13 @@ import com.eomcs.lms.domain.Member;
 
 public class MemberHandler {
 
+  int member_count = 0; 
+  Member[] members = new Member[SIZE];
+  
   static final int SIZE = 5000;
-  static int member_count = 0; 
-  static Member[] members = new Member[SIZE];
   public static Scanner sc;
 
-  public static void memberAdd() {
+  public static void memberAdd(MemberHandler mh) {
     Member m = new Member();
     System.out.print("번호? ");
     m.no = sc.nextInt();
@@ -29,14 +30,14 @@ public class MemberHandler {
     System.out.print("가입일? ");
     m.registeredDate = new Date(System.currentTimeMillis());
     System.out.println(m.registeredDate);
-    members[member_count++] = m;
+    mh.members[mh.member_count ++] = m;
     System.out.println("저장하였습니다.");
     System.out.println();
   }
 
-  public static void memberList() {
-    for (int i = 0 ; i < member_count ; ) {
-      Member m = members[i++];
+  public static void memberList(MemberHandler mh) {
+    for (int i = 0 ; i < mh.member_count ; ) {
+      Member m = mh.members[i++];
       System.out.printf("%d, %s, %s, %s, %s\n", 
           m.no, m.name, m.email, m.tel, m.registeredDate);
     }
