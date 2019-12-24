@@ -1,10 +1,10 @@
-package com.eomcs.lms;
+package com.eomcs.lms.handler;
 
 import java.sql.Date;
 import java.util.Scanner;
 
 public class LessonHandler {
-  
+
   static class Lesson {
     int num, totalHours, dayHours, count;
     String title, description;
@@ -13,9 +13,9 @@ public class LessonHandler {
   static final int SIZE = 5000;
   static int lesson_count = 0;
   static Lesson[] lessons = new Lesson[SIZE];
-  static Scanner sc;
+  public static Scanner sc;
 
-  static void lessonAdd() {
+  public static void lessonAdd() {
     Lesson l = new Lesson();
     System.out.print("번호? ");
     l.num = sc.nextInt();
@@ -38,7 +38,7 @@ public class LessonHandler {
     System.out.println();
   }
 
-  static void lessonList() {
+  public static void lessonList() {
     for (int i = 0 ; i < lesson_count ; ) {
       Lesson l = lessons[i++];
       System.out.printf("%d, %s, %s ~ %s, %d\n", 

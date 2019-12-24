@@ -1,4 +1,4 @@
-package com.eomcs.lms;
+package com.eomcs.lms.handler;
 
 import java.sql.Date;
 import java.util.Scanner;
@@ -13,9 +13,9 @@ public class MemberHandler {
   static final int SIZE = 5000;
   static int member_count = 0; 
   static Member[] members = new Member[SIZE];
-  static Scanner sc;
+  public static Scanner sc;
 
-  static void memberAdd() {
+  public static void memberAdd() {
     Member m = new Member();
     System.out.print("번호? ");
     m.no = sc.nextInt();
@@ -38,7 +38,7 @@ public class MemberHandler {
     System.out.println();
   }
 
-  static void memberList() {
+  public static void memberList() {
     for (int i = 0 ; i < member_count ; ) {
       Member m = members[i++];
       System.out.printf("%d, %s, %s, %s, %s\n", 
