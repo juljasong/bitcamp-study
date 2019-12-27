@@ -1,4 +1,4 @@
-// 생성자 - 생성자 호출 막기
+// 생성자 - 생성자 호출 막기 = 인스턴스 생성 막기
 package com.eomcs.oop.ex03;
 
 class X {

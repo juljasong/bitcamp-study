@@ -1,36 +1,53 @@
-# 13 - 인스턴스 필드와 인스턴스 메서드가 필요한 이유
+# eomcs-java-project-2.4
 
-## 학습 목표
+인스턴스 연산자와 메서드
 
-- 인스턴스 필드와 인스턴스 메서드를 사용할 수 있다.
-- 스태틱 필드와 인스턴스 필드의 차이점과 용도를 설명할 수 있다.
-- 스태틱 메서드와 인스턴스 메서드의 차이점과 용도를 설명할 수 있다.
+- 메서드를 활용하여 인스턴스 값을 다루는 연산자를 정의하는 방법
+- 캡슐화와 셋터/겟터의 의미
 
-## 실습 소스 및 결과
+## 프로젝트 - 수업관리 시스템  
 
-- src/main/java/com/eomcs/lms/handler/BoardHandler.java 변경
+### 과제 1: Lesson 인스턴스의 값을 다룰 연산자를 정의하라.
+
+- Lesson.java
+    - 인스턴스 변수(필드)를 비공개(private)로 전환한다.
+    - 값을 설정하고 리턴해주는 세터/게터를 정의한다. 
+- LessonHandler.java
+    - Lesson 인스턴스에 값을 넣고 꺼낼 때 세터/겟터를 사용한다.
+
+#### 실행 결과
+
+`App` 클래스의 실행 결과는 이전 버전과 같다.
+
+### 과제 2: Member 인스턴스의 값을 다룰 연산자를 정의하라.
+
+- Member.java
+    - 인스턴스 변수(필드)를 비공개(private)로 전환한다.
+    - 값을 설정하고 리턴해주는 세터/게터를 정의한다. 
+- MemberHandler.java
+    - Member 인스턴스에 값을 넣고 꺼낼 때 세터/겟터를 사용한다.
+
+#### 실행 결과
+
+`App` 클래스의 실행 결과는 이전 버전과 같다.
+
+### 과제 3: Board 인스턴스의 값을 다룰 연산자를 정의하라.
+
+- Board.java
+    - 인스턴스 변수(필드)를 비공개(private)로 전환한다.
+    - 값을 설정하고 리턴해주는 세터/게터를 정의한다. 
+- BoardHandler.java
+    - Board 인스턴스에 값을 넣고 꺼낼 때 세터/겟터를 사용한다.
+
+#### 실행 결과
+
+`App` 클래스의 실행 결과는 이전 버전과 같다.
+
+## 실습 소스
+
+- src/main/java/com/eomcs/lms/domain/Lesson.java 변경
+- src/main/java/com/eomcs/lms/domain/Member.java 변경
+- src/main/java/com/eomcs/lms/domain/Board.java 변경
 - src/main/java/com/eomcs/lms/handler/LessonHandler.java 변경
 - src/main/java/com/eomcs/lms/handler/MemberHandler.java 변경
-- src/main/java/com/eomcs/lms/handler/BoardHandler2.java 삭제
-- src/main/java/com/eomcs/lms/App.java 변경
-
-## 실습
-
-### 작업1) 인스턴스 멤버를 활용하여 새 게시판을 추가하라.
-
-- BoardHandler.java
-    - 게시판 마다 게시글을 개별적으로 다룰 수 있도록 필드를 인스턴스 멤버로 전환한다.
-    - 인스턴스 필드를 다루기 위해 클래스 메서드를 인스턴스 메서드로 전환한다.
-- App.java (App.java.01)
-    - `BoardHandler` 클래스의 변화에 맞추어 코드를 변경한다.
-- BoardHandler2.java
-    - 삭제한다.
-
-### 작업2) 핸들러의 스태틱 멤버를 인스턴스 필드와 인스턴스 메서드로 전환하라.
-
-- LessonHandler.java
-    - 필드와 메서드를 인스턴스 멤버로 전환한다.
-- MemberHandler.java    
-    - 필드와 메서드를 인스턴스 멤버로 전환한다.
-- App.java
-    - `LessonHandler`와 `MemberHandler` 클래스의 변화에 맞추어 코드를 변경한다.
+- src/main/java/com/eomcs/lms/handler/BoardHandler.java 변경

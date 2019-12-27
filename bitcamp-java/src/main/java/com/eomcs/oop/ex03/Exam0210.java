@@ -2,6 +2,7 @@
 package com.eomcs.oop.ex03;
 
 public class Exam0210 {
+  
     static class A {
         //1) 클래스 메서드 
         //   => static 붙은 메서드이다.

@@ -7,36 +7,29 @@ import com.eomcs.lms.domain.Lesson;
 public class LessonHandler {
 
   int lesson_count = 0;
-  Lesson[] lessons;
-  
+  Lesson[] lessons = new Lesson[SIZE];
   
   static final int SIZE = 5000;
-  public Scanner input;
-  
-  public LessonHandler(Scanner input){
-    this.input = input;
-    this.lessons = new Lesson[SIZE];
-  }
-  
+  public static Scanner sc;
 
   public  void lessonAdd() {
     Lesson l = new Lesson();
     System.out.print("번호? ");
-    l.num = input.nextInt();
-    input.nextLine();
+    l.num = sc.nextInt();
+    sc.nextLine();
     System.out.print("수업명? ");
-    l.title = input.nextLine();
+    l.title = sc.nextLine();
     System.out.print("설명? ");
-    l.description = input.nextLine();
+    l.description = sc.nextLine();
     System.out.print("시작일? ");
-    l.startDate = Date.valueOf(input.next());
+    l.startDate = Date.valueOf(sc.next());
     System.out.print("종료일? ");
-    l.endDate = Date.valueOf(input.next());
+    l.endDate = Date.valueOf(sc.next());
     System.out.print("총수업시간? ");
-    l.totalHours = input.nextInt();
+    l.totalHours = sc.nextInt();
     System.out.print("일수업시간? ");
-    l.dayHours = input.nextInt();
-    input.nextLine();
+    l.dayHours = sc.nextInt();
+    sc.nextLine();
     this.lessons[this.lesson_count++] = l;
     System.out.println("저장하였습니다.");
     System.out.println();

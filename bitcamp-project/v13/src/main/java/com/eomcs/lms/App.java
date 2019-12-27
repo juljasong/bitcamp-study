@@ -10,15 +10,19 @@ public class App {
   static Scanner sc = new Scanner(System.in);
   
   public static void main(String[] args) {
+    LessonHandler.sc = sc;
+    BoardHandler.sc = sc;
+    MemberHandler.sc = sc;
     
-    BoardHandler 게시판1 = new BoardHandler(sc);
-    BoardHandler 게시판2 = new BoardHandler(sc, 200);
-    BoardHandler 게시판3 = new BoardHandler(sc, 1000);
-    BoardHandler 게시판4 = new BoardHandler(sc);
-    BoardHandler 게시판5 = new BoardHandler(sc, 9000);
-    BoardHandler 게시판6 = new BoardHandler(sc, 20000);
-    MemberHandler mh = new MemberHandler(sc);
-    LessonHandler lh = new LessonHandler(sc);
+    // BoardHandler 메소드가 사용할 메모리만 게시판 마다 따로 생성
+    BoardHandler 게시판1 = new BoardHandler();
+    BoardHandler 게시판2 = new BoardHandler();
+    BoardHandler 게시판3 = new BoardHandler();
+    BoardHandler 게시판4 = new BoardHandler();
+    BoardHandler 게시판5 = new BoardHandler();
+    BoardHandler 게시판6 = new BoardHandler();
+    MemberHandler mh = new MemberHandler();
+    LessonHandler lh = new LessonHandler();
     
     String command;
     while (true) {
