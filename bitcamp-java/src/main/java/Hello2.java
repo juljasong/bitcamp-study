@@ -7,12 +7,7 @@ public class Hello2 {
     System.out.println("Fahrenheit : " + fahrenheit);
     System.out.println("Celcius : " + celcius); //37.78
     */
-    char ch = '9';
-    // 영문자 혹은 숫자일 때만 true
-    boolean b = ((ch > 47 && ch < 58) || (ch > 64 && ch < 91) 
-        || (ch > 96 && ch < 123));
-    
-    System.out.println(b);
+    System.out.println('1' + '2');
 
   }
 
