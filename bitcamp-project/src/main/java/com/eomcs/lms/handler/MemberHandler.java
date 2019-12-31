@@ -20,21 +20,21 @@ public class MemberHandler {
   public void memberAdd() {
     Member m = new Member();
     System.out.print("번호? ");
-    m.no = input.nextInt();
+    m.setNo(input.nextInt());
     input.nextLine();
     System.out.print("이름? ");
-    m.name = input.nextLine();
+    m.setName(input.nextLine());
     System.out.print("이메일? ");
-    m.email = input.nextLine();
+    m.setEmail(input.nextLine());
     System.out.print("암호? ");
-    m.password = input.nextLine();
+    m.setPassword(input.nextLine()); 
     System.out.print("사진? ");
-    m.photo = input.nextLine();
+    m.setPhoto(input.nextLine()); 
     System.out.print("전화? ");
-    m.tel = input.nextLine();
+    m.setTel(input.nextLine()); 
     System.out.print("가입일? ");
-    m.registeredDate = new Date(System.currentTimeMillis());
-    System.out.println(m.registeredDate);
+    m.setRegisteredDate(new Date(System.currentTimeMillis())); 
+    System.out.println(m.getRegisteredDate());
     this.members[this.member_count ++] = m;
     System.out.println("저장하였습니다.");
     System.out.println();
@@ -44,7 +44,7 @@ public class MemberHandler {
     for (int i = 0 ; i < this.member_count ; ) {
       Member m = this.members[i++];
       System.out.printf("%d, %s, %s, %s, %s\n", 
-          m.no, m.name, m.email, m.tel, m.registeredDate);
+          m.getNo(), m.getName(), m.getEmail(), m.getTel(), m.getRegisteredDate());
     }
     System.out.println();
   }

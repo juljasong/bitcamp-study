@@ -2,7 +2,7 @@
 
 package com.eomcs.oop.ex07.a;
 
-class Score {
+class Score2 {
   String name;
   int kor;
   int eng;
@@ -17,9 +17,9 @@ class Score {
   
 }
 
-public class Exam0110 {
+public class Exam0111 {
   public static void main(String[] args) {
-    Score s1 = new Score();
+    Score2 s1 = new Score2();
     
     s1.name = "피에르";
     s1.eng = 100;
