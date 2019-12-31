@@ -1,19 +1,19 @@
 package com.eomcs.lms.handler;
 
 import java.util.Arrays;
-import com.eomcs.lms.domain.Member;
+import com.eomcs.lms.domain.Lesson;
 
-public class MemberList {
+public class LessonList {
   
   private static final int DEFAULT_CAPACITY = 100;
-  private int size = 0; 
-  private Member[] list;
+  private int size = 0;
+  private Lesson[] list;
   
-  public MemberList() {
-    list = new Member[DEFAULT_CAPACITY];
+  public LessonList() {
+    list = new Lesson[DEFAULT_CAPACITY];
   }
 
-  public void add(Member m) {
+  public void add(Lesson l) {
     if (this.size == this.list.length) { // 현재 배열에 게시글 객체가 차면, 배열을 늘림
       int oldCapacity = this.list.length;
       int newCapacity = oldCapacity + (oldCapacity >> 1);
@@ -28,10 +28,10 @@ public class MemberList {
       System.out.printf("새 배열을 %d개 생성하였습니다.", newCapacity);
       System.out.println();
     }
-    this.list[this.size++] = m;
+    this.list[size++] = l;
   }
 
-  public Member[] toArray() {
+  public Lesson[] toArray() {
     return Arrays.copyOf(this.list, this.size);
   }
   
