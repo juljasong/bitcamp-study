@@ -16,9 +16,3 @@ public class B extends A {
         System.out.println("B() 생성자!");
     }
 }
-
-
-
-
-
-

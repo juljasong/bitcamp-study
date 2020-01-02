@@ -8,10 +8,11 @@ public class Car {
     public Car() {}
     
     public Car(String model, String maker, int capacity) {
-        this.model = model;
-        this.maker = maker;
-        this.capacity = capacity;
+      this.model = model;
+      this.maker = maker;
+      this.capacity = capacity;
     }
+    
 }
 
 
