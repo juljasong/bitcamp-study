@@ -1,7 +1,7 @@
 // 다형성 - 다형적 변수의 형변환 응용 - instanceof 연산자
 package com.eomcs.oop.ex06.a;
 
-public class Exam05 {
+public class Exam0521 {
 
     // Sedan과 Truck, Bike의 모든 정보를 자세히 출력하라!
     // 단, 한 개의 메서드로 처리하라!

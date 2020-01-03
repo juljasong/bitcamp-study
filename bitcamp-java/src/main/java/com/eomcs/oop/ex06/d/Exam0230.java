@@ -1,7 +1,7 @@
 // Object 클래스의 메서드를 오버라이딩 하기 - hashCode()
 package com.eomcs.oop.ex06.d;
 
-public class Exam0220 {
+public class Exam0230 {
 
     static class Score {
         String name;
@@ -27,36 +27,35 @@ public class Exam0220 {
             // String 클래스에 있는 hashCode()를 사용하는 것이다.
             // 왜? String 클래스에 있는 hashCode()는 문자열이 같은 경우 
             //     같은 해시 값을 리턴하도록 이미 오버라이딩 되어 있기 때문이다.
-            return 1000;
+            String value = String.format("%s,%d,%d,%d,%d,%.1f", 
+                    this.name, this.kor, this.eng, this.math,
+                    this.sum, this.aver);
+            return value.hashCode();
         }
     }
     
     public static void main(String[] args) {
         Score s1 = new Score("홍길동", 100, 100, 100);
         Score s2 = new Score("홍길동", 100, 100, 100);
+        Score s3 = new Score("홍길동", 99, 100, 100);
+
         
         // 같은 값을 가질 때 같은 해시값을 리턴하도록 
         // hashCode()를 오버라이딩 했기 때문에
         // 다음 출력은 같은 해시 값을 출력할 것이다.
         System.out.printf("%d, %d\n", s1.hashCode(), s2.hashCode());
+        System.out.println("s1 : " + s1.hashCode());
+        System.out.println("s2 : " + s2.hashCode());
+        System.out.println("s3 : " + s3.hashCode());
         
         // hashCode()의 리턴 값을 비교하여 두 인스턴스의 값이 같은지 알아낼 수도 있다.
-        System.out.println(s1.hashCode() == s2.hashCode());
+        System.out.println(s1.hashCode() == s2.hashCode()); // true
         
-        String pw1 = "juliaSong";
-        String pw2 = "juliasong";
-        String pw3 = "memememem3434";
+        /* 인스턴스는 다름 : false */
+        System.out.println(s1 == s2);
+        System.out.println(s1 == s3);
+        System.out.println(s2 == s3);
         
-        System.out.println(pw1.hashCode());
-        System.out.println(pw2.hashCode());
-        System.out.println(pw2.hashCode());
-        
-        String pw4 = "1231242342";
-        String pw5 = "1231242342";
-        String pw6 = "23";
-        System.out.println(pw4.hashCode());
-        System.out.println(pw5.hashCode());
-        System.out.println(pw6.hashCode());
         
     }
 }

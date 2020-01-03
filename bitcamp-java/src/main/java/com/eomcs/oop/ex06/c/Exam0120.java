@@ -1,7 +1,7 @@
 // 오버라이딩(overriding) - 오버라이딩 문법이 없다면?
 package com.eomcs.oop.ex06.c;
 
-public class Exam02 {
+public class Exam0120 {
     public static void main(String[] args) {
         A2 obj1 = new A2();
         obj1.name = "홍길동";

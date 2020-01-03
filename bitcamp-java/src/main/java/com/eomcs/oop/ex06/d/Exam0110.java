@@ -1,9 +1,9 @@
 // Object 클래스의 메서드를 오버라이딩 하기 - toString()
 package com.eomcs.oop.ex06.d;
 
-public class Exam0110 {
+public class Exam0110 extends Object {
 
-    static class Score {
+    static class Score /* extends Object */ {
         String name;
         int kor;
         int eng;

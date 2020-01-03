@@ -1,7 +1,7 @@
 // 메서드 오버로딩(overloading) - 정의하는 규칙과 사용 규칙
 package com.eomcs.oop.ex06.b;
 
-public class Exam01 {
+public class Exam0113 {
     public static void main(String[] args) {
         // 메서드 사용하기
         // => 같은 이름의 메서드가 여러 개 있을 경우, 
