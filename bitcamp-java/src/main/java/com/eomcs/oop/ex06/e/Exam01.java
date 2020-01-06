@@ -1,17 +1,27 @@
 // 다형적 변수와 오버라이딩
-package com.eomcs.oop.ex07.c;
+package com.eomcs.oop.ex06.e;
 
 public class Exam01 {
     public static void main(String[] args) {
         A a = new A();
+        a.m(); // A 객체 사용
+        //((A2)a).x(); // 실행오류
+        System.out.println("------------");
+        
         A2 a2 = new A2();
-        
-        // A 객체 사용
-        a.m();
-        
         // A2 객체 사용
         a2.m(); // 이때 m()은 A2가 재정의한 메서드이다.
         a2.x();
+        
+        A a3 = new A2();
+        a3.m(); // A2의 m() 호출!
+        // 레퍼런스가 하위 클래스 인스턴스 가리킬 때, 
+        // 레퍼런스를 통해 호출하는 메서드가 하위 클래스에서 오버라이딩 한 것이라면 오버라이딩 한 메서드 호출
+        
+        // 그러나 A2에서 추가한 메서드 호출은 불가
+        //a3.x(); // 컴파일 오류
+        ((A2)a3).x(); // 형변환 하면 가능
+        System.out.println("------------");
         
         // 다형적 변수와 오버라이딩 메서드
         A p = a2; // 수퍼 클래스의 래퍼런스는 서브 클래스의 객체 주소를 담을 수 있다.
