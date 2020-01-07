@@ -15,6 +15,9 @@ public class Exam0646 {
     static {
       System.out.println("Static{} 22222");
     }
+    {
+    	System.out.println("실행?");
+    }
   }
 
   public static void main(String[] args) throws Exception {
@@ -36,9 +39,9 @@ public class Exam0646 {
     // => 레퍼런스를 선언할 때는 클래스가 로딩되지 않는다.
 
     // 클래스 중복 로딩 X
-    //A.a = 100;
-    //A.m();
-    //new A();
+    A.a = 100;
+    A.m();
+    new A();
     System.out.println("--------");
 
     //이전에 이미 클래스가 로딩되었기 때문에 다시 로딩되지 않는다

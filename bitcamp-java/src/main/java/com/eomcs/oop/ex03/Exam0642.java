@@ -15,6 +15,9 @@ public class Exam0642 {
     static {
       System.out.println("Static{} 22222");
     }
+    {
+    	System.out.println("실행?");
+    }
   }
 
   public static void main(String[] args) throws Exception {
