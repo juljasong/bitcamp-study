@@ -22,49 +22,25 @@ public class App {
 
       switch(command) {
         case "/lesson/add" :
-          lessonHandler.addLesson();
+          lessonHandler.lessonAdd();
           break;
         case "/lesson/list" :
-          lessonHandler.listLesson();
-          break;
-        case "/lesson/detail" :
-          lessonHandler.detailLesson();
-          break;
-        case "/lesson/update" :
-          lessonHandler.updateLesson();
-          break;
-        case "/lesson/delete" :
-          lessonHandler.deleteLesson();
+          lessonHandler.lessonList();
           break;
         case "/member/add" :
-          memberHandler.addMember();
+          memberHandler.memberAdd();
           break;
         case "/member/list" :
-          memberHandler.listMember();
-          break;
-        case "/member/detail" :
-          memberHandler.detailMember();
-          break;
-        case "/member/update" :
-          memberHandler.updateMember();
-          break;
-        case "/member/delete" :
-          memberHandler.deleteMember();
+          memberHandler.memberList();
           break;
         case "/board/add" :
-          boardHandler.addBoard();
+          boardHandler.boardAdd();
           break;
         case "/board/list" :
-          boardHandler.ListBoard();
+          boardHandler.boardList();
           break;
         case "/board/detail" :
           boardHandler.detailBoard();
-          break;
-        case "/board/update" :
-          boardHandler.updateBoard();
-          break;
-        case "/board/delete" :
-          boardHandler.deleteBoard();
           break;
         case "quit" :
           System.out.println("안녕!");
