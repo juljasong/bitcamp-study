@@ -36,22 +36,17 @@ public class ArrayList<E> {
     }
     this.elementData[this.size++] = e;
   }
-
-   public void add(int index, E value) {
-    if (index < 0 || index >= this.size)
+  /*
+  public void add(int idx, E e) {
+    if (idx < 0 || idx >= this.size) {
       return;
-
-    if (this.size == this.elementData.length) {
-      grow();
     }
-
-    for (int i = size - 1; i >= index; i--)
-      this.elementData[i + 1] = this.elementData[i];
-
-    this.elementData[index] = value;
+    System.arraycopy(elementData, idx , elementData, idx + 1, this.size + 1);
     this.size++;
+    this.elementData[idx] = e;
   }
-   
+  */
+
   @SuppressWarnings("unchecked")
   public E get(int index) {
     if (index < 0 || index >= this.size) {
@@ -112,15 +107,5 @@ public class ArrayList<E> {
     // 넉넉할 때 파라미터로 받은 배열 그대로 리턴
     System.arraycopy(this.elementData, 0, arr, 0, size);
     return arr;
-  }
-  
-  private Object[] grow() {
-    return this.elementData = Arrays.copyOf(this.elementData, 
-        newCapacity());
-  }
-  
-  private int newCapacity() {
-    int oldSize = this.elementData.length;
-    return oldSize + (oldSize >> 1);
   }
 }

@@ -49,16 +49,13 @@ public class MemberHandler {
 
   public void detailMember() {
     System.out.print("회원 번호? ");
-    int no = input.nextInt();
+    Member member = this.memberList.get(input.nextInt());
     input.nextLine();
-    int index = indexOfMember(no);
-   
-    if (index == -1) {
+    if (member == null) {
       System.out.println("해당 학생을 찾을 수 없습니다.");
       System.out.println();
       return;
     }
-    Member member = this.memberList.get(index);
     System.out.println("이름 : " + member.getName());
     System.out.println("이메일 : " + member.getEmail());
     System.out.println("암호: " + member.getPassword());
@@ -72,15 +69,13 @@ public class MemberHandler {
     String s;
     boolean changed = false;
     System.out.print("회원 번호? ");
-    int no = input.nextInt();
+    Member member = this.memberList.get(input.nextInt());
     input.nextLine();
-    int index = indexOfMember(no);
-    if (index == -1) {
+    if (member == null) {
       System.out.println("해당 회원을 찾을 수 없습니다.");
       System.out.println();
       return;
     }
-    Member member = this.memberList.get(index);
     System.out.printf("이름(%s)? ", member.getName());
     s = input.nextLine();
     if(s.length() != 0) {
@@ -122,28 +117,18 @@ public class MemberHandler {
 
   public void deleteMember() {
     System.out.print("회원 번호? ");
-    int no = input.nextInt();
+    int index = input.nextInt();
     input.nextLine();
-    int index = indexOfMember(no);
-    
-    if(index == -1) {
+    Member member = this.memberList.get(index);
+    if(member == null) {
       System.out.println("해당 회원을 찾을 수 없습니다.");
       System.out.println();
       return;
     }
-    
     this.memberList.remove(index);
     System.out.println("회원을 삭제했습니다.");
     System.out.println();
-  }
-  
-  private int indexOfMember(int no) {
-    for(int i = 0 ; i < this.memberList.size() ; i++) {
-      if(this.memberList.get(i).getNo() == no) {
-        return i;
-      }
-    }
-    return -1;
+
   }
 
 }

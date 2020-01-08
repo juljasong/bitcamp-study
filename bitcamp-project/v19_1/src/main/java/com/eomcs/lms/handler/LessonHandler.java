@@ -51,15 +51,15 @@ public class LessonHandler {
 
   public void detailLesson() {
     System.out.print("강의 번호? ");
-    int no = input.nextInt();
+    Lesson lesson = this.lessonList.get(input.nextInt());
     input.nextLine();
-    int index = indexOfLesson(no);
-    if(index == -1) {
+
+    if(lesson == null) {
       System.out.println("해당 수업을 찾을 수 없습니다.");
       System.out.println();
       return;
     }
-    Lesson lesson = this.lessonList.get(index);
+
     System.out.println("수업명: " + lesson.getTitle());
     System.out.println("수업내용: " + lesson.getDescription());
     System.out.printf("기간 : %s ~ %s\n", lesson.getStartDate(), lesson.getEndDate());
@@ -73,15 +73,13 @@ public class LessonHandler {
     boolean changed = false;
     String s = null;
     System.out.print("강의 번호? ");
-    int no = input.nextInt();
-    input.nextLine();
-    int index = indexOfLesson(no);
-    if(index == -1) {
+    Lesson lesson = this.lessonList.get(input.nextInt());
+    if(lesson == null) {
       System.out.println("해당 수업을 찾을 수 없습니다.");
       System.out.println();
       return;
     }
-    Lesson lesson = this.lessonList.get(index);
+    input.nextLine();
     System.out.printf("수업명(%s)? ", lesson.getTitle());
     s = input.nextLine();
     if(s.length() != 0) {
@@ -129,11 +127,10 @@ public class LessonHandler {
 
   public void deleteLesson() {
     System.out.print("강의 번호? ");
-    int no = input.nextInt();
+    int index = input.nextInt();
     input.nextLine();
-    int index = indexOfLesson(no);
-    
-    if(index == -1) {
+    Lesson lesson = this.lessonList.get(index);
+    if(lesson == null) {
       System.out.println("해당 수업을 찾을 수 없습니다.");
       System.out.println();
       return;
@@ -141,15 +138,6 @@ public class LessonHandler {
     this.lessonList.remove(index);
     System.out.println("수업을 삭제했습니다.");
     System.out.println();
-  }
-  
-  private int indexOfLesson(int no) {
-    for (int i = 0 ; i < this.lessonList.size() ; i++) {
-      if(this.lessonList.get(i).getNum() == no) {
-        return i;
-      }
-    }
-    return -1;
   }
 
 }
