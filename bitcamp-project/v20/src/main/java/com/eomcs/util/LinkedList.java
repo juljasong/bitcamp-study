@@ -30,7 +30,7 @@ public class LinkedList<E> {
     if (index < 0 || index >= size) {
       return;
     }
-    Node<E> newNode = new Node<>();
+    Node<E> newNode = new Node();
     newNode.value = value; // 추가할 값
 
     Node<E> cursor = first; 
