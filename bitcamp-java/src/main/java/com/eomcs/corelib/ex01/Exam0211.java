@@ -1,13 +1,13 @@
 // Wrapper 클래스 - 종류
 package com.eomcs.corelib.ex01;
 
-public class Exam0210 {
+public class Exam0211 {
   public static void main(String[] args) {
     // 자바는 primitive data type의 값을 다룰 때 기본 연산자 외에  
     // 좀 더 다양한 방법으로 다루기 위해 
     // primitive data type에 대응하는 클래스를 제공한다.
     // 예)
-    Byte b = Byte.valueOf((byte) 100);              // ==> byte
+    Byte b = Byte.valueOf((byte) 100);               // ==> byte
     Short s = Short.valueOf((short)20000);          // ==> short
     Integer i = Integer.valueOf(3000000);           // ==> int
     Long l = Long.valueOf(60000000000L);            // ==> long

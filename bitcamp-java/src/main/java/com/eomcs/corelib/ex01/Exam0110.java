@@ -8,7 +8,7 @@ public class Exam0110 {
     String s2 = new String("Hello");
     // => 내용물의 동일 여부를 검사하지 않고 무조건 인스턴스를 생성한다.
     // => 가비지가 되면 가비지 컬렉터에 의해 제거된다.
-      System.out.println(s1 == s2);
+    System.out.println(s1 == s2);
 
 
     // string constant pool 메모리 영역에 String 인스턴스를 생성하는 방법

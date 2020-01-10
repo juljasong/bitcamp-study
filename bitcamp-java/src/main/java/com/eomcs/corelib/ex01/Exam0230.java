@@ -5,24 +5,21 @@ public class Exam0230 {
   public static void main(String[] args) {
     Integer obj1 = new Integer(100); // Heap에 인스턴스 생성 
     Integer obj2 = new Integer(100); // Heap에 인스턴스 생성 
-    if (obj1 == obj2) // 인스턴스의 주소 비교 
-      System.out.println("obj1 == obj2");
-    else 
-      System.out.println("obj1 != obj2");
+    System.out.println(obj1 == obj2); // false
+    // new -> 같은 값이라도 다른 인스턴스
 
-    Integer obj3 = 100; // constant pool에 생성
-    Integer obj4 = 100; // constant pool에 생성된 기존 주소 리턴
-    if (obj3 == obj4) // 인스턴스의 주소가 같다!
-      System.out.println("obj3 == obj4");
-    else 
-      System.out.println("obj3 != obj4");
+    Integer obj3 = 100; 
+    Integer obj4 = 100; 
+    System.out.println(obj3 == obj4); // true
+    // 정수 리터럴을 이요해 오토 박싱으로 생성된 객체는 constants pool에 생성
+    // 같은 값을 가지는 객체가 여러 개 존재해야 할 필요 없으니, 가능한 이 방법을 사용하는 것이 좋음
 
-    int i = 100;
-    Integer obj5 = new Integer(100);
-    if (i == obj5) // obj5가 auto-unboxing을 수행하여 int와 int를 비교한다.
-      System.out.println("i == obj5");
-    else 
-      System.out.println("i != obj5");
+    Integer obj5 = Integer.valueOf(100); 
+    Integer obj6 = Integer.valueOf(100); 
+    System.out.println(obj5 == obj6); // true
+    // wrapper 클래스의 valueOf()로 객체를 생성하는 경우 constants pool에 생성 = auto-boxing
+    
+    System.out.println(obj3 == obj5); // 정수 리터럴 = wrapper : true
 
   }
 }

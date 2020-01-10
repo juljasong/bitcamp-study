@@ -3,21 +3,23 @@ package com.eomcs.corelib.ex01;
 
 public class Exam0120 {
   public static void main(String[] args) {
+    /* Heap */
     String s1 = new String("Hello");
     String s2 = new String("Hello");
-    String s3 = "Hello";
+    /* string constant pool */
+    String x1 = "Hello";
+    String x2 = "Hello";
 
-    // 인스턴스의 주소가 아닌 인스턴스의 데이터가 같은 지 비교할 때는
-    // equals()라는 메서드를 사용하라!
-    if (s1.equals(s2)) 
-      System.out.println("s1과 s2는 같다.");
-    else 
-      System.out.println("s1과 s2는 다르다.");
+    // equals()
+    // Object에 오버라이딩되어 있는 메서드
+    // 인스턴스 주소가 아닌 데이터가 같은지 비교
 
-    if (s1.equals(s3)) 
-      System.out.println("s1과 s3는 같다.");
-    else 
-      System.out.println("s1과 s3는 다르다.");
+    System.out.println("s1.equals(s2)) : " + s1.equals(s2)); // true
+    System.out.println("s1.equals(x1) : " + s1.equals(x1)); // true
+    
+    System.out.printf("s1 == s2 : %b\n", s1 == s2); // false
+    System.out.printf("x1 == x2 : %b\n", x1 == x2); // true
+    System.out.printf("s1 == x1 : %b\n", s1 == x1); // true
   }
 }
 
