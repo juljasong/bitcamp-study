@@ -5,17 +5,15 @@ import com.eomcs.lms.handler.BoardHandler;
 import com.eomcs.lms.handler.LessonHandler;
 import com.eomcs.lms.handler.MemberHandler;
 import com.eomcs.util.Prompt;
-import com.eomcs.util.Queue;
 import com.eomcs.util.Stack;
 
 public class App {
 
   static Scanner sc = new Scanner(System.in);
   static Stack<String> commandStack = new Stack<>();
-  static Queue<String> commandQueue = new Queue<>();
-
+  
   public static void main(String[] args) {
-
+    
     Prompt prompt = new Prompt(sc);
 
     BoardHandler boardHandler = new BoardHandler(prompt);
@@ -26,12 +24,11 @@ public class App {
     while (true) {
       System.out.print("명령> ");
       command = sc.nextLine();
-
+      
       if(command.length() == 0) 
         continue;
-
+      
       commandStack.push(command);
-      commandQueue.offer(command);
 
       switch(command) {
         case "/lesson/add" :
@@ -82,9 +79,6 @@ public class App {
         case "history" :
           printCommandHistory();
           break;
-        case "history2" :
-          printCommandHistory2();
-          break;
         case "quit" :
           System.out.println("안녕!");
           sc.close();
@@ -103,7 +97,7 @@ public class App {
     while (!historyStack.empty()) {
       System.out.println(historyStack.pop());
       count++;
-
+      
       if(count % 5 == 0 ) {
         System.out.print(" : ");
         String str = sc.nextLine();
@@ -111,21 +105,5 @@ public class App {
           break;
       }
     }
-  }
-
-  private static void printCommandHistory2() {
-    Queue<String> historyQueue = commandQueue.clone();
-    int count = 0;
-    while(historyQueue.size() > 0) {
-      System.out.println(historyQueue.poll());
-      if((++count % 5 == 0)) {
-        System.out.print(" : ");
-        String str = sc.nextLine();
-        if(str.equalsIgnoreCase("q")) {
-          break;
-        }
-      }
-    }
-
   }
 }
