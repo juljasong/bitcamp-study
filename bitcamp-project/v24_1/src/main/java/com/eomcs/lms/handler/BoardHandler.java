@@ -1,7 +1,11 @@
+// listBoard() 메서드 변경
+// => toArray() 대신 iterator()를 사용하여 목록 출력
+
 package com.eomcs.lms.handler;
 
 import java.sql.Date;
 import com.eomcs.lms.domain.Board;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
@@ -19,11 +23,11 @@ public class BoardHandler {
 
 
   public void ListBoard() {
-    Board[] arr = new Board[this.boardList.size()]; 
-    this.boardList.toArray(arr); // Board[]의 타입
-    for (Board b : arr) {
-      if (b == null)
-        break;
+    // BoardList에게 값을 꺼내는 일을 해줄 Iterator 객체 요청
+    Iterator<Board> iterator = boardList.iterator(); // 일관된 방식으로 값을 꺼내기 위해 iterator 사용
+    while (iterator.hasNext()) {
+      Board b = iterator.next();
+
       System.out.printf("%d, %s, %s, %d\n", 
           b.getNo(), b.getTitle(), b.getDate(), b.getViewCount());
     }

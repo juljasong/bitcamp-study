@@ -7,6 +7,9 @@ import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class MemberHandler {
+  //ArrayList나 LinkedList를 마음대로 사용할 수 있도록 게시물 목록 관리하는 필드 선언 시,
+  // 이들 클래스의 수퍼 클래스로 선언. 대신 이 필드에 들어갈 객체는 생성자에서 파라미터로 받음
+  // ArrayList와 LinkedList 둘 다 사용할 수 있어 유지보수에 좋음
   Prompt prompt;
   List<Member> memberList;
 

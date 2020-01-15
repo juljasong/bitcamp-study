@@ -1,6 +1,7 @@
 package com.eomcs.lms.handler;
 
 import com.eomcs.lms.domain.Lesson;
+import com.eomcs.util.Iterator;
 import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
@@ -17,7 +18,7 @@ public class LessonHandler {
 
 
   public void addLesson() {
-    Lesson l = new Lesson();    
+    Lesson l = new Lesson();
     l.setNum(prompt.inputInt("번호? "));
     l.setTitle(prompt.inputString("수업명? "));
     l.setDescription(prompt.inputString("설명? "));
@@ -31,8 +32,13 @@ public class LessonHandler {
   }
 
   public void listLesson() {
-    Lesson[] arr = this.lessonList.toArray(new Lesson[this.lessonList.size()]); //lessonList.toArray(Lesson[].class);
-    for (Lesson l : arr) {
+    /*
+    for (int i = 0 ; i < lessonList.size() ; i++) {
+      Lesson l = lessonList.get(i);
+      */
+    Iterator<Lesson> iterator = lessonList.iterator();
+    while (iterator.hasNext()) {
+      Lesson l = iterator.next();
       System.out.printf("%d, %s, %s ~ %s, %d\n", 
           l.getNum(), l.getTitle(), l.getStartDate(), l.getEndDate(), l.getTotalHours());
     }

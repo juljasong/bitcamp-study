@@ -121,4 +121,10 @@ public class LinkedList<E> extends AbstractList<E> {
     return arr;
   }
   
+  @Override
+  public Iterator<E> iterator() {
+    // LinkedList에서 값을 꺼내 줄 Iterator 객체 준비하여 리턴
+    return new ListIterator<E>(this);
+  }
+  
 }

@@ -6,10 +6,12 @@ public class Queue<E> extends LinkedList<E> implements Cloneable{
     this.add(value); 
   }
 
+  @SuppressWarnings("unchecked")
   public E poll() {
     return (E) this.remove(0);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public Queue<E> clone() {
 

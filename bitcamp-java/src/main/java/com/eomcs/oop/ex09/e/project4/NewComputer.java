@@ -1,4 +1,6 @@
-package com.eomcs.oop.ex09.e;
+package com.eomcs.oop.ex09.e.project4;
+
+import com.eomcs.oop.ex09.e.Computer;
 
 public class NewComputer implements Computer {
     // 새 컴퓨터를 만들 때는 기존 규칙만 따라도 되고,

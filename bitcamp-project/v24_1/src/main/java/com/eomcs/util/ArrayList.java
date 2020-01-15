@@ -104,4 +104,8 @@ public class ArrayList<E> extends AbstractList<E> {
     return oldSize + (oldSize >> 1);
   }
   
+  @Override
+  public Iterator<E> iterator() {
+    return new ListIterator<E>(this);
+  }
 }

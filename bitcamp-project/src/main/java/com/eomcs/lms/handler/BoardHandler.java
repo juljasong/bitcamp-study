@@ -1,30 +1,31 @@
+// listBoard() 메서드 변경
+// => toArray() 대신 iterator()를 사용하여 목록 출력
+
 package com.eomcs.lms.handler;
 
 import java.sql.Date;
 import com.eomcs.lms.domain.Board;
-import com.eomcs.util.AbstractList;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
-
-  // ArrayList나 LinkedList를 마음대로 사용할 수 있도록 게시물 목록 관리하는 필드 선언 시,
-  // 이들 클래스의 수퍼 클래스로 선언. 대신 이 필드에 들어갈 객체는 생성자에서 파라미터로 받음
-  // ArrayList와 LinkedList 둘 다 사용할 수 있어 유지보수에 좋음
-  AbstractList<Board> boardList;
+ 
+  List<Board> boardList;
   public Prompt prompt;
 
-  public BoardHandler(Prompt prompt, AbstractList<Board> list) {
+  public BoardHandler(Prompt prompt, List<Board> list) {
     this.prompt = prompt;
     this.boardList = list;
   }
 
 
   public void ListBoard() {
-    Board[] arr = new Board[this.boardList.size()]; 
-    this.boardList.toArray(arr); // Board[]의 타입
-    for (Board b : arr) {
-      if (b == null)
-        break;
+    // BoardList에게 값을 꺼내는 일을 해줄 Iterator 객체 요청
+    Iterator<Board> iterator = boardList.iterator(); // 일관된 방식으로 값을 꺼내기 위해 iterator 사용
+    while (iterator.hasNext()) {
+      Board b = iterator.next();
+
       System.out.printf("%d, %s, %s, %d\n", 
           b.getNo(), b.getTitle(), b.getDate(), b.getViewCount());
     }

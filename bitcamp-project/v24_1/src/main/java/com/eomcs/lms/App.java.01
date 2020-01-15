@@ -8,7 +8,6 @@ import com.eomcs.lms.handler.BoardHandler;
 import com.eomcs.lms.handler.LessonHandler;
 import com.eomcs.lms.handler.MemberHandler;
 import com.eomcs.util.ArrayList;
-import com.eomcs.util.Iterator;
 import com.eomcs.util.LinkedList;
 import com.eomcs.util.Prompt;
 import com.eomcs.util.Queue;
@@ -23,12 +22,13 @@ public class App {
   public static void main(String[] args) {
 
     Prompt prompt = new Prompt(sc);
+    
     LinkedList<Board> boardList = new LinkedList<>();
     BoardHandler boardHandler = new BoardHandler(prompt, boardList);
     LinkedList<Member> memberList = new LinkedList<>();
     MemberHandler memberHandler = new MemberHandler(prompt, memberList);
     ArrayList<Lesson> lessonList = new ArrayList<>();
-
+    
     LessonHandler lessonHandler = new LessonHandler(prompt, lessonList);
 
     String command;
@@ -89,10 +89,10 @@ public class App {
           boardHandler.deleteBoard();
           break;
         case "history" :
-          printCommandHistory(commandStack.iterator());
+          printCommandHistory();
           break;
         case "history2" :
-          printCommandHistory(commandQueue.iterator());
+          printCommandHistory2();
           break;
         case "quit" :
           System.out.println("안녕!");
@@ -105,18 +105,36 @@ public class App {
       }
     }
   }
-
-  private static void printCommandHistory(Iterator<String> iter) {
-    Iterator<String> iterator = iter;
+  private static void printCommandHistory() {
+    Stack<String> historyStack = (Stack<String>)commandStack.clone();
     int count = 0;
-    while (iterator.hasNext()) {
-      System.out.println(iterator.next());
-      if(++count % 5 == 0 ) {
+    historyStack.pop();
+    while (!historyStack.empty()) {
+      System.out.println(historyStack.pop());
+      count++;
+
+      if(count % 5 == 0 ) {
         System.out.print(" : ");
         String str = sc.nextLine();
         if (str.equalsIgnoreCase("q")) 
           break;
       }
     }
+  }
+
+  private static void printCommandHistory2() {
+    Queue<String> historyQueue = commandQueue.clone();
+    int count = 0;
+    while(historyQueue.size() > 0) {
+      System.out.println(historyQueue.poll());
+      if((++count % 5 == 0)) {
+        System.out.print(" : ");
+        String str = sc.nextLine();
+        if(str.equalsIgnoreCase("q")) {
+          break;
+        }
+      }
+    }
+
   }
 }

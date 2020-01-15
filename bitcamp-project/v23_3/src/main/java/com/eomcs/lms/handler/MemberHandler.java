@@ -2,7 +2,7 @@ package com.eomcs.lms.handler;
 
 import java.sql.Date;
 import com.eomcs.lms.domain.Member;
-import com.eomcs.util.AbstractList;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class MemberHandler {
@@ -10,9 +10,9 @@ public class MemberHandler {
   // 이들 클래스의 수퍼 클래스로 선언. 대신 이 필드에 들어갈 객체는 생성자에서 파라미터로 받음
   // ArrayList와 LinkedList 둘 다 사용할 수 있어 유지보수에 좋음
   Prompt prompt;
-  AbstractList<Member> memberList;
+  List<Member> memberList;
 
-  public MemberHandler (Prompt prompt, AbstractList<Member> list) {
+  public MemberHandler (Prompt prompt, List<Member> list) {
     this.prompt = prompt;
     this.memberList = list;
   }

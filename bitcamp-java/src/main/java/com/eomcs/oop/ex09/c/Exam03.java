@@ -12,6 +12,21 @@ public class Exam03 implements B, C, D {
     public void m2() {} // B와 D 인터페이스 구현
     public void m3() {} // C의 인터페이스 구현 
     public void m4() {} // D의 인터페이스 구현
+    
+    public static void main(String[] args) {
+      
+      Exam03 obj = new Exam03();
+      
+      B obj2 = obj;
+      obj2.m1();
+      obj2.m2(); // B.m2
+      
+      C obj3 = obj;
+      obj3.m3();
+      
+      D obj4 = obj;
+      obj4.m2(); // D.m2
+    }
 }
 
 

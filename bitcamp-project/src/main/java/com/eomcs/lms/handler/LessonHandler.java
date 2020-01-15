@@ -1,24 +1,19 @@
 package com.eomcs.lms.handler;
 
 import com.eomcs.lms.domain.Lesson;
-import com.eomcs.util.AbstractList;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class LessonHandler {
   
-  //ArrayList나 LinkedList를 마음대로 사용할 수 있도록 게시물 목록 관리하는 필드 선언 시,
-  // 이들 클래스의 수퍼 클래스로 선언. 대신 이 필드에 들어갈 객체는 생성자에서 파라미터로 받음
-  // ArrayList와 LinkedList 둘 다 사용할 수 있어 유지보수에 좋음
 
-  AbstractList<Lesson> lessonList;
+  List<Lesson> lessonList;
   Prompt prompt;
 
-  public LessonHandler(Prompt prompt, AbstractList<Lesson> list){
+  public LessonHandler(Prompt prompt, List<Lesson> list){
     this.prompt = prompt;
     this.lessonList = list;
-    // Handler가 사용할 List 객체(의존객체: dependency)를 파라미터로 받으면 필요에 따라
-    // List 객체를 다른 객체로 대체하기 쉬움
-    // 의존 객체를 외부에서 주입받는 것을 "Dependency Injection(의존성 주입) : DI"라 한다
   }
 
 
@@ -37,8 +32,9 @@ public class LessonHandler {
   }
 
   public void listLesson() {
-    Lesson[] arr = this.lessonList.toArray(new Lesson[this.lessonList.size()]); //lessonList.toArray(Lesson[].class);
-    for (Lesson l : arr) {
+    Iterator<Lesson> iterator = lessonList.iterator();
+    while (iterator.hasNext()) {
+      Lesson l = iterator.next();
       System.out.printf("%d, %s, %s ~ %s, %d\n", 
           l.getNum(), l.getTitle(), l.getStartDate(), l.getEndDate(), l.getTotalHours());
     }
@@ -74,7 +70,6 @@ public class LessonHandler {
     Lesson newLesson = new Lesson();
     newLesson.setNum(oldLesson.getNum());
     
-    // private String inputString(String label, String defaultValue)
     newLesson.setTitle(prompt.inputString
         ( String.format("수업명(%s)? ", oldLesson.getTitle()) , oldLesson.getTitle()));
     newLesson.setDescription(prompt.inputString
