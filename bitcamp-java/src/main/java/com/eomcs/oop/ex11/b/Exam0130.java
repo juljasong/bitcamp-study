@@ -1,5 +1,5 @@
 // 클래스의 종류 : non-static 중첩 클래스(nested class) 사용
-package com.eomcs.oop.ex11.a;
+package com.eomcs.oop.ex11.b;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -19,11 +19,22 @@ public class Exam0130 {
         }
     }
     
-    public void test() {
+    public static void test1() {
+     //JavaFilter는 non-static -> 인스턴스 생성 시, 반드시 바깥 클래스의 인스턴스 필요
+      
+      JavaFilter javaFilter;
+      //JavaFilter javaFilter = new JavaFilter();
+    }
+    
+    public void test2() {
         File dir = new File(".");
+        // 인스턴스 메서드에서는 non-static nested class의 인스턴스 생성 가능
+        // => 바깥 클래스의 인스턴스 주소를 앞쪽에 지정 후 해당 클래스의 인스턴스 생성
+        JavaFilter javaFilter;
+        javaFilter = this.new JavaFilter();
         
-        // inner class의 인스턴스를 생성한다.
-        JavaFilter javaFilter = new JavaFilter();
+        //this 생략 가능
+        javaFilter = new JavaFilter();
         
         // inner class의 인스턴스를 필터로 사용하여 디렉토리 안의 목록을 추출한다.
         String[] names = dir.list(javaFilter);
@@ -34,7 +45,7 @@ public class Exam0130 {
     
     public static void main(String[] args) throws Exception {
         Exam0130 obj = new Exam0130();
-        obj.test();
+        obj.test2();
     }
 
 }

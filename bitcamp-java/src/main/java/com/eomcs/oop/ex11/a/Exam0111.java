@@ -1,7 +1,7 @@
 // non-static nested class == inner class
 package com.eomcs.oop.ex11.a;
 
-public class Exam0110 {
+public class Exam0111 {
 
   /* 스태틱 필드 */
   static int sValue;
@@ -14,15 +14,19 @@ public class Exam0110 {
   
   static class A {
     void m1() {
-      sValue = 100;
-      //iVAlue = 100; //컴파일 오류 -> static 멤버는 static 멤버만 사용할 수 있음!
-      
-      sm();
-      //im();
+     
     }
   }
   
-  // 결론 : 인스턴스 멤버 사용하지 않으면 static nested class로 
+  static void m1() {
+    A obj;
+    obj = new A(); // OK
+  }
+  
+  void m2() {
+    A obj;
+    obj = new A(); // 인스턴스 멤버는 스태틱 멤버 사용 가능
+  }
   
   public static void main(String[] args) {
     
