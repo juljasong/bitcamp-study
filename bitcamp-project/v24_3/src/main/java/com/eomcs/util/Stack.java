@@ -64,6 +64,27 @@ public class Stack<E> implements Cloneable {
     }
   }
   public Iterator<E> iterator() {
-    return new StackIterator<E>(this);
+    return this.new StackIterator<E>();
   }
+  
+  class StackIterator<T> implements Iterator<T> {
+
+    Stack<T> stack;
+
+    @SuppressWarnings("unchecked")
+    public StackIterator() {
+      this.stack = (Stack<T>) Stack.this.clone();
+    }
+
+    @Override
+    public boolean hasNext() { // 다음 값 존재?
+      return !stack.empty(); // 비어 있지 않으면 true
+    }
+
+    @Override
+    public T next() { // 다음 값 리턴
+      return stack.pop();
+    }
+  }
+
 }

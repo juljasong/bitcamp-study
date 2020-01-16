@@ -1,26 +1,24 @@
 package com.eomcs.lms;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
-import java.util.Stack;
 import com.eomcs.lms.domain.Board;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.domain.Member;
 import com.eomcs.lms.handler.BoardHandler;
 import com.eomcs.lms.handler.LessonHandler;
 import com.eomcs.lms.handler.MemberHandler;
+import com.eomcs.util.ArrayList;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.LinkedList;
 import com.eomcs.util.Prompt;
+import com.eomcs.util.Queue;
+import com.eomcs.util.Stack;
 
 public class App {
 
   static Scanner sc = new Scanner(System.in);
-  static Deque<String> commandStack = new ArrayDeque<>();
-  static Queue<String> commandQueue = new LinkedList<>(); // 인터페이스 - 클래스
+  static Stack<String> commandStack = new Stack<>();
+  static Queue<String> commandQueue = new Queue<>();
 
   public static void main(String[] args) {
 

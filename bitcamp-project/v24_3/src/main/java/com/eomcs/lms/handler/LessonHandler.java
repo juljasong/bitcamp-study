@@ -1,8 +1,8 @@
 package com.eomcs.lms.handler;
 
-import java.util.Iterator;
-import java.util.List;
 import com.eomcs.lms.domain.Lesson;
+import com.eomcs.util.Iterator;
+import com.eomcs.util.List;
 import com.eomcs.util.Prompt;
 
 public class LessonHandler {
