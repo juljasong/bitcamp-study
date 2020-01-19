@@ -23,13 +23,6 @@ public class Exam0360 {
   Runner createRunner(final String name) {
     // Exam0360 객체 주소를 받는 내장 변수 this가 있다.
     class A implements Runner {
-      /*
-       * 컴파일러는 바깥 클래스의 객체 주소를 받을 필드는 추가한다. 또한 바깥 클래스의 객체 주소를 받는 생성자를 추가한다.
-       *
-       * Exam0360 outer; // Outer의 주소를 받을 필드
-       *
-       * public A(Exam0360 obj, String str) { outer = obj; } // run()에서 사용할 로컬 변수
-       */
       @Override
       public void run() {
         // 바깥 메서드의 로컬 변수는 호출 완료되는 순간 스택에서 제거되기 때문에
@@ -37,7 +30,6 @@ public class Exam0360 {
         // => 컴파일러가 바깥 메서드의 로컬 변수 값을 저장할 필드를 클래스에 추가
         // 또한 로컬 변수의 값을 받는 생성자를 만듬
         // => run() 호출하는 시점에는 A 로컬 객체에 name 변수의 값이 들어있어 로컬 변수 사용 가능
-
         System.out.printf("%s님이 달립니다!", name); // => System.out.printf("%s님이 달립니다!", this.paraName);
       }
     }

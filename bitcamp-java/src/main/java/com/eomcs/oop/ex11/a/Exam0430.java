@@ -1,7 +1,6 @@
 // anonymous class - 추상 클래스 상속
 package com.eomcs.oop.ex11.a;
 
-// 인터페이스의 경우 static으로 선언하지 않아도 static 멤버에서 사용할 수 있다.
 public class Exam0430 {
 
   // 클래스는 스태틱으로 선언해야만 한다

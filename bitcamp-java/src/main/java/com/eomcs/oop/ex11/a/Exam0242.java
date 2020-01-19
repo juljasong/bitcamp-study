@@ -5,14 +5,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Exam0242 {
+	
   public static void main(final String[] args) {
+	  
     final ArrayList<String> m1 = new ArrayList<>();
     m1.add("aaa.mp3");
     m1.add("bbb.mp3");
     m1.add("bbb.mp3");
-
     final Iterator<String> i1 = m1.iterator();
-    final Iterator<String> i2 = m1.iterator();
+    
+    final ArrayList<String> m2 = new ArrayList<>();
+    m2.add("111.mp3");
+    m2.add("222.mp3");
+    m2.add("333.mp3");
+    final Iterator<String> i2 = m2.iterator();
 
     while (i1.hasNext()) {
       System.out.println(i1.next());

@@ -11,17 +11,14 @@ public class Exam0210 {
   int iValue;
   void im() {}
   
-  // non-static nested class 는 인스턴스 멤버이다.
-  // 따라서 인스턴스가 있어야만 사용할 수 있다.
+  // non-static nested class 는 인스턴스 멤버이다. 인스턴스가 있어야만 사용할 수 있다.
+  
   class A {
     
-    // 자바 컴파일러는 non-static nested class를 컴파일할 때 
-    // 바깥 클래스의 인스턴스 주소를 담을 필드를 자동으로 생성한다.
-    // 예)
-    // Exam0210 outer;
+    // 자바 컴파일러는 non-static nested class를 컴파일할 때 바깥 클래스의 인스턴스 주소를 담을 필드를 자동으로 생성한다.
+    // 예) Exam0210 outer;
     
     // 또한 이 inner class의 객체를 생성할 때 호출될 생성자를 자동으로 만든다.
-    // 예)
     /*
     public A(Exam0210 arg0) {
       outer = arg0;
@@ -47,8 +44,7 @@ public class Exam0210 {
       Exam0210.this.iValue = 100; // OK!
       Exam0210.this.im(); // OK!
       
-      // inner 클래스에 같은 이름의 멤버가 없다면,
-      // "바깥 클래스명.this"를 생략해도 된다.
+      // inner 클래스에 같은 이름의 멤버가 없다면, "바깥 클래스명.this"를 생략해도 된다.
       //
       iValue = 100; // OK!
       im(); // OK!
