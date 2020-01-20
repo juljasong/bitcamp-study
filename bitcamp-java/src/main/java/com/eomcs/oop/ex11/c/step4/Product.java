@@ -1,6 +1,10 @@
-package com.eomcs.oop.ex11.c;
+package com.eomcs.oop.ex11.c.step4;
 
 public class Product {
+
+  // 상수를 문자열로 정의하면, 메모리를 많이 차지 하기 때문에
+  // 실무에서는 보통 다음과 같이 정수 값으로 처리한다.
+  // 상수의 이름은 대문자로
   public static final int COMPUTER_CPU = 1;
   public static final int COMPUTER_VGA = 2;
   public static final int COMPUTER_RAM = 3;

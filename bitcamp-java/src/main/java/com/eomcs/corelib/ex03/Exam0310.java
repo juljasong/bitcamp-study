@@ -14,7 +14,7 @@ public class Exam0310 {
     list.add(s3);
     print(list);
 
-    System.out.println(list.indexOf(s4));
+    System.out.println(list.indexOf(s4)); // indexOf() <- equals
   }
 
   static void print(ArrayList list) {
@@ -23,10 +23,6 @@ public class Exam0310 {
     }
     System.out.println();
   }
-}   
-
-
-
-
+}
 
 

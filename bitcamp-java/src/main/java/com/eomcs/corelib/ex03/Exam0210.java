@@ -1,4 +1,4 @@
-// contains() 와 hashCode(), equals()의 관계
+// contains() 와 equals()의 관계
 package com.eomcs.corelib.ex03;
 
 public class Exam0210 {
@@ -14,7 +14,8 @@ public class Exam0210 {
     list.add(s3);
     print(list);
 
-    System.out.println(list.contains(s4));
+    System.out.println(list.contains(s4)); // contains() : hashCode()와 equals()의 결과가 true인지 비교.
+                                           // String 클래스의 경우, 서로 다른 객체라도 값이 같다면 true.
   }
 
   static void print(ArrayList list) {

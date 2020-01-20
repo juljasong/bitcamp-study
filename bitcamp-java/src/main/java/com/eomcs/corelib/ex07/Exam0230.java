@@ -19,11 +19,10 @@ public class Exam0230 {
     stack.add(s4);
     stack.add(s5);
 
-    Iterator 컬렉션에서값을꺼내주는객체 = stack.iterator();
-    while (컬렉션에서값을꺼내주는객체.hasNext()) {
-      System.out.print(컬렉션에서값을꺼내주는객체.next() + ", ");
+    Iterator iterator = stack.iterator();
+    while (iterator.hasNext()) {
+      System.out.print(iterator.next() + ", ");
     }
-    System.out.println();
-
+    System.out.println(stack.pop());
   }
 }

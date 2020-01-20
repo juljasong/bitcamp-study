@@ -1,4 +1,4 @@
-package com.eomcs.oop.ex11.c;
+package com.eomcs.oop.ex11.c.step5;
 
 public class Category {
   public static final int COMPUTER_CPU = 1;

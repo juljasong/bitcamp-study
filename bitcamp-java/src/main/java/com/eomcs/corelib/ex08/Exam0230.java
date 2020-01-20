@@ -1,4 +1,4 @@
-// java.util.HashMap - value 목록만 꺼내기  
+// java.util.HashMap - value 목록만 꺼내기
 package com.eomcs.corelib.ex08;
 
 import java.util.Collection;
@@ -19,6 +19,8 @@ public class Exam0230 {
     map.put("s04", v4);
     map.put("s05", v5);
 
+    // key는 중복되면 안되기 때문에 set에 담아서 리턴
+    // value는 중복 저장될 수 있기 때문에 Collection에 담아서 리턴
     Collection values = map.values();
     for (Object value : values) {
       System.out.println(value);
@@ -27,10 +29,5 @@ public class Exam0230 {
   }
 
 }
-
-
-
-
-
 
 

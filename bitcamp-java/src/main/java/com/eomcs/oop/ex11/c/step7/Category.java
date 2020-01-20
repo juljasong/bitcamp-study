@@ -1,6 +1,6 @@
-package com.eomcs.oop.ex11.c;
+package com.eomcs.oop.ex11.c.step7;
 
-public class Category2 {
+public class Category {
 
   // static nested class 를 사용하여 
   // 여러 상수를 그룹 별로 묶어 관리한다.

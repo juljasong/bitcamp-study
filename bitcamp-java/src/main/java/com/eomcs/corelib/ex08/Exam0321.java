@@ -2,9 +2,10 @@
 package com.eomcs.corelib.ex08;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 
-public class Exam0320 {
+public class Exam0321 {
   public static void main(String[] args) {
     Member v1 = new Member("홍길동", 20);
     Member v2 = new Member("임꺽정", 30);
@@ -20,16 +21,15 @@ public class Exam0320 {
     map.put("s05", v5);
 
     Set keys = map.keySet();
-
+    Iterator iterator = keys.iterator();
+    // Iterator 객체 생성시, 현재 목록 객체를 바탕으로 생성
+    // => Iterator 생성 후 목록의 값 변경하면, 기존의 Iterator는 무효
     map.remove("s01");
     map.remove("s02");
     map.remove("s03");
 
-    // Set 객체를 통해 key 를 꺼낼 때,
-    // 그 순간의 HashSet에 있는 key를 꺼낸다.
-    // 즉 keySet()을 호출할 때 모든 key를 미리 목록을 만들어 리턴하지 않는다.
-    for (Object key : keys) {
-      System.out.println(key);
+    while (iterator.hasNext()) {
+      System.out.println(iterator.next());
     }
   }
 
