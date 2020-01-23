@@ -24,7 +24,7 @@ public class Board {
   }
 
   public String toCsvString() { // saveBoradData()
-    return String.format("%d, %s, %s, %d", this.getNo(), this.getTitle(), this.getDate(),
+    return String.format("%d, %s, %s, %d\n", this.getNo(), this.getTitle(), this.getDate(),
         this.getViewCount());
   }
 

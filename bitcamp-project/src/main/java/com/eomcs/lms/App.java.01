@@ -1,17 +1,16 @@
 package com.eomcs.lms;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
 import com.eomcs.lms.domain.Board;
@@ -23,6 +22,8 @@ import com.eomcs.lms.handler.BoardDetailCommand;
 import com.eomcs.lms.handler.BoardListCommand;
 import com.eomcs.lms.handler.BoardUpdateCommand;
 import com.eomcs.lms.handler.Command;
+import com.eomcs.lms.handler.ComputeCommand;
+import com.eomcs.lms.handler.HelloCommand;
 import com.eomcs.lms.handler.LessonAddCommand;
 import com.eomcs.lms.handler.LessonDeleteCommand;
 import com.eomcs.lms.handler.LessonDetailCommand;
@@ -41,9 +42,9 @@ public class App {
   static Scanner sc = new Scanner(System.in);
   static Deque<String> commandStack = new ArrayDeque<>();
   static Queue<String> commandQueue = new LinkedList<>(); // 인터페이스 - 클래스
-  static List<Lesson> lessonList = new ArrayList<>();
-  static List<Board> boardList = new ArrayList<>();
-  static List<Member> memberList = new ArrayList<>();
+  static ArrayList<Lesson> lessonList = new ArrayList<>();
+  static LinkedList<Board> boardList = new LinkedList<>();
+  static LinkedList<Member> memberList = new LinkedList<>();
 
   public static void main(String[] args) {
 
@@ -72,6 +73,9 @@ public class App {
     commandMap.put("/lesson/detail", new LessonDetailCommand(prompt, App.lessonList));
     commandMap.put("/lesson/update", new LessonUpdateCommand(prompt, App.lessonList));
     commandMap.put("/lesson/delete", new LessonDeleteCommand(prompt, App.lessonList));
+
+    commandMap.put("/hello", new HelloCommand(prompt));
+    commandMap.put("/compute/plus", new ComputeCommand(prompt));
 
     String command;
     while (true) {
@@ -130,24 +134,47 @@ public class App {
   }
 
   private static void loadLessonData() {
+    // 데이터가 보관된 파일의 정보 준비
+    File file = new File("./lesson.json"); // comma seperated value
+    // 파일 읽을 때 사용할 도구 준비
+    FileReader in = null;
 
-    File file = new File("./lesson.json");
-    try (FileReader in = new FileReader(file)) {
-      App.lessonList
-          .addAll(new ArrayList<>(Arrays.asList(new Gson().fromJson(in, Lesson[].class))));
+    try {
+      in = new FileReader(file);
+      Lesson[] lessons = new Gson().fromJson(in, Lesson[].class);
+      for (Lesson lesson : lessons) {
+        App.lessonList.add(lesson);
+      }
       System.out.printf("%d개의 수업 데이터, ", App.lessonList.size());
-    } catch (Exception e) {
+    } catch (FileNotFoundException e) {
       System.out.println("파일 읽기 중 오류 발생" + e.getMessage());
+      // 파일 읽기 중 오류 발생하더라도 시스템을 멈추지 않고 계속 실행하게 함.
+    } finally {
+      try {
+        in.close();
+      } catch (Exception e) {
+
+      }
     }
   }
 
   private static void loadMemberData() {
     File file = new File("./member.json");
-    try (FileReader in = new FileReader(file)) {
-      App.memberList.addAll(Arrays.asList(new Gson().fromJson(in, Member[].class)));
+    FileReader in = null;
+    try {
+      in = new FileReader(file);
+      Member[] members = new Gson().fromJson(in, Member[].class);
+      for (Member member : members) {
+        App.memberList.add(member);
+      }
       System.out.printf("%d개의 멤버 데이터, ", App.memberList.size());
-    } catch (Exception e) {
+    } catch (FileNotFoundException e) {
       System.out.println("파일 읽기 중 오류 발생" + e.getMessage());
+    } finally {
+      try {
+        in.close();
+      } catch (Exception e) {
+      }
     }
   }
 
@@ -157,7 +184,10 @@ public class App {
 
     try {
       in = new FileReader(file);
-      App.boardList.addAll(Arrays.asList(new Gson().fromJson(in, Board[].class)));
+      Board[] boards = new Gson().fromJson(in, Board[].class);
+      for (Board board : boards) {
+        App.boardList.add(board);
+      }
       System.out.printf("%d개의 게시글 데이터를 로딩했습니다.\n", App.boardList.size());
       System.out.println();
     } catch (Exception e) {
@@ -172,31 +202,52 @@ public class App {
 
   private static void saveLessonData() {
     File file = new File("./lesson.json");
-    try (FileWriter out = new FileWriter(file)) {
+    FileWriter out = null;
+    try {
+      out = new FileWriter(file);
       out.write(new Gson().toJson(App.lessonList));
       System.out.printf("%d개의 수업 데이터, ", App.lessonList.size());
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생" + e.getMessage());
+    } finally {
+      try {
+        out.close();
+      } catch (IOException e) {
+      }
     }
   }
 
   private static void saveMemberData() {
     File file = new File("./member.json");
-    try (FileWriter out = new FileWriter(file)) {
+    FileWriter out = null;
+    try {
+      out = new FileWriter(file);
       out.write(new Gson().toJson(App.memberList));
       System.out.printf("%d개의 멤버 데이터, ", App.memberList.size());
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생" + e.getMessage());
+    } finally {
+      try {
+        out.close();
+      } catch (IOException e) {
+      }
     }
   }
 
   private static void saveBoardData() {
     File file = new File("./board.json");
-    try (FileWriter out = new FileWriter(file)) {
+    FileWriter out = null;
+    try {
+      out = new FileWriter(file);
       out.write(new Gson().toJson(App.boardList)); // gson 객체의 toJson()호출하여 boardList를 jason문자열로 만듬
       System.out.printf("%d개의 게시글 데이터를 저장했습니다.\n", App.boardList.size());
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생" + e.getMessage());
+    } finally {
+      try {
+        out.close();
+      } catch (IOException e) {
+      }
     }
   }
 }
