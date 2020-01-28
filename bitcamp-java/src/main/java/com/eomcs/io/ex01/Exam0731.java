@@ -32,14 +32,15 @@ public class Exam0731 {
         }
         return false;
       }
-    }); // 현재 디렉토리의 하위 파일 / 디렉토리 목록
+    });
 
-    if (packageName.length() > 0) {
+    if (packageName.length() > 0) { // packageName 길이 0이하 일 때, . 안붙임
       packageName += ".";
     }
+
     for (File file : files) {
       if (file.isDirectory()) {
-        printList(file, packageName + file.getName());
+        printList(file, packageName + file.getName()); // 디렉토리일 때, 디렉토리 주고 재탐색
       } else {
         System.out.println(packageName + file.getName().replace(".class", ""));
       }

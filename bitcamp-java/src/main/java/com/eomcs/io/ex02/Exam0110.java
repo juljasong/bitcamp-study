@@ -8,7 +8,7 @@ public class Exam0110 {
   public static void main(String[] args) throws Exception {
     // 1) 파일로 데이터를 출력하는 객체를 준비한다.
     // - new FileOutputStream("파일경로") -> 지정된 경로에 해당 파일 자동 생성
-    // - 기족에 같은 이름의 파일이 있으면 덮어씀
+    // - 기존에 같은 이름의 파일이 있으면 덮어씀
     // 파일 경로가 절대 경로가 아니면 :
     // - Linux/Unix : /로 시작하지 않으면
     // - Windows : c:\, d:\ 등으로 시작하지 않으면
@@ -49,4 +49,4 @@ public class Exam0110 {
 // +-- FileOutputStream : 바이트 단위로 쓰기
 //
 // Writer (추상 클래스)
-// +-- FileOutputStream : 문자 단위로 쓰기
+// +-- FileWriter : 문자 단위로 쓰기

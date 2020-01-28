@@ -17,7 +17,6 @@ public class Exam0420 {
       System.out.println("test.txt 파일을 삭제할 수 없습니다.");
     }
 
-
   }
 
 }

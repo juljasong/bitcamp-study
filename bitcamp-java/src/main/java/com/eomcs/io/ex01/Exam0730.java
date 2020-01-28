@@ -13,6 +13,7 @@ public class Exam0730 {
     System.out.println(dir.getCanonicalPath());
 
     printList(dir);
+
   }
 
   static void printList(File dir) {
@@ -32,7 +33,7 @@ public class Exam0730 {
         }
         return false;
       }
-    }); // 현재 디렉토리의 하위 파일 / 디렉토리 목록
+    });
 
     for (File file : files) {
       if (file.isDirectory()) {
@@ -40,12 +41,6 @@ public class Exam0730 {
       } else {
         System.out.printf("%s\n", file.getName());
       }
-    }
-  }
-
-  static void printIndent(int level) {
-    for (int i = 0; i < level; i++) {
-      System.out.print("  ");
     }
   }
 }
