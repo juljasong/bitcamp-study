@@ -16,9 +16,7 @@ public class Exam0110 {
       // catch 블록에서 파라미터로 받는다.
       System.out.println(e.getMessage());
     }
-
     // 리턴 값을 검사하는 방식보다 더 정확하게 예외를 처리할 수 있다.
-
   }
 }
 

@@ -18,7 +18,6 @@ public class Exam0640 {
     try (
         // A 클래스는 AutoCloseable 구현체가 아니기 때문에 여기에 선언할 수 없다.
         // A obj = new A(); // 컴파일 오류!
-
         B obj2 = new B(); // OK!
     ) {
       System.out.println("try 블록 실행...");
