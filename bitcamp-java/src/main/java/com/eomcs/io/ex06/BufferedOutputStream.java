@@ -19,15 +19,12 @@ public class BufferedOutputStream extends FileOutputStream {
     }
 
     // 1바이트 출력하라고 하면 일단 버퍼에 저장할 것이다.
-    buf[cursor++] = (byte)b;
+    buf[cursor++] = (byte) b;
   }
 
-  @Override
-  public void close() throws IOException {
-    this.flush();
-    super.close();
-  }
-
+  /*
+   * @Override public void close() throws IOException { this.flush(); super.close(); }
+   */
   @Override
   public void flush() throws IOException {
     if (cursor > 0) {
@@ -37,10 +34,5 @@ public class BufferedOutputStream extends FileOutputStream {
   }
 
 }
-
-
-
-
-
 
 
