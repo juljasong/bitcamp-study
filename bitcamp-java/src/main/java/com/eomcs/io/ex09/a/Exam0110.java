@@ -18,7 +18,7 @@ public class Exam0110 {
     // 장신구/보조장치/플러그인(decorator)를 사용하여 String,int,boolean 값을 출력한다.
     long startTime = System.currentTimeMillis();
 
-    for (int i = 0; i < 100000; i++) {
+    for (int i = 0; i < 50; i++) {
       out.writeUTF(member.name);
       out.writeInt(member.age);
       out.writeBoolean(member.gender);

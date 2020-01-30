@@ -4,7 +4,7 @@ package com.eomcs.io.ex06;
 public class Exam0310 {
 
   public static void main(String[] args) throws Exception {
-    BufferedInputStream in = new BufferedInputStream("temp/test7.data");
+    BufferedInputStream in = new BufferedInputStream("temp/test8.data");
 
     long startTime = System.currentTimeMillis(); // 밀리초
 
@@ -12,9 +12,11 @@ public class Exam0310 {
 
     while (true) {
       int b = in.read();
+      if (callCount % 16 == 0)
+        System.out.println();
+      System.out.printf("%x ", b);
       if (b == -1)
         break;
-      System.out.println("Exam0310.int b : " + b);
       callCount++; // 파일을 끝까지 읽는다.
     }
 
