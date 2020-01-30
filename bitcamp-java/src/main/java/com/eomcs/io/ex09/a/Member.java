@@ -1,4 +1,4 @@
-package com.eomcs.io.ex10;
+package com.eomcs.io.ex09.a;
 
 public class Member {
   String name;
