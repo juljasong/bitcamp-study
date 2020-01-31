@@ -25,13 +25,13 @@ public class Car {
 
   public void run() {
     System.out.println("달린다.");
-    for (CarObserver observer : observers) {
-      observer.carStopped();
-    }
   }
 
   public void stop() {
     System.out.println("시동을 끈다.");
+    for (CarObserver observer : observers) {
+      observer.carStopped();
+    }
   }
 }
 

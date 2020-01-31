@@ -1,22 +1,17 @@
 package com.eomcs.lms;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Set;
+import com.eomcs.lms.context.ApplicationContextListener;
 import com.eomcs.lms.domain.Board;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.domain.Member;
@@ -40,45 +35,78 @@ import com.eomcs.util.Prompt;
 
 public class App {
 
-  static Scanner sc = new Scanner(System.in);
-  static Deque<String> commandStack = new ArrayDeque<>();
-  static Queue<String> commandQueue = new LinkedList<>(); // 인터페이스 - 클래스
-  static List<Lesson> lessonList = new ArrayList<>();
-  static List<Board> boardList = new ArrayList<>();
-  static List<Member> memberList = new ArrayList<>();
+  Scanner sc = new Scanner(System.in);
+  Deque<String> commandStack = new ArrayDeque<>();
+  Queue<String> commandQueue = new LinkedList<>(); // 인터페이스 - 클래스
 
-  public static void main(String[] args) {
 
-    // 파일에서 데이터 로딩
-    loadLessonData();
-    loadMemberData();
-    loadBoardData();
+  // 옵저버 목록 관리할 객체 준비
+  // list-arrayList도 가능하지만, set을 쓰면 같은 인스턴스를 중복해서 등록하지 않도록 한다.
+  // 등록 순서를 따지지 않는다.
+  Set<ApplicationContextListener> listeners = new HashSet<>();
 
-    Prompt prompt = new Prompt(App.sc);
+  // 옵저버와 공유할 값을 보관할 객체 준비
+  Map<String, Object> context = new HashMap<>();
+
+  // 옵저버 등록할 메서드
+  public void addApplicationContextListener(ApplicationContextListener listener) {
+    listeners.add(listener);
+  }
+
+  // 옵저버 삭제할 메서드
+  public void removeApplicationContextListener(ApplicationContextListener listener) {
+    listeners.remove(listener);
+  }
+
+  // 앱 실행되면 등록된 리스너에게 알림
+  private void notifyApplicationInitialized() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextInitailized(context);
+    }
+  }
+
+  // 앱 종료되면 등록된 리스너에 알림
+  private void notifyApplicationDestroyed() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextDestroyed(context);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void service() {
+
+    notifyApplicationInitialized();
+
+    List<Board> boardList = (List<Board>) context.get("boardList");
+    List<Member> memberList = (List<Member>) context.get("memberList");
+    List<Lesson> lessonList = (List<Lesson>) context.get("lessonList");
+
+
+    Prompt prompt = new Prompt(sc);
     HashMap<String, Command> commandMap = new HashMap<>();
 
-    commandMap.put("/board/add", new BoardAddCommand(prompt, App.boardList));
-    commandMap.put("/board/list", new BoardListCommand(App.boardList));
-    commandMap.put("/board/detail", new BoardDetailCommand(prompt, App.boardList));
-    commandMap.put("/board/update", new BoardUpdateCommand(prompt, App.boardList));
-    commandMap.put("/board/delete", new BoardDeleteCommand(prompt, App.boardList));
+    commandMap.put("/board/add", new BoardAddCommand(prompt, boardList));
+    commandMap.put("/board/list", new BoardListCommand(boardList));
+    commandMap.put("/board/detail", new BoardDetailCommand(prompt, boardList));
+    commandMap.put("/board/update", new BoardUpdateCommand(prompt, boardList));
+    commandMap.put("/board/delete", new BoardDeleteCommand(prompt, boardList));
 
-    commandMap.put("/member/add", new MemberAddCommand(prompt, App.memberList));
-    commandMap.put("/member/list", new MemberListCommand(App.memberList));
-    commandMap.put("/member/detail", new MemberDetailCommand(prompt, App.memberList));
-    commandMap.put("/member/update", new MemberUpdateCommand(prompt, App.memberList));
-    commandMap.put("/member/delete", new MemberDeleteCommand(prompt, App.memberList));
+    commandMap.put("/member/add", new MemberAddCommand(prompt, memberList));
+    commandMap.put("/member/list", new MemberListCommand(memberList));
+    commandMap.put("/member/detail", new MemberDetailCommand(prompt, memberList));
+    commandMap.put("/member/update", new MemberUpdateCommand(prompt, memberList));
+    commandMap.put("/member/delete", new MemberDeleteCommand(prompt, memberList));
 
-    commandMap.put("/lesson/add", new LessonAddCommand(prompt, App.lessonList));
-    commandMap.put("/lesson/list", new LessonListCommand(App.lessonList));
-    commandMap.put("/lesson/detail", new LessonDetailCommand(prompt, App.lessonList));
-    commandMap.put("/lesson/update", new LessonUpdateCommand(prompt, App.lessonList));
-    commandMap.put("/lesson/delete", new LessonDeleteCommand(prompt, App.lessonList));
+    commandMap.put("/lesson/add", new LessonAddCommand(prompt, lessonList));
+    commandMap.put("/lesson/list", new LessonListCommand(lessonList));
+    commandMap.put("/lesson/detail", new LessonDetailCommand(prompt, lessonList));
+    commandMap.put("/lesson/update", new LessonUpdateCommand(prompt, lessonList));
+    commandMap.put("/lesson/delete", new LessonDeleteCommand(prompt, lessonList));
 
     String command;
     while (true) {
       System.out.print("명령> ");
-      command = App.sc.nextLine();
+      command = sc.nextLine();
 
       if (command.length() == 0)
         continue;
@@ -87,16 +115,16 @@ public class App {
         System.out.println("안녕!");
         break;
       } else if (command.equals("history")) {
-        printCommandHistory(App.commandStack.iterator());
+        printCommandHistory(commandStack.iterator());
         System.out.println();
         continue;
       } else if (command.equals("history2")) {
-        printCommandHistory(App.commandQueue.iterator());
+        printCommandHistory(commandQueue.iterator());
         System.out.println();
         continue;
       }
-      App.commandStack.push(command);
-      App.commandQueue.offer(command);
+      commandStack.push(command);
+      commandQueue.offer(command);
 
       Command commandHandler = commandMap.get(command);
 
@@ -111,95 +139,29 @@ public class App {
         System.out.println("실행할 수 없는 명령입니다.");
       }
     }
-    App.sc.close();
-    saveLessonData();
-    saveMemberData();
-    saveBoardData();
-  }
+    sc.close();
 
-  private static void printCommandHistory(Iterator<String> iter) {
+    notifyApplicationDestroyed();
+  }
+  // service
+
+  private void printCommandHistory(Iterator<String> iter) {
     Iterator<String> iterator = iter;
     int count = 0;
     while (iterator.hasNext()) {
       System.out.println(iterator.next());
       if (++count % 5 == 0) {
         System.out.print(" : ");
-        String str = App.sc.nextLine();
+        String str = sc.nextLine();
         if (str.equalsIgnoreCase("q"))
           break;
       }
     }
   }
 
-  @SuppressWarnings("unchecked")
-  private static void loadLessonData() {
-
-    File file = new File("./lesson.ser2");
-    try (ObjectInputStream in =
-        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      App.lessonList = (List<Lesson>) in.readObject();
-      System.out.printf("%d개의 수업 데이터, ", App.lessonList.size());
-    } catch (Exception e) {
-      System.out.println("파일 읽기 중 오류 발생" + e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  private static void loadMemberData() {
-    File file = new File("./member.ser2");
-    try (ObjectInputStream in =
-        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      App.memberList = (List<Member>) in.readObject();
-      System.out.printf("%d개의 멤버 데이터, ", App.memberList.size());
-    } catch (Exception e) {
-      System.out.println("파일 읽기 중 오류 발생" + e.getMessage());
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  private static void loadBoardData() {
-    File file = new File("./board.ser2");
-
-    try (ObjectInputStream in =
-        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      App.boardList = (List<Board>) in.readObject();
-      System.out.printf("%d개의 게시글 데이터를 로딩했습니다.\n", App.boardList.size());
-      System.out.println();
-    } catch (Exception e) {
-      System.out.println("파일 읽기 중 오류 발생" + e.getMessage());
-    }
-  }
-
-  private static void saveLessonData() {
-    File file = new File("./lesson.ser2");
-    try (ObjectOutputStream out =
-        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeObject(App.lessonList);
-      System.out.printf("%d개의 수업 데이터, ", App.lessonList.size());
-    } catch (IOException e) {
-      System.out.println("파일 쓰기 중 오류 발생" + e.getMessage());
-    }
-  }
-
-  private static void saveMemberData() {
-    File file = new File("./member.ser2");
-    try (ObjectOutputStream out =
-        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeObject(App.memberList);
-      System.out.printf("%d개의 멤버 데이터, ", App.memberList.size());
-    } catch (IOException e) {
-      System.out.println("파일 쓰기 중 오류 발생" + e.getMessage());
-    }
-  }
-
-  private static void saveBoardData() {
-    File file = new File("./board.ser2");
-    try (ObjectOutputStream out =
-        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
-      out.writeObject(App.boardList);
-      System.out.printf("%d개의 게시글 데이터를 저장했습니다.\n", App.boardList.size());
-    } catch (IOException e) {
-      System.out.println("파일 쓰기 중 오류 발생" + e.getMessage());
-    }
+  public static void main(String[] args) {
+    App app = new App();
+    app.addApplicationContextListener(new DataLoaderListener());
+    app.service();
   }
 }

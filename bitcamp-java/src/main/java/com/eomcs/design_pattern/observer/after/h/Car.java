@@ -1,4 +1,4 @@
-package com.eomcs.design_pattern.observer.after.a;
+package com.eomcs.design_pattern.observer.after.h;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,24 +15,34 @@ public class Car {
     observers.add(observer);
   }
 
-  public void start() {
-    System.out.println("시동을 건다.");
-    // 자동차에 시동 걸면, 등록된 관찰자들에 알린다.
+  private void notifyObserversOnStarted() {
     for (CarObserver observer : observers) {
       observer.carStarted();
     }
   }
 
-  public void run() {
-    System.out.println("달린다.");
-  }
-
-  public void stop() {
-    System.out.println("시동을 끈다.");
+  private void notifyObserversOnStopped() {
     for (CarObserver observer : observers) {
       observer.carStopped();
     }
   }
+
+  public void start() {
+    System.out.println("시동을 건다.");
+    // 자동차에 시동 걸면, 등록된 관찰자들에 알린다.
+    notifyObserversOnStarted();
+  }
+
+  public void run() {
+    System.out.println("달린다.");
+
+  }
+
+  public void stop() {
+    System.out.println("시동을 끈다.");
+    notifyObserversOnStopped();
+  }
+
 }
 
 
