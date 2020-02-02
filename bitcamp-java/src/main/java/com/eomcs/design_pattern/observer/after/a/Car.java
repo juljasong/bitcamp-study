@@ -12,7 +12,7 @@ public class Car {
   }
 
   public void removeCarObserver(CarObserver observer) {
-    observers.add(observer);
+    observers.remove(observer);
   }
 
   public void start() {

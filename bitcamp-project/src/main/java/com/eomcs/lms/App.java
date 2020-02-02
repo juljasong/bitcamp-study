@@ -39,7 +39,6 @@ public class App {
   Deque<String> commandStack = new ArrayDeque<>();
   Queue<String> commandQueue = new LinkedList<>(); // 인터페이스 - 클래스
 
-
   // 옵저버 목록 관리할 객체 준비
   // list-arrayList도 가능하지만, set을 쓰면 같은 인스턴스를 중복해서 등록하지 않도록 한다.
   // 등록 순서를 따지지 않는다.
