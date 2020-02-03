@@ -161,7 +161,6 @@ public class App {
   public static void main(String[] args) {
     App app = new App();
     app.addApplicationContextListener(new DataLoaderListener());
-    app.addApplicationContextListener(new GreetingListener());
     app.service();
   }
 }

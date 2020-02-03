@@ -1,58 +1,96 @@
-# 31_2 - 애플리케이션을 시작하거나 종료할 때 작업할 옵저버를 추가한다.
+32 - 네트워크 API를 활용하여 애플리케이션 사이에 데이터 주고 받기
 
-## 학습목표
+- 데이터 관리를 별도의 프로그램으로 분리하기
+- 네트워크 API 사용법
+- 클라이언트/서버 애플리케이션 아키텍처의 이해
+- `Stateful` 통신 방식의 특징과 장단점 이해하기
+- 상속의 일반화(generalization) 기법과 추상 클래스 활용법
 
-- 옵저버 디자인 패턴에 따라 옵저버를 정의할 수 있다.
+## 프로젝트 - 수업관리 시스템  
 
-## 실습 소스 및 결과
+### 과제: 사용자 UI 부분을 클라이언트로 만들라.
 
-- src/main/java/com/eomcs/lms/DataLoaderListener.java 추가
+`App.java`에서 데이터 관리 부분을 제외한 사용자 UI 부분을 추출한다.
+
+- `eomcs-java-project-client` 프로젝트로 분리한다.
+
+#### ver 4.1.0
+
+데이터 관리 부분을 제외한 나머지를 클라이언트로 만들라.
+
+- Lesson.java, Member.java, Board.java
+  - 테스트 할 때 객체의 필드 값을 확인할 수 있도록 toString()을 오버라이딩 한다.
+- com.eomcs.lms.proxy
+  - 서버쪽의 DAO와 통신을 담당할 Proxy 클래스를 둘 패키지를 생성한다.
+- LessonDaoProxy.java
+  - 서버의 `LessonDao`와 통신하는 부분을 캡슐화한다.
+  - `Proxy` 디자인 패턴을 응용하여 클라이언트 측에서 서버의 `LessonDao` 객체를 대행하게 한다.
+- MemberDaoProxy.java
+  - 서버의 `MemberDao`와 통신하는 부분을 캡슐화한다.
+  - `Proxy` 디자인 패턴을 응용하여 클라이언트 측에서 서버의 `MemberDao` 객체를 대행하게 한다.
+- BoardDaoProxy.java
+  - 서버의 `BoardDao`와 통신하는 부분을 캡슐화한다.
+  - `Proxy` 디자인 패턴을 응용하여 클라이언트 측에서 서버의 `BoardDao` 객체를 대행하게 한다.  
+- DataLoaderListener.java
+  - 애플리케이션을 시작할 때 DAO Proxy를 준비한다.
+  - 애플리케이션을 종료할 때 서버에 종료 명령을 보낸 후 소켓을 닫는다.
+- XxxCommand.java
+  - 생성자에서 List 대신 DAO Proxy를 받아 데이터를 처리한다.
+- App.java
+  - 파일에서 데이터를 로딩하는 코드를 제거한다.
+  - 커맨드 객체의 변경에 맞춰 코드를 변경한다.
+
+#### 실행 결과
+
+서버 애플리케이션의 `ServerApp`을 먼저 실행한다.
+```
+수업 데이터를 로딩 성공!
+회원 데이터를 로딩 성공!
+게시글 데이터를 로딩 성공!
+서버 시작!
+.
+.
+.
+클라이언트와 연결되었음.
+```
+
+클라이언트 애플리케이션의 `App`을 실행한다. 실행은 이전 버전과 같다.
+```
+명령> /lesson/list
+  1, 과정1x           , 2019-01-02 ~ 2019-01-16, 1001
+  2, 과정2            , 2019-02-01 ~ 2019-02-15, 1000
+
+명령> /lesson/add
+번호? 3
+수업명? 과정3
+설명? 설명입니다.
+시작일? 2019-1-1
+종료일? 2019-2-5
+총수업시간? 120
+일수업시간? 8
+수업을 저장했습니다.
+
+명령> /lesson/list
+  1, 과정1x           , 2019-01-02 ~ 2019-01-16, 1001
+  2, 과정2            , 2019-02-01 ~ 2019-02-15, 1000
+  3, 과정3            , 2019-01-01 ~ 2019-02-05,  120
+
+명령> 
+.
+.
+.
+```
+
+
+## 실습 소스
+
+- src/main/java/com/eomcs/lms/domain/Lesson.java 변경
+- src/main/java/com/eomcs/lms/domain/Member.java 변경
+- src/main/java/com/eomcs/lms/domain/Board.java 변경
+- src/main/java/com/eomcs/lms/proxy 패키지 추가
+- src/main/java/com/eomcs/lms/proxy/LessonDaoProxy 추가
+- src/main/java/com/eomcs/lms/proxy/MemberDaoProxy 추가
+- src/main/java/com/eomcs/lms/proxy/BoardDaoProxy 추가
+- src/main/java/com/eomcs/lms/DataLoaderListener.java 변경 
+- src/main/java/com/eomcs/lms/handler/XxxCommand.java 변경
 - src/main/java/com/eomcs/lms/App.java 변경
-
-## 실습  
-
-### 훈련 1: 애플리케이션을 시작하거나 종료할 때 데이터를 로딩하고 저장할 옵저버를 만들라.
-
-- DataLoaderListener.java 추가 (DataLoaderListener.java.01)
-  - ApplicationContextListener를 구현한다.
-  - 테스트 할 용도로 간단하게 구현한다.
-  
-
-### 훈련 2: DataLoaderListener 옵저버를 App 객체에 등록하고 실행 확인하라.
-
-- App.java 변경 (App.java.01)
-  - DataLoaderListener 객체를 생성한 후 App 객체에 등록한다.
-  - 실행하여 옵저버가 동작하는 지를 확인한다.
-    
-
-### 훈련 3: DataLoaderListener 옵저버에서 데이터를 로딩하고 저장하게 하라.
-
-- DataLoaderListener.java 변경 (DataLoaderListener.java.02)
-  - App 클래스에 있는 List 객체를 이 클래스로 옮긴다.
-  - App 클래스에 있는 데이터 로딩, 저장 관련 메서드를 이 클래스로 옮긴다.
-  
-- App.java 변경 (계속 작업 중)
-  - List 객체를 필드에서 제거한다.(DataLoaderListener가 할 일이다.)
-  - 데이터 로딩, 저장 관련 메서드를 제거한다.(DataLoaderListener가 할 일이다.)
-  - 데이터 로딩 호출 코드를 제거한다.(DataLoaderListener가 할 일이다.)
-  - 데이터 저장 호출 코드를 제거한다.(DataLoaderListener가 할 일이다.)
-
-### 훈련 4: App 클래스가 옵저버의 결과물을 사용할 수 있게 하라!
-
-ApplicationContextListener.java (변경)
-  - contextInitialized()에 Map 파라미터를 추가한다.
-  - contextDestroyed()에 Map 파라미터를 추가한다.
-
-### 훈련 5: DataLoaderListener의 작업 결과를 Map 객체를 통해 공유하라.
-
-DataLoaderListener.java (변경)
-  - 데이터 로딩 결과를 Map 객체에 보관한다.
-
-### 훈련 6: DataLoaderListener에서 준비한 List 객체를 Command에게 전달하라.
-
-App.java (변경)
-  - 애플리케이션이 시작될 때 옵저버를 실행한 후 Map 에 저장된 작업 결과를 꺼내
-    Command 객체에 전달한다.
-    
-
-
