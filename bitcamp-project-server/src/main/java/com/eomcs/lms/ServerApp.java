@@ -1,23 +1,21 @@
 // LMS 서버
-
 package com.eomcs.lms;
 
-import java.io.PrintStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 import com.eomcs.lms.context.ApplicationContextListener;
 import com.eomcs.lms.domain.Board;
-import com.eomcs.lms.domain.Lesson;
-import com.eomcs.lms.domain.Member;
 
 public class ServerApp {
 
+  // 옵저버 관련 코드
   Set<ApplicationContextListener> listeners = new HashSet<>();
   Map<String, Object> context = new HashMap<>();
 
@@ -31,7 +29,7 @@ public class ServerApp {
 
   private void notifyApplicationInitialized() {
     for (ApplicationContextListener listener : listeners) {
-      listener.contextInitailized(context);
+      listener.contextInitialized(context);
     }
   }
 
@@ -40,67 +38,182 @@ public class ServerApp {
       listener.contextDestroyed(context);
     }
   }
+  // 옵저버 관련코드 끝!
 
-  @SuppressWarnings("unchecked")
   public void service() {
+
     notifyApplicationInitialized();
 
-    List<Board> boardList = (List<Board>) context.get("boardList");
-    List<Member> memberList = (List<Member>) context.get("memberList");
-    List<Lesson> lessonList = (List<Lesson>) context.get("lessonList");
+    try (
+        // 서버쪽 연결 준비
+        // => 클라이언트의 연결을 9999번 포트에서 기다린다.
+        ServerSocket serverSocket = new ServerSocket(9999)) {
+
+      System.out.println("클라이언트 연결 대기중...");
+
+      while (true) {
+        Socket socket = serverSocket.accept();
+        System.out.println("클라이언트와 연결되었음!");
+
+        if (processRequest(socket) == 9) {
+          break;
+        }
+
+        System.out.println("--------------------------------------");
+      }
+
+    } catch (Exception e) {
+      System.out.println("서버 준비 중 오류 발생!");
+    }
 
     notifyApplicationDestroyed();
+
+  } // service()
+
+
+  @SuppressWarnings("unchecked")
+  int processRequest(Socket clientSocket) {
+    try (Socket socket = clientSocket;
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+
+      System.out.println("통신을 위한 입출력 스트림을 준비하였음!");
+
+      while (true) {
+        String request = in.readUTF();
+        System.out.println("클라이언트가 보낸 메시지를 수신하였음!");
+
+        if (request.equals("quit")) {
+          out.writeUTF("OK");
+          out.flush();
+          break;
+        }
+
+        if (request.equals("/server/stop")) {
+          out.writeUTF("OK");
+          out.flush();
+          return 9;
+        }
+
+        List<Board> boards = (List<Board>) context.get("boardList");
+
+        if (request.equals("/board/list")) {
+          out.writeUTF("OK");
+          out.reset(); // 기존에 출력했던 List<Board> 객체의 직렬화 데이터 무시하고 새로 직렬화 수행
+          out.writeObject(boards);
+        } else if (request.equals("/board/add")) {
+          try {
+            Board board = (Board) in.readObject();
+
+            int i = 0;
+            for (; i < boards.size(); i++) {
+              if (boards.get(i).getNo() == board.getNo()) {
+                break;
+              }
+            }
+            if (i == boards.size()) { // 같은 번호의 게시물이 없다면
+              boards.add(board); // 새 게시물 등록
+              out.writeUTF("OK");
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("같은 번호의 게시물이 있습니다.");
+            }
+            System.out.println("저장하였습니다.");
+            out.writeUTF("OK");
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+        } else if (request.equals("/board/detail")) {
+          try {
+            int no = in.readInt();
+
+            Board board = null;
+            for (Board b : boards) {
+              if (b.getNo() == no) {
+                board = b;
+                break;
+              }
+            }
+
+            if (board != null) {
+              out.writeUTF("OK");
+              out.writeObject(board);
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("해당 번호의 게시물이 없습니다.");
+            }
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+        } else if (request.equals("/board/update")) {
+          try {
+            Board board = (Board) in.readObject();
+
+            int index = -1;
+            for (int i = 0; i < boards.size(); i++) {
+              if (boards.get(i).getNo() == board.getNo()) {
+                index = i;
+                break;
+              }
+            }
+
+            if (index != 1) {
+              boards.set(index, board);
+              out.writeUTF("OK");
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("해당 번호의 게시물이 없습니다");
+            }
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+        } else if (request.equals("/board/delete")) {
+          try {
+            int no = in.readInt();
+            Board board = (Board) in.readObject();
+            int index = -1;
+            for (int i = 0; i < boards.size(); i++) {
+              if (boards.get(i).getNo() == board.getNo()) {
+                index = i;
+                break;
+              }
+            }
+
+            if (index != -1) {
+              boards.remove(index);
+              out.writeUTF("OK");
+
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("해당 번호의 게시물이 없습니다.");
+            }
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+        } else {
+          out.writeUTF("FAIL");
+          out.writeUTF("요청한 명령을 처리할 수 없습니다.");
+        }
+        out.flush();
+      }
+      System.out.println("클라이언트로 메시지를 전송하였음!");
+      return 0;
+    } catch (Exception e) {
+      System.out.println("예외 발생:");
+      e.printStackTrace();
+      return -1;
+    }
   }
 
   public static void main(String[] args) {
     System.out.println("서버 수업 관리 시스템입니다.");
+
     ServerApp app = new ServerApp();
     app.addApplicationContextListener(new DataLoaderListener());
     app.service();
-
-    /*
-    try (// 서버쪽 연결 준비 : 9999 포트에서 클라이언트 연결 기다림
-        ServerSocket serverSocket = new ServerSocket(9999)) {
-      System.out.println("클라이언트 연결 대기중...");
-      while (true) {
-        // 대기하고 있는 클라이언트와 연결
-        // 대기하고 있는 클라이언트와 연결될 떄 까지 리턴 X
-        Socket socket = serverSocket.accept();
-        System.out.println("클라이언트와 연결되었습니다.");
-        // 클라이언트 요청 처리
-        processRequest(socket);
-        System.out.println("-----------------------------");
-      }
-    } catch (Exception e) {
-      System.out.println("서버 준비 중 오류 발생");
-      return;
-    }
-  }
-
-  static void processRequest(Socket clientSocket) {
-    try (
-        // 요청 처리 끝난 후 클라이언트와 연결된 소켓 자동으로 닫으려면
-        // 별도의 로컬 변수에 담는다
-        Socket socket = clientSocket;
-        // 클라이언트 메시지 수신 후 클라이언트 전송할 입출력 도구 준비
-        Scanner in = new Scanner(socket.getInputStream());
-        PrintStream out = new PrintStream(socket.getOutputStream())) {
-      System.out.println("통신을 위한 입출력 스트림을 준비하였습니다. ");
-
-      // 클라이언트가 보낸 메시지 수신
-      // 한 줄의 메시지를 읽을 떄까지 리턴하지 않는다.
-      String message = in.nextLine();
-      System.out.println("클라이언트가 보낸 메시지를 수신하였습니다.");
-      System.out.println("클라이언트 : " + message);
-
-      // 클라이언트에게 메시지를 전송 => 클라이언트가 메시지를 모두 읽을 때 까지 리턴하지 않는다.
-      out.println("hi(julia)");
-      System.out.println("클라이언트로 메시지를 전송하였습니다.");
-
-    } catch (Exception e) {
-      System.out.print("예외발생: ");
-      e.printStackTrace();
-    }
-*/
   }
 }

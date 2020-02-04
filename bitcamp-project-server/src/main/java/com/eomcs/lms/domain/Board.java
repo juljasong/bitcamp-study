@@ -3,73 +3,44 @@ package com.eomcs.lms.domain;
 import java.io.Serializable;
 import java.sql.Date;
 
-// 객체를 seralize하려면 Serializable 인터페이스 구현.
-// 버전 번호 명시
+// 객체를 serialize 하려면 이 기능을 활성화시켜야 한다.
+// - java.io.Serializable을 구현하라!
+// - serialize 데이터를 구분하기 위해 버전 번호를 명시하라.
+//
 public class Board implements Serializable {
 
-  private static final long serialVersionUID = 584122342870013456L;
+  private static final long serialVersionUID = 20200131L;
+
   private int no;
-  private int viewCount;
   private String title;
   private Date date;
+  private int viewCount;
   private String writer;
 
-  public static Board valueOf(String csv) { // loadBoradData()
+  @Override
+  public String toString() {
+    return "Board [no=" + no + ", title=" + title + ", date=" + date + ", viewCount=" + viewCount
+        + ", writer=" + writer + "]";
+  }
 
-    String[] data = csv.split(", "); // 한 줄을 ,로 나눔
-    // 데이터 순서 : 번호, 제목, 날짜, 조회수
+  // CSV 포맷:
+  // - 번호,제목,등록일,조회수,작성자
+  //
+  public static Board valueOf(String csv) {
+    String[] data = csv.split(",");
+
     Board board = new Board();
     board.setNo(Integer.parseInt(data[0]));
     board.setTitle(data[1]);
     board.setDate(Date.valueOf(data[2]));
     board.setViewCount(Integer.parseInt(data[3]));
-
+    board.setWriter(data[4]);
     return board;
   }
 
-  public String toCsvString() { // saveBoradData()
-    return String.format("%d, %s, %s, %d", this.getNo(), this.getTitle(), this.getDate(),
-        this.getViewCount());
-  }
-
-  public int getNo() {
-    return no;
-  }
-
-  public void setNo(int no) {
-    this.no = no;
-  }
-
-  public int getViewCount() {
-    return viewCount;
-  }
-
-  public void setViewCount(int viewCount) {
-    this.viewCount = viewCount;
-  }
-
-  public String getTitle() {
-    return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
-  }
-
-  public Date getDate() {
-    return date;
-  }
-
-  public void setDate(Date date) {
-    this.date = date;
-  }
-
-  public String getWriter() {
-    return writer;
-  }
-
-  public void setWriter(String writer) {
-    this.writer = writer;
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%d,%s", this.getNo(), this.getTitle(), this.getDate(),
+        this.getViewCount(), this.getWriter());
   }
 
   @Override
@@ -107,6 +78,46 @@ public class Board implements Serializable {
     } else if (!writer.equals(other.writer))
       return false;
     return true;
+  }
+
+  public int getNo() {
+    return no;
+  }
+
+  public void setNo(int no) {
+    this.no = no;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public int getViewCount() {
+    return viewCount;
+  }
+
+  public void setViewCount(int viewCount) {
+    this.viewCount = viewCount;
+  }
+
+  public String getWriter() {
+    return writer;
+  }
+
+  public void setWriter(String writer) {
+    this.writer = writer;
   }
 
 }

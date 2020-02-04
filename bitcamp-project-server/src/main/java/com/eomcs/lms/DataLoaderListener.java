@@ -23,7 +23,7 @@ public class DataLoaderListener implements ApplicationContextListener {
   List<Member> memberList = new ArrayList<>();
 
   @Override
-  public void contextInitailized(Map<String, Object> context) {
+  public void contextInitialized(Map<String, Object> context) {
     loadLessonData();
     loadMemberData();
     loadBoardData();

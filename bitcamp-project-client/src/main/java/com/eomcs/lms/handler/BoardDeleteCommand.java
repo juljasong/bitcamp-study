@@ -3,41 +3,47 @@
 
 package com.eomcs.lms.handler;
 
-import java.util.List;
-import com.eomcs.lms.domain.Board;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import com.eomcs.util.Prompt;
 
 public class BoardDeleteCommand implements Command {
 
-  List<Board> boardList;
-  public Prompt prompt;
+  ObjectOutputStream out;
+  ObjectInputStream in;
+  Prompt prompt;
 
-  public BoardDeleteCommand(Prompt prompt, List<Board> list) {
+  public BoardDeleteCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
+    this.out = out;
+    this.in = in;
     this.prompt = prompt;
-    this.boardList = list;
   }
 
   @Override
   public void execute() {
-    int index = indexOfBoard(prompt.inputInt("게시글 번호? "));
+    try {
+      int index = prompt.inputInt("게시글 번호? ");
+      out.writeUTF("/board/delete");
+      out.writeInt(index);
+      out.flush();
 
-    if (index == -1) {
-      System.out.println("게시글 번호가 유효하지 않습니다.");
-      System.out.println();
-      return;
-    }
-    this.boardList.remove(index);
-    System.out.println("게시글을 삭제했습니다.");
-    System.out.println();
-  }
-
-  private int indexOfBoard(int no) {
-    for (int i = 0; i < this.boardList.size(); i++) {
-      if (this.boardList.get(i).getNo() == no) {
-        return i;
+      String response = in.readUTF();
+      if (response.equals("FAIL")) {
+        System.out.println(in.readUTF());
+        return;
       }
+      System.out.println("게시글을 삭제했습니다.");
+
+      if (index == -1) {
+        System.out.println("게시글 번호가 유효하지 않습니다.");
+        System.out.println();
+        return;
+      }
+      System.out.println("게시글을 삭제했습니다.");
+      System.out.println();
+    } catch (Exception e) {
+      System.out.println("명령 처리 중 오류 발생");
     }
-    return -1;
   }
 
 }

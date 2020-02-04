@@ -3,45 +3,45 @@
 
 package com.eomcs.lms.handler;
 
-import java.util.List;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import com.eomcs.lms.domain.Board;
 import com.eomcs.util.Prompt;
 
 public class BoardDetailCommand implements Command {
 
-  List<Board> boardList;
-  public Prompt prompt;
+  ObjectOutputStream out;
+  ObjectInputStream in;
+  Prompt prompt;
 
-  public BoardDetailCommand(Prompt prompt, List<Board> list) {
+  public BoardDetailCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
+    this.out = out;
+    this.in = in;
     this.prompt = prompt;
-    this.boardList = list;
   }
-
 
   @Override
   public void execute() {
-    int index = indexOfBoard(prompt.inputInt("게시글 번호? "));
 
-    if (index == -1) {
-      System.out.println("게시글 번호가 유효하지 않습니다.");
-      System.out.println();
-      return;
-    }
-    Board board = this.boardList.get(index);
-    System.out.printf("번호: %d\n", board.getNo());
-    System.out.printf("제목: %s\n", board.getTitle());
-    System.out.printf("등록일: %s\n", board.getDate());
-    System.out.printf("조회수: %d\n", board.getViewCount());
-    System.out.println();
-  }
+    try {
+      int no = prompt.inputInt("게시글 번호? ");
+      out.writeUTF("/board/detail");
+      out.writeInt(no);
+      out.flush();
 
-  private int indexOfBoard(int no) {
-    for (int i = 0; i < this.boardList.size(); i++) {
-      if (this.boardList.get(i).getNo() == no) {
-        return i;
+      String response = in.readUTF();
+
+      if (response.contentEquals("FAIL")) {
+        System.out.println(in.readUTF());
+        return;
       }
+      Board board = (Board) in.readObject();
+      System.out.printf("번호: %d\n", board.getNo());
+      System.out.printf("제목: %s\n", board.getTitle());
+      System.out.printf("등록일: %s\n", board.getDate());
+      System.out.printf("조회수: %d\n", board.getViewCount());
+    } catch (Exception e) {
+      System.out.println("명령 실행 중 오류 발생");
     }
-    return -1;
   }
-
 }
