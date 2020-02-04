@@ -31,7 +31,7 @@ public class BoardDetailCommand implements Command {
 
       String response = in.readUTF();
 
-      if (response.contentEquals("FAIL")) {
+      if (response.equals("FAIL")) {
         System.out.println(in.readUTF());
         return;
       }

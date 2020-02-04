@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import com.eomcs.lms.context.ApplicationContextListener;
 import com.eomcs.lms.domain.Board;
+import com.eomcs.lms.domain.Lesson;
+import com.eomcs.lms.domain.Member;
 
 public class ServerApp {
 
@@ -67,7 +69,6 @@ public class ServerApp {
     }
 
     notifyApplicationDestroyed();
-
   } // service()
 
 
@@ -96,11 +97,24 @@ public class ServerApp {
         }
 
         List<Board> boards = (List<Board>) context.get("boardList");
+        List<Lesson> lessons = (List<Lesson>) context.get("lessonList");
+        List<Member> members = (List<Member>) context.get("memberList");
 
         if (request.equals("/board/list")) {
           out.writeUTF("OK");
           out.reset(); // 기존에 출력했던 List<Board> 객체의 직렬화 데이터 무시하고 새로 직렬화 수행
           out.writeObject(boards);
+
+        } else if (request.equals("/lesson/list")) {
+          out.writeUTF("OK");
+          out.reset();
+          out.writeObject(lessons);
+
+        } else if (request.equals("/member/list")) {
+          out.writeUTF("OK");
+          out.reset();
+          out.writeObject(members);
+
         } else if (request.equals("/board/add")) {
           try {
             Board board = (Board) in.readObject();
@@ -111,6 +125,7 @@ public class ServerApp {
                 break;
               }
             }
+
             if (i == boards.size()) { // 같은 번호의 게시물이 없다면
               boards.add(board); // 새 게시물 등록
               out.writeUTF("OK");
@@ -118,12 +133,57 @@ public class ServerApp {
               out.writeUTF("FAIL");
               out.writeUTF("같은 번호의 게시물이 있습니다.");
             }
-            System.out.println("저장하였습니다.");
-            out.writeUTF("OK");
           } catch (Exception e) {
             out.writeUTF("FAIL");
             out.writeUTF(e.getMessage());
           }
+
+        } else if (request.equals("/lesson/add")) {
+          try {
+            Lesson lesson = (Lesson) in.readObject();
+
+            int i = 0;
+            for (; i < lessons.size(); i++) {
+              if (lessons.get(i).getNo() == lesson.getNo()) {
+                break;
+              }
+            }
+
+            if (i == lessons.size()) {
+              lessons.add(lesson);
+              out.writeUTF("OK");
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("같은 번호의 수업이 있습니다.");
+            }
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+
+        } else if (request.equals("/member/add")) {
+          try {
+            Member member = (Member) in.readObject();
+
+            int i = 0;
+            for (; i < members.size(); i++) {
+              if (members.get(i).getNo() == member.getNo()) {
+                break;
+              }
+            }
+
+            if (i == members.size()) {
+              members.add(member);
+              out.writeUTF("OK");
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("같은 번호의 회원이 있습니다.");
+            }
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+
         } else if (request.equals("/board/detail")) {
           try {
             int no = in.readInt();
@@ -147,6 +207,51 @@ public class ServerApp {
             out.writeUTF("FAIL");
             out.writeUTF(e.getMessage());
           }
+
+        } else if (request.equals("/lesson/detail")) {
+          try {
+            int no = in.readInt();
+            Lesson lesson = null;
+            for (Lesson l : lessons) {
+              if (l.getNo() == no) {
+                lesson = l;
+                break;
+              }
+            }
+            if (lesson != null) {
+              out.writeUTF("OK");
+              out.writeObject(lesson);
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("해당 번호의 수업이 없습니다.");
+            }
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+
+        } else if (request.equals("/member/detail")) {
+          try {
+            int no = in.readInt();
+            Member member = null;
+            for (Member m : members) {
+              if (m.getNo() == no) {
+                member = m;
+                break;
+              }
+            }
+            if (member != null) {
+              out.writeUTF("OK");
+              out.writeObject(member);
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("해당 번호의 회원이 없습니다.");
+            }
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+
         } else if (request.equals("/board/update")) {
           try {
             Board board = (Board) in.readObject();
@@ -159,24 +264,76 @@ public class ServerApp {
               }
             }
 
-            if (index != 1) {
+            if (index != -1) {
               boards.set(index, board);
               out.writeUTF("OK");
             } else {
               out.writeUTF("FAIL");
-              out.writeUTF("해당 번호의 게시물이 없습니다");
+              out.writeUTF("해당 번호의 게시물이 없습니다.");
             }
+
           } catch (Exception e) {
             out.writeUTF("FAIL");
             out.writeUTF(e.getMessage());
           }
+
+        } else if (request.equals("/lesson/update")) {
+          try {
+            Lesson lesson = (Lesson) in.readObject();
+
+            int index = -1;
+            for (int i = 0; i < lessons.size(); i++) {
+              if (lessons.get(i).getNo() == lesson.getNo()) {
+                index = i;
+                break;
+              }
+            }
+
+            if (index != -1) {
+              lessons.set(index, lesson);
+              out.writeUTF("OK");
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("해당 번호의 수업이 없습니다.");
+            }
+
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+
+        } else if (request.equals("/member/update")) {
+          try {
+            Member member = (Member) in.readObject();
+
+            int index = -1;
+            for (int i = 0; i < members.size(); i++) {
+              if (members.get(i).getNo() == member.getNo()) {
+                index = i;
+                break;
+              }
+            }
+
+            if (index != -1) {
+              members.set(index, member);
+              out.writeUTF("OK");
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("해당 번호의 회원이 없습니다.");
+            }
+
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+
         } else if (request.equals("/board/delete")) {
           try {
             int no = in.readInt();
-            Board board = (Board) in.readObject();
+
             int index = -1;
             for (int i = 0; i < boards.size(); i++) {
-              if (boards.get(i).getNo() == board.getNo()) {
+              if (boards.get(i).getNo() == no) {
                 index = i;
                 break;
               }
@@ -194,6 +351,54 @@ public class ServerApp {
             out.writeUTF("FAIL");
             out.writeUTF(e.getMessage());
           }
+        } else if (request.equals("/lesson/delete")) {
+          try {
+            int no = in.readInt();
+
+            int index = -1;
+            for (int i = 0; i < lessons.size(); i++) {
+              if (lessons.get(i).getNo() == no) {
+                index = i;
+                break;
+              }
+            }
+
+            if (index != -1) {
+              lessons.remove(index);
+              out.writeUTF("OK");
+
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("해당 번호의 게시물이 없습니다.");
+            }
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
+        } else if (request.equals("/member/delete")) {
+          try {
+            int no = in.readInt();
+
+            int index = -1;
+            for (int i = 0; i < members.size(); i++) {
+              if (members.get(i).getNo() == no) {
+                index = i;
+                break;
+              }
+            }
+
+            if (index != -1) {
+              members.remove(index);
+              out.writeUTF("OK");
+
+            } else {
+              out.writeUTF("FAIL");
+              out.writeUTF("해당 번호의 회원이 없습니다.");
+            }
+          } catch (Exception e) {
+            out.writeUTF("FAIL");
+            out.writeUTF(e.getMessage());
+          }
         } else {
           out.writeUTF("FAIL");
           out.writeUTF("요청한 명령을 처리할 수 없습니다.");
@@ -202,7 +407,9 @@ public class ServerApp {
       }
       System.out.println("클라이언트로 메시지를 전송하였음!");
       return 0;
-    } catch (Exception e) {
+    } catch (
+
+    Exception e) {
       System.out.println("예외 발생:");
       e.printStackTrace();
       return -1;

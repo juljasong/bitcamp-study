@@ -21,14 +21,13 @@ public class BoardUpdateCommand implements Command {
     this.prompt = prompt;
   }
 
-
   @Override
   public void execute() {
     try {
-      int index = prompt.inputInt("게시글 번호? ");
+      int no = prompt.inputInt("게시글 번호? ");
 
       out.writeUTF("/board/detail");
-      out.writeInt(index);
+      out.writeInt(no);
       out.flush();
 
       String response = in.readUTF();
@@ -51,8 +50,9 @@ public class BoardUpdateCommand implements Command {
 
       if (oldBoard.equals(newBoard)) {
         System.out.println("게시글 변경을 취소했습니다.");
+        return;
       }
-      out.writeUnshared("/board/update");
+      out.writeUTF("/board/update");
       out.writeObject(newBoard);
       out.flush();
 
