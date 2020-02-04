@@ -79,8 +79,6 @@ public class App {
     List<Board> boardList = (List<Board>) context.get("boardList");
     List<Member> memberList = (List<Member>) context.get("memberList");
     List<Lesson> lessonList = (List<Lesson>) context.get("lessonList");
-
-
     Prompt prompt = new Prompt(sc);
     HashMap<String, Command> commandMap = new HashMap<>();
 
