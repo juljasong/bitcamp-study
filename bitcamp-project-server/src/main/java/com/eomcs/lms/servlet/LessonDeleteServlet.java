@@ -16,18 +16,8 @@ public class LessonDeleteServlet implements Servlet {
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
     int no = in.readInt();
 
-    int index = -1;
-    for (int i = 0; i < lessons.size(); i++) {
-      if (lessons.get(i).getNo() == no) {
-        index = i;
-        break;
-      }
-    }
-
-    if (index != -1) {
-      lessons.remove(index);
+    if (lessonDao.delete(no) > 0) {
       out.writeUTF("OK");
-
     } else {
       out.writeUTF("FAIL");
       out.writeUTF("해당 번호의 수업이 없습니다.");

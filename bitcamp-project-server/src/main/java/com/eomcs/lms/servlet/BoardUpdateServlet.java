@@ -20,7 +20,6 @@ public class BoardUpdateServlet implements Servlet {
 
     if (boardDao.update(board) > 0) { // 변경했다면,
       out.writeUTF("OK");
-
     } else {
       out.writeUTF("FAIL");
       out.writeUTF("해당 번호의 게시물이 없습니다.");

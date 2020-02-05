@@ -52,15 +52,12 @@ public class MemberFileDao {
     }
   }
 
-  // 서블릿 객체들이 데이터를 다룰 때 사용할 메서드를 정의한다.
   public int insert(Member member) throws Exception {
 
-    Member originMember = findByNo(member.getNo());
-
-    if (originMember != null) { // 같은 번호의 게시물이 있다면,
+    if (indexOf(member.getNo()) > -1) {
       return 0;
     }
-    list.add(member); // 새 게시물을 등록한다.
+    list.add(member);
     saveData();
     return 1;
   }
@@ -70,34 +67,41 @@ public class MemberFileDao {
   }
 
   public Member findByNo(int no) throws Exception {
-    for (Member m : list) {
-      if (m.getNo() == no) {
-        return m;
-      }
+    int index = indexOf(no);
+    if (index == -1) {
+      return null;
     }
-    return null;
+    return list.get(index);
   }
 
   public int update(Member member) throws Exception {
-    for (int i = 0; i < list.size(); i++) {
-      if (list.get(i).getNo() == member.getNo()) {
-        list.set(i, member); // 기존 객체를 파라미터로 받은 객체로 바꾼다.
-        saveData();
-        return 1;
-      }
+    int index = indexOf(member.getNo());
+
+    if (index == -1) {
+      return 0;
     }
-    return 0;
+    list.set(index, member);
+    saveData();
+    return 1;
   }
 
   public int delete(int no) throws Exception {
+    int index = indexOf(no);
+    if (index == -1) {
+      return 0;
+    }
+    list.remove(index);
+    saveData();
+    return 1;
+  }
+
+  private int indexOf(int no) {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getNo() == no) {
-        list.remove(i);
-        saveData();
-        return 1;
+        return i; // 해당 숫자 리턴
       }
     }
-    return 0;
+    return -1; // 해당 숫자 없으면 -1
   }
 }
 

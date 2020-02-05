@@ -102,10 +102,10 @@ public class BoardFileDao {
   private int indexOf(int no) {
     for (int i = 0; i < list.size(); i++) {
       if (list.get(i).getNo() == no) {
-        return i;
+        return i; // 해당 숫자 리턴
       }
     }
-    return -1;
+    return -1; // 해당 숫자 없으면 -1
   }
 }
 

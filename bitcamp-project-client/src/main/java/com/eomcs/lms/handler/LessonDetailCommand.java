@@ -35,7 +35,7 @@ public class LessonDetailCommand implements Command {
       }
 
       Lesson lesson = (Lesson) in.readObject();
-      System.out.printf("번호: %d\n", lesson.getNo());
+      // System.out.printf("번호: %d\n", lesson.getNo());
       System.out.printf("수업명: %s\n", lesson.getTitle());
       System.out.printf("설명: %s\n", lesson.getDescription());
       System.out.printf("시작일: %s\n", lesson.getStartDate());

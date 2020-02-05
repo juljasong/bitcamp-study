@@ -17,13 +17,7 @@ public class LessonDetailServlet implements Servlet {
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
     int no = in.readInt();
 
-    Lesson lesson = null;
-    for (Lesson l : lessons) {
-      if (l.getNo() == no) {
-        lesson = l;
-        break;
-      }
-    }
+    Lesson lesson = lessonDao.findByNo(no);
 
     if (lesson != null) {
       out.writeUTF("OK");

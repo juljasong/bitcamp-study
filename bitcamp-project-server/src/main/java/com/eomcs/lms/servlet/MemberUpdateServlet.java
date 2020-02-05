@@ -17,16 +17,7 @@ public class MemberUpdateServlet implements Servlet {
   public void service(ObjectInputStream in, ObjectOutputStream out) throws Exception {
     Member member = (Member) in.readObject();
 
-    int index = -1;
-    for (int i = 0; i < members.size(); i++) {
-      if (members.get(i).getNo() == member.getNo()) {
-        index = i;
-        break;
-      }
-    }
-
-    if (index != -1) {
-      members.set(index, member);
+    if (memberDao.update(member) > 0) {
       out.writeUTF("OK");
     } else {
       out.writeUTF("FAIL");
