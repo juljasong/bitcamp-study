@@ -1,57 +1,41 @@
-# 32_4 - 클라이언트의 게시물 관리와 관련된 데이터 요청을 처리하기 
+# 32_7 - 데이터 처리 코드를 별도의 클래스로 정의하여 객체화 시키기
 
 ## 학습목표
 
-- 클라이언트의 요청을 받을 수 있다.
-- 클라이언트의 요청에 대해 데이터를 보낼 수 있다.
+- DAO(Data Access Object)의 역할과 이점을 이해한다.
+- 데이터 처리 코드를 DAO로 분리할 수 있다. 
+
+### DAO(Data Access Object)
+
+- 데이터 처리 역할을 수행하는 객체이다.
+- 데이터 처리 방식을 캡슐화(=추상화=클래스로 정의)하여 객체의 사용을 일관성 있게 만든다.
+  - 즉 데이터 처리 방식(배열, 스택, 큐, 맵, 파일, 데이터베이스 등)을 
+    클래스로 포장(캡슐화)하면 데이터 처리 방식에 상관없이 메서드 사용을 통일할 수 있다.
+ 
 
 ## 실습 소스 및 결과
 
+- src/main/java/com/eomcs/lms/dao 패키지 생성
+- src/main/java/com/eomcs/lms/dao/BoardFileDao.java 추가
+- src/main/java/com/eomcs/lms/dao/LessonFileDao.java 추가
+- src/main/java/com/eomcs/lms/dao/MemberFileDao.java 추가
 - src/main/java/com/eomcs/lms/ServerApp.java 변경
 
 ## 실습  
 
-### 훈련 1: 서비스를 시작할 때 클라이언트의 연결을 기다리는 코드를 추가하라.
+### 훈련 1: 게시물 데이터를 처리하는 DAO 클래스를 정의하라.
 
-- ServerApp.java 변경
-  - ServerSocket을 준비한다.
-  - 클라이언트 연결을 준비한다.
+- com.eomcs.lms.dao 패키지를 생성한다.
+- com.eomcs.lms.BoardFileDao 클래스를 정의한다.
+
+### 훈련 2: BoardFileDao 객체를 적용하라.
+
+- com.eomcs.lms.DataLoaderListener 를 변경한다.
+  - 게시물 데이터를 로딩하고 저장하는 기존 코드를 제거한다.
+  - 대신에 BoardFileDao 객체를 생성한다.
+- com.eomcs.lms.ServerApp 을 변경한다.
+  - Map에서 BoardFileDao를 꺼내 관련 커맨드 객체에 주입한다.
+- BoardXxxServlet 을 변경한다.
+  - 생성자에서 List 객체를 받는 대신에 BoardFileDao 객체를 받는다.
+  - 데이터를 저장하고, 조회하고, 변경하고, 삭제할 때 BoardFileDao 객체를 통해 처리한다.
   
-### 훈련 2: 클라이언트의 게시물 목록 요청(/board/list)을 처리하라.
-
-- ServerApp.java 변경
-  - processRequest() 메서드 변경
-- ServerAppTest.java 추가
-  - 서버의 응답 기능을 테스트 한다.
-- Board.java 변경
-  - 통신 테스트 할 때 게시물 필드 정보를 확인할 수 있도록 toString()을 오버라이딩 한다.
-
-### 훈련 3: 클라이언트의 게시물 등록 요청(/board/add)을 처리하라.
-
-- ServerApp.java 변경
-  - processRequest() 메서드 변경
-
-### 훈련 4: 클라리언트의 게시물 조회 요청(/board/detail)을 처리하라.
-
-- ServerApp.java 변경
-  - processRequest() 메서드 변경
-  
-### 훈련 5: 클라리언트의 게시물 변경 요청(/board/detail)을 처리하라.
-
-- ServerApp.java 변경
-  - processRequest() 메서드 변경  
-  
-### 훈련 6: 클라리언트의 게시물 삭제 요청(/board/detail)을 처리하라.
-
-- ServerApp.java 변경
-  - processRequest() 메서드 변경  
-
-### 훈련 7: 클라리언트의 수업 관리 요청(/lesson/*)을 처리하라.
-
-- ServerApp.java 변경
-  - processRequest() 메서드 변경  
-  
-### 훈련 8: 클라리언트의 회원 관리 요청(/member/*)을 처리하라.
-
-- ServerApp.java 변경
-  - processRequest() 메서드 변경  

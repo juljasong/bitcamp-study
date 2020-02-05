@@ -7,5 +7,4 @@ public class ServerAppTest {
   public void testBoardList() {
 
   }
-
 }

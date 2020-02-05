@@ -21,6 +21,7 @@ public class MemberListCommand implements Command {
     try {
       out.writeUTF("/member/list");
       out.flush();
+
       String response = in.readUTF();
       if (response.equals("FAIL")) {
         System.out.println(in.readUTF());
@@ -33,7 +34,7 @@ public class MemberListCommand implements Command {
             m.getRegisteredDate());
       }
     } catch (Exception e) {
-      System.out.println("통신 오류 발생.");
+      System.out.println("통신 오류 발생!");
     }
   }
 }

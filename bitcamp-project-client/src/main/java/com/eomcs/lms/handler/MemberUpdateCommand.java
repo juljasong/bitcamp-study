@@ -6,8 +6,10 @@ import com.eomcs.lms.domain.Member;
 import com.eomcs.util.Prompt;
 
 public class MemberUpdateCommand implements Command {
+
   ObjectOutputStream out;
   ObjectInputStream in;
+
   Prompt prompt;
 
   public MemberUpdateCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
@@ -19,13 +21,14 @@ public class MemberUpdateCommand implements Command {
   @Override
   public void execute() {
     try {
-      int index = prompt.inputInt("회원 번호? ");
+      int no = prompt.inputInt("번호? ");
+
+      // 기존의 회원 데이터를 가져온다.
       out.writeUTF("/member/detail");
-      out.writeInt(index);
+      out.writeInt(no);
       out.flush();
 
       String response = in.readUTF();
-
       if (response.equals("FAIL")) {
         System.out.println(in.readUTF());
         return;
@@ -33,19 +36,24 @@ public class MemberUpdateCommand implements Command {
 
       Member oldMember = (Member) in.readObject();
       Member newMember = new Member();
+
       newMember.setNo(oldMember.getNo());
+      newMember.setRegisteredDate(oldMember.getRegisteredDate());
 
       newMember.setName(
           prompt.inputString(String.format("이름(%s)? ", oldMember.getName()), oldMember.getName()));
+
       newMember.setEmail(prompt.inputString(String.format("이메일(%s)? ", oldMember.getEmail()),
           oldMember.getEmail()));
+
       newMember.setPassword(prompt.inputString(String.format("암호(%s)? ", oldMember.getPassword()),
           oldMember.getPassword()));
+
       newMember.setPhoto(prompt.inputString(String.format("사진(%s)? ", oldMember.getPhoto()),
           oldMember.getPhoto()));
+
       newMember.setTel(
           prompt.inputString(String.format("전화(%s)? ", oldMember.getTel()), oldMember.getTel()));
-      newMember.setRegisteredDate(oldMember.getRegisteredDate());
 
       if (oldMember.equals(newMember)) {
         System.out.println("회원 변경을 취소하였습니다.");
@@ -60,7 +68,9 @@ public class MemberUpdateCommand implements Command {
         System.out.println(in.readUTF());
         return;
       }
-      System.out.println("회원 정보를 변경하였습니다.");
+
+      System.out.println("회원을 변경했습니다.");
+
     } catch (Exception e) {
       System.out.println("명령 실행 중 오류 발생!");
     }

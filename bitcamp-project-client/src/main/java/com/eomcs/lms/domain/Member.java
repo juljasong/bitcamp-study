@@ -3,17 +3,32 @@ package com.eomcs.lms.domain;
 import java.io.Serializable;
 import java.sql.Date;
 
-// 객체를 seralize하려면 Serializable 인터페이스 구현.
-// 버전 번호 명시
+// 객체를 serialize 하려면 이 기능을 활성화시켜야 한다.
+// - java.io.Serializable을 구현하라!
+// - serialize 데이터를 구분하기 위해 버전 번호를 명시하라.
+//
 public class Member implements Serializable {
 
-  private static final long serialVersionUID = 765542141820646770L;
+  private static final long serialVersionUID = 20200131L;
+
   private int no;
-  private String name, email, password, photo, tel;
+  private String name;
+  private String email;
+  private String password;
+  private String photo;
+  private String tel;
   private Date registeredDate;
 
+
+  @Override
+  public String toString() {
+    return "Member [no=" + no + ", name=" + name + ", email=" + email + ", password=" + password
+        + ", photo=" + photo + ", tel=" + tel + ", registeredDate=" + registeredDate + "]";
+  }
+
   public static Member valueOf(String csv) {
-    String[] data = csv.split(", ");
+    String[] data = csv.split(",");
+
     Member member = new Member();
     member.setNo(Integer.parseInt(data[0]));
     member.setName(data[1]);
@@ -22,70 +37,15 @@ public class Member implements Serializable {
     member.setPhoto(data[4]);
     member.setTel(data[5]);
     member.setRegisteredDate(Date.valueOf(data[6]));
+
     return member;
   }
 
   public String toCsvString() {
-    return String.format("%d, %s, %s, %s, %s, %s, %s", this.getNo(), this.getName(),
-        this.getEmail(), this.getPassword(), this.getPhoto(), this.getTel(),
-        this.getRegisteredDate());
+    return String.format("%d,%s,%s,%s,%s,%s,%s", this.getNo(), this.getName(), this.getEmail(),
+        this.getPassword(), this.getPhoto(), this.getTel(), this.getRegisteredDate());
   }
 
-  public int getNo() {
-    return no;
-  }
-
-  public void setNo(int no) {
-    this.no = no;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getPhoto() {
-    return photo;
-  }
-
-  public void setPhoto(String photo) {
-    this.photo = photo;
-  }
-
-  public String getTel() {
-    return tel;
-  }
-
-  public void setTel(String tel) {
-    this.tel = tel;
-  }
-
-  public Date getRegisteredDate() {
-    return registeredDate;
-  }
-
-  public void setRegisteredDate(Date registeredDate) {
-    this.registeredDate = registeredDate;
-  }
 
   @Override
   public int hashCode() {
@@ -145,6 +105,59 @@ public class Member implements Serializable {
     return true;
   }
 
+  public int getNo() {
+    return no;
+  }
 
+  public void setNo(int no) {
+    this.no = no;
+  }
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getPhoto() {
+    return photo;
+  }
+
+  public void setPhoto(String photo) {
+    this.photo = photo;
+  }
+
+  public String getTel() {
+    return tel;
+  }
+
+  public void setTel(String tel) {
+    this.tel = tel;
+  }
+
+  public Date getRegisteredDate() {
+    return registeredDate;
+  }
+
+  public void setRegisteredDate(Date registeredDate) {
+    this.registeredDate = registeredDate;
+  }
 }

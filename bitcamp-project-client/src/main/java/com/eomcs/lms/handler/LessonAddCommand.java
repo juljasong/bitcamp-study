@@ -9,6 +9,7 @@ public class LessonAddCommand implements Command {
 
   ObjectOutputStream out;
   ObjectInputStream in;
+
   Prompt prompt;
 
   public LessonAddCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
@@ -19,20 +20,19 @@ public class LessonAddCommand implements Command {
 
   @Override
   public void execute() {
+    Lesson lesson = new Lesson();
 
-    Lesson l = new Lesson();
-    l.setNo(prompt.inputInt("번호? "));
-    l.setTitle(prompt.inputString("수업명? "));
-    l.setDescription(prompt.inputString("설명? "));
-    l.setStartDate(prompt.inputDate("시작일? "));
-    l.setEndDate(prompt.inputDate("종료일? "));
-    l.setTotalHours(prompt.inputInt("총수업시간? "));
-    l.setDayHours(prompt.inputInt("일수업시간? "));
-    System.out.println();
+    lesson.setNo(prompt.inputInt("번호? "));
+    lesson.setTitle(prompt.inputString("수업명? "));
+    lesson.setDescription(prompt.inputString("설명? "));
+    lesson.setStartDate(prompt.inputDate("시작일? "));
+    lesson.setEndDate(prompt.inputDate("종료일? "));
+    lesson.setTotalHours(prompt.inputInt("총수업시간? "));
+    lesson.setDayHours(prompt.inputInt("일수업시간? "));
 
     try {
       out.writeUTF("/lesson/add");
-      out.writeObject(l);
+      out.writeObject(lesson);
       out.flush();
 
       String response = in.readUTF();
@@ -40,9 +40,13 @@ public class LessonAddCommand implements Command {
         System.out.println(in.readUTF());
         return;
       }
+
       System.out.println("저장하였습니다.");
+
     } catch (Exception e) {
-      System.out.println("통신 오류 발생");
+      System.out.println("통신 오류 발생!");
     }
   }
 }
+
+

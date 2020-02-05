@@ -34,7 +34,9 @@ public class LessonListCommand implements Command {
             l.getEndDate(), l.getTotalHours());
       }
     } catch (Exception e) {
-      System.out.println("통신 오류 발생.");
+      System.out.println("통신 오류 발생!");
     }
   }
 }
+
+

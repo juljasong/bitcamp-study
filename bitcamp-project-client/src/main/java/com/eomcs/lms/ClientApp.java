@@ -53,7 +53,7 @@ public class ClientApp {
         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
 
-      System.out.println("서버와 연결 되었음!");
+      System.out.println("서버와 연결을 되었음!");
 
       processCommand(out, in);
 
@@ -65,7 +65,7 @@ public class ClientApp {
     }
 
     keyboard.close();
-  } // service()
+  }
 
   private void processCommand(ObjectOutputStream out, ObjectInputStream in) {
 
@@ -78,20 +78,22 @@ public class ClientApp {
     commandMap.put("/board/detail", new BoardDetailCommand(out, in, prompt));
     commandMap.put("/board/update", new BoardUpdateCommand(out, in, prompt));
     commandMap.put("/board/delete", new BoardDeleteCommand(out, in, prompt));
-    commandMap.put("/lesson/list", new LessonListCommand(out, in));
-    commandMap.put("/lesson/add", new LessonAddCommand(out, in, prompt));
-    commandMap.put("/lesson/detail", new LessonDetailCommand(out, in, prompt));
-    commandMap.put("/lesson/update", new LessonUpdateCommand(out, in, prompt));
-    commandMap.put("/lesson/delete", new LessonDeleteCommand(out, in, prompt));
+
     commandMap.put("/member/list", new MemberListCommand(out, in));
     commandMap.put("/member/add", new MemberAddCommand(out, in, prompt));
     commandMap.put("/member/detail", new MemberDetailCommand(out, in, prompt));
     commandMap.put("/member/update", new MemberUpdateCommand(out, in, prompt));
     commandMap.put("/member/delete", new MemberDeleteCommand(out, in, prompt));
 
+    commandMap.put("/lesson/list", new LessonListCommand(out, in));
+    commandMap.put("/lesson/add", new LessonAddCommand(out, in, prompt));
+    commandMap.put("/lesson/detail", new LessonDetailCommand(out, in, prompt));
+    commandMap.put("/lesson/update", new LessonUpdateCommand(out, in, prompt));
+    commandMap.put("/lesson/delete", new LessonDeleteCommand(out, in, prompt));
+
     try {
-      String command;
       while (true) {
+        String command;
         command = prompt.inputString("\n명령> ");
 
         if (command.length() == 0)
@@ -112,6 +114,7 @@ public class ClientApp {
         }
 
         commandStack.push(command);
+
         commandQueue.offer(command);
 
         Command commandHandler = commandMap.get(command);
@@ -131,7 +134,6 @@ public class ClientApp {
       System.out.println("프로그램 실행 중 오류 발생!");
     }
     keyboard.close();
-
   }
 
   private void printCommandHistory(Iterator<String> iterator) {

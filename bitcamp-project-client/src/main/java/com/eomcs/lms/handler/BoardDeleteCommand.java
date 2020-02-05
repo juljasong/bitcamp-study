@@ -1,16 +1,15 @@
-// listBoard() 메서드 변경
-// => toArray() 대신 iterator()를 사용하여 목록 출력
-
 package com.eomcs.lms.handler;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import com.eomcs.util.Prompt;
 
+// "/board/delete" 명령 처리
 public class BoardDeleteCommand implements Command {
 
   ObjectOutputStream out;
   ObjectInputStream in;
+
   Prompt prompt;
 
   public BoardDeleteCommand(ObjectOutputStream out, ObjectInputStream in, Prompt prompt) {
@@ -22,7 +21,8 @@ public class BoardDeleteCommand implements Command {
   @Override
   public void execute() {
     try {
-      int no = prompt.inputInt("게시글 번호? ");
+      int no = prompt.inputInt("번호? ");
+
       out.writeUTF("/board/delete");
       out.writeInt(no);
       out.flush();
@@ -34,9 +34,11 @@ public class BoardDeleteCommand implements Command {
         return;
       }
       System.out.println("게시글을 삭제했습니다.");
+
     } catch (Exception e) {
-      System.out.println("명령 처리 중 오류 발생");
+      System.out.println("명령 실행 중 오류 발생!");
     }
   }
-
 }
+
+
