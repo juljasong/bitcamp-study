@@ -2,14 +2,14 @@ package com.eomcs.lms.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import com.eomcs.lms.dao.MemberFileDao;
+import com.eomcs.lms.dao.MemberDao;
 import com.eomcs.lms.domain.Member;
 
 public class MemberUpdateServlet implements Servlet {
 
-  MemberFileDao memberDao;
+  MemberDao memberDao;
 
-  public MemberUpdateServlet(MemberFileDao memberDao) {
+  public MemberUpdateServlet(MemberDao memberDao) {
     this.memberDao = memberDao;
   }
 

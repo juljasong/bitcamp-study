@@ -2,14 +2,14 @@ package com.eomcs.lms.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import com.eomcs.lms.dao.BoardFileDao;
+import com.eomcs.lms.dao.BoardDao;
 import com.eomcs.lms.domain.Board;
 
 public class BoardUpdateServlet implements Servlet {
 
-  BoardFileDao boardDao;
+  BoardDao boardDao;
 
-  public BoardUpdateServlet(BoardFileDao boardDao) {
+  public BoardUpdateServlet(BoardDao boardDao) {
     this.boardDao = boardDao;
   }
 

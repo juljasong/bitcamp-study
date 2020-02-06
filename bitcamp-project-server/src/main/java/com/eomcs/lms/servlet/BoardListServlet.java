@@ -2,13 +2,13 @@ package com.eomcs.lms.servlet;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import com.eomcs.lms.dao.BoardFileDao;
+import com.eomcs.lms.dao.BoardDao;
 
 public class BoardListServlet implements Servlet {
 
-  BoardFileDao boardDao;
+  BoardDao boardDao;
 
-  public BoardListServlet(BoardFileDao boardDao) {
+  public BoardListServlet(BoardDao boardDao) {
     this.boardDao = boardDao;
   }
 
