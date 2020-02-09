@@ -8,12 +8,12 @@ import com.eomcs.lms.domain.Board;
 
 public class BoardDaoProxy implements BoardDao {
 
-  ObjectOutputStream out;
   ObjectInputStream in;
+  ObjectOutputStream out;
 
-  public BoardDaoProxy(ObjectOutputStream out, ObjectInputStream in) {
-    this.out = out;
+  public BoardDaoProxy(ObjectInputStream in, ObjectOutputStream out) {
     this.in = in;
+    this.out = out;
   }
 
   @Override

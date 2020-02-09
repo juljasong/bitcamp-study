@@ -67,5 +67,3 @@ public class BoardObjectFileDao extends AbstractObjectFileDao<Board> {
     return -1; // 해당 숫자 없으면 -1
   }
 }
-
-
