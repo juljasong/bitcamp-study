@@ -76,9 +76,9 @@ public class ClientApp {
     Queue<String> commandQueue = new LinkedList<>();
 
     // Dao 프록시 객체 준비
-    BoardDaoProxy boardDao = new BoardDaoProxy(out, in);
-    LessonDaoProxy lessonDao = new LessonDaoProxy(out, in);
-    MemberDaoProxy memberDao = new MemberDaoProxy(out, in);
+    BoardDaoProxy boardDao = new BoardDaoProxy(in, out);
+    LessonDaoProxy lessonDao = new LessonDaoProxy(in, out);
+    MemberDaoProxy memberDao = new MemberDaoProxy(in, out);
 
     HashMap<String, Command> commandMap = new HashMap<>();
     commandMap.put("/board/list", new BoardListCommand(boardDao));

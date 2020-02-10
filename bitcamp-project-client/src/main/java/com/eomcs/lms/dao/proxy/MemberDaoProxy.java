@@ -11,7 +11,7 @@ public class MemberDaoProxy implements MemberDao {
   ObjectOutputStream out;
   ObjectInputStream in;
 
-  public MemberDaoProxy(ObjectOutputStream out, ObjectInputStream in) {
+  public MemberDaoProxy(ObjectInputStream in, ObjectOutputStream out) {
     this.out = out;
     this.in = in;
   }

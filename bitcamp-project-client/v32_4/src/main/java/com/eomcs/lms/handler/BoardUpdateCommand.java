@@ -1,6 +1,3 @@
-// listBoard() 메서드 변경
-// => toArray() 대신 iterator()를 사용하여 목록 출력
-
 package com.eomcs.lms.handler;
 
 import java.io.ObjectInputStream;

@@ -8,12 +8,12 @@ import com.eomcs.lms.domain.Lesson;
 
 public class LessonDaoProxy implements LessonDao {
 
-  ObjectOutputStream out;
   ObjectInputStream in;
+  ObjectOutputStream out;
 
-  public LessonDaoProxy(ObjectOutputStream out, ObjectInputStream in) {
-    this.out = out;
+  public LessonDaoProxy(ObjectInputStream in, ObjectOutputStream out) {
     this.in = in;
+    this.out = out;
   }
 
   @Override
