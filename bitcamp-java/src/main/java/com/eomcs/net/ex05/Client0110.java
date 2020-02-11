@@ -1,11 +1,11 @@
 // connection-oriented 클라이언트 - 연결 후 데이터 송수신
-package com.eomcs.net.ex06;
+package com.eomcs.net.ex05;
 
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ConnectionOrientedClient {
+public class Client0110 {
   public static void main(String[] args) throws Exception {
     Socket socket = new Socket("localhost", 8888);
     System.out.println("서버에 연결됨!");

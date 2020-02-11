@@ -1,5 +1,5 @@
 // URL(Uniform Resource Locator) - 유닉스 OS의 로컬 파일 경로
-package com.eomcs.net.ex08;
+package com.eomcs.net.ex07;
 
 import java.net.URL;
 

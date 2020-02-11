@@ -1,5 +1,5 @@
 // URL(Uniform Resource Locator) - 문서 내의 위치 지정
-package com.eomcs.net.ex08;
+package com.eomcs.net.ex07;
 
 import java.net.URL;
 

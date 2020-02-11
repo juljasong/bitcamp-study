@@ -59,8 +59,8 @@ public class CalcServer {
         out.flush();
         resultMap.put(clientId, result);
       }
+      ss.close();
     }
-    // ss.close();
   }
 }
 

@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
     implementation 'com.google.guava:guava:28.0-jre'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.11'
     testImplementation 'junit:junit:4.12'
 }
 

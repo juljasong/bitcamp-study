@@ -1,5 +1,5 @@
 // connectionless 클라이언트 - 연결없이 데이터 수신
-package com.eomcs.net.ex06;
+package com.eomcs.net.ex05;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -11,7 +11,7 @@ import java.net.DatagramSocket;
 // => 실생활에서 "편지"와 같다.
 // => 예) ping 
 // 
-public class ConnectionlessServer {
+public class Server0210 {
   public static void main(String[] args) throws Exception {
     System.out.println("서버 실행 중...");
 
