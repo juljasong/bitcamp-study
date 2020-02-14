@@ -14,6 +14,7 @@ repositories {
 }
 
 dependencies {
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.5.4'
     implementation 'com.google.guava:guava:28.0-jre'
     testImplementation 'junit:junit:4.12'
 }
