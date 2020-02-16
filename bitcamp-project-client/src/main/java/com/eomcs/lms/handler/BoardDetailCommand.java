@@ -1,7 +1,10 @@
 package com.eomcs.lms.handler;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import com.eomcs.lms.dao.proxy.BoardDaoProxy;
-import com.eomcs.lms.domain.Board;
 import com.eomcs.util.Prompt;
 
 // "/board/detail" 명령 처리
@@ -20,11 +23,24 @@ public class BoardDetailCommand implements Command {
     try {
       int no = prompt.inputInt("번호? ");
 
-      Board board = boardDao.findByNo(no);
-      // System.out.printf("번호: %d\n", board.getNo());
-      System.out.printf("제목: %s\n", board.getTitle());
-      System.out.printf("등록일: %s\n", board.getDate());
-      System.out.printf("조회수: %d\n", board.getViewCount());
+      Class.forName("org.mariadb.jdbc.Driver");
+
+      Connection con =
+          DriverManager.getConnection("jdbc:mariadb://localhost:3306/studydb", "study", "1111");
+
+      // PreparedStatement pstm = con.prepareStatement("SELECT * FROM lms_board WHERE board_id = ? ;");
+      // pstm.setInt(1, no);
+      // ResultSet rs = pstm.executeQuery();
+
+      Statement stmt = con.createStatement();
+
+      ResultSet rs = stmt.executeQuery("SELECT * FROM lms_board WHERE board_id = " + no + ";");
+
+      while (rs.next()) {
+        System.out.printf("제목: %s\n", rs.getString("conts"));
+        System.out.printf("등록일: %s\n", rs.getString("cdt"));
+        System.out.printf("조회수: %d\n", rs.getInt("vw_cnt"));
+      }
 
     } catch (Exception e) {
       System.out.println("조회 실패!");

@@ -32,6 +32,7 @@ public class BoardListCommand implements Command {
 
       // MariaDB의 lms_board 테이블 데이터 가져올 준비
       ResultSet rs = stmt.executeQuery("select board_id, conts, cdt, vw_cnt from lms_board");
+      // ResultSet rs = stmt.executeQuery("select * from lms_board");
       // ResultSet 도구를 사용해 데이터를 하나씩 가져옴
 
       while (rs.next()) {
