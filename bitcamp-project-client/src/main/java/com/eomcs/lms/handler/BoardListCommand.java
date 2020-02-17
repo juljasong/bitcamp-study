@@ -22,7 +22,6 @@ public class BoardListCommand implements Command {
         System.out.printf("%d, %s, %s, %d\n", b.getNo(), b.getTitle(), b.getDate(),
             b.getViewCount());
       }
-
     } catch (Exception e) {
       System.out.println("통신 오류 발생!");
     }

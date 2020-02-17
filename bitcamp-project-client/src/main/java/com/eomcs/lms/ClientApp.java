@@ -38,8 +38,10 @@ public class ClientApp {
 
   Scanner keyboard = new Scanner(System.in);
   Prompt prompt = new Prompt(keyboard);
+
   Deque<String> commandStack;
   Queue<String> commandQueue;
+
   Connection con;
 
   HashMap<String, Command> commandMap = new HashMap<>();
