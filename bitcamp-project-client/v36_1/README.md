@@ -139,7 +139,7 @@ tasks.withType(JavaCompile) {
 mainClassName = 'App'
 
 dependencies {
-    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.5.4'
     compile 'com.google.guava:guava:23.0'
     testCompile 'junit:junit:4.12'
 }
