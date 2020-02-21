@@ -57,7 +57,7 @@ public class BoardDaoImpl implements BoardDao {
 
     try (Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(
-            "select board_id, conts, cdt, vw_cnt from lms_board where board_id = " + no + ";")) {
+            "select board_id, conts, cdt, vw_cnt from lms_board where board_id = " + no)) {
 
       if (rs.next()) {
         Board board = new Board();
@@ -77,8 +77,8 @@ public class BoardDaoImpl implements BoardDao {
 
     try (Statement stmt = con.createStatement()) {
 
-      int result = stmt.executeUpdate("UPDATE lms_board SET conts='" + board.getTitle()
-          + "' WHERE board_id=" + board.getNo() + ";");
+      int result = stmt.executeUpdate(
+          "UPDATE lms_board SET conts='" + board.getTitle() + "' WHERE board_id=" + board.getNo());
       // .executeUpdate()의 리턴값은 서버에 입력된 데이터의 개수
 
       return result;
@@ -90,7 +90,7 @@ public class BoardDaoImpl implements BoardDao {
 
     try (Statement stmt = con.createStatement()) {
 
-      int result = stmt.executeUpdate("DELETE FROM lms_board WHERE board_id=" + no + ";");
+      int result = stmt.executeUpdate("DELETE FROM lms_board WHERE board_id=" + no);
 
       return result;
     }

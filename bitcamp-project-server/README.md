@@ -1,22 +1,63 @@
-# 35 - 스레드풀을 이용하여 스레드를 재사용하기
+# 37_3 - Application Server 구조로 변경: 통신 규칙2 추가 및 Servlet, DAO에 적용 
 
 ## 학습목표
 
-- `Flyweight` 디자인 패턴의 용도를 이해한다.
-- `Flyweight` 디자인 패턴의 응용 기법인 Pooling 기법의 동작 원리를 이해한다.
-- Pooling 기법을 사용하여 객체를 재활용할 수 있다.
-- Thread를 종료시키지 않고 계속 재활용할 수 있다.
-- Thread의 wait()/notify()의 사용법을 이해한다.
-- Thread Pool을 적용할 수 있다.
+- Application Server 아키텍처의 구성과 특징을 이해한다.
+- 통신 프로토콜 규칙에 따라 동작하는 서버를 만들 수 있다.
 
 ## 실습 소스 및 결과
 
+- src/main/java/com/eomcs/lms/dao/mariadb 디렉토리 생성
+- src/main/java/com/eomcs/lms/dao/mariadb/BoardDaoImpl.java 추가
+- src/main/java/com/eomcs/lms/dao/mariadb/LessonDaoImpl.java 추가
+- src/main/java/com/eomcs/lms/dao/mariadb/MemberDaoImpl.java 추가
+- src/main/java/com/eomcs/lms/DataLoaderListener.java 변경
+- src/main/java/com/eomcs/lms/servlet/BoardListServlet.java 변경
+- src/main/java/com/eomcs/lms/servlet/LessonListServlet.java 변경
+- src/main/java/com/eomcs/lms/servlet/MemberListServlet.java 변경
 - src/main/java/com/eomcs/lms/ServerApp.java 변경
 
 ## 실습  
 
-### 훈련 1: 스레드 풀을 적용하여 스레드를 관리하라.
+### 훈련1: 서버가 클라이언트에게 추가 데이터 입력을 요구할 수 있도록 통신 규칙을 변경하라. 
+규칙2) 사용자 입력을 포함하는 경우
+```
+[클라이언트]                                        [서버]
+서버에 연결 요청        -------------->           연결 승인
+명령(CRLF)              -------------->           명령처리
+화면 출력               <--------------           응답(CRLF)
+사용자 입력 요구        <--------------           !{}!(CRLF)
+입력값(CRLF)            -------------->           입력 값 처리
+화면 출력               <--------------           응답(CRLF)
+사용자 입력 요구        <--------------           !{}!(CRLF)
+입력값(CRLF)            -------------->           입력 값 처리
+명령어 실행 완료        <--------------           !end!(CRLF)
+서버와 연결 끊기
+```
 
-- com.eomcs.lms.ServerApp을 변경한다.
-  - 스레드 풀을 준비한다.
-  - 스레드를 생성할 때 스레드 풀을 사용한다.
+### 훈련2: '통신 규칙2'에 따라 게시글 번호를 입력 받을 수 있도록 BoardDetailServlet을 변경하라. 
+
+- com.eomcs.lms.servlet.BoardDetailServlet 변경
+  - Servlet 인터페이스에 추가한 service(Scanner in, PrintStream out)을 구현한다.
+  - '통신 규칙2'에 따라 클라이언트에게 상세 조회할 게시글의 번호를 요구한다.
+  - '통신 규칙1'에 따라 응답한다.
+- com.eomcs.lms.ServerApp 변경
+  - '/board/detail' 명령을 처리할 서블릿을 맵에 추가한다.
+
+### 훈련3: '통신 규칙2'에 따라 게시글을 입력 받을 수 있도록 BoardAddServlet을 변경하라. 
+
+- com.eomcs.lms.servlet.BoardAddServlet 변경
+  - Servlet 인터페이스에 추가한 service(Scanner in, PrintStream out)을 구현한다.
+  - '통신 규칙2'에 따라 클라이언트에게 게시글을 요구한다.
+  - '통신 규칙1'에 따라 응답한다.
+- com.eomcs.lms.ServerApp 변경
+  - '/board/add' 명령을 처리할 서블릿을 맵에 추가한다.
+
+### 훈련4: '통신 규칙2'에 따라 게시글을 변경할 수 있도록 BoardUpdateServlet을 변경하라. 
+
+- com.eomcs.lms.servlet.BoardUpdateServlet 변경
+  - Servlet 인터페이스에 추가한 service(Scanner in, PrintStream out)을 구현한다.
+  - '통신 규칙2'에 따라 클라이언트에게 게시글 변경을 요구한다.
+  - '통신 규칙1'에 따라 응답한다.
+- com.eomcs.lms.ServerApp 변경
+  - '/board/update' 명령을 처리할 서블릿을 맵에 추가한다.
