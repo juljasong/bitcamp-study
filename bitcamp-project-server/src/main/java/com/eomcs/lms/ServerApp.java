@@ -26,9 +26,15 @@ import com.eomcs.lms.servlet.BoardDetailServlet;
 import com.eomcs.lms.servlet.BoardListServlet;
 import com.eomcs.lms.servlet.BoardUpdateServlet;
 import com.eomcs.lms.servlet.LessonAddServlet;
+import com.eomcs.lms.servlet.LessonDeleteServlet;
+import com.eomcs.lms.servlet.LessonDetailServlet;
 import com.eomcs.lms.servlet.LessonListServlet;
+import com.eomcs.lms.servlet.LessonUpdateServlet;
 import com.eomcs.lms.servlet.MemberAddServlet;
+import com.eomcs.lms.servlet.MemberDeleteServlet;
+import com.eomcs.lms.servlet.MemberDetailServlet;
 import com.eomcs.lms.servlet.MemberListServlet;
+import com.eomcs.lms.servlet.MemberUpdateServlet;
 import com.eomcs.lms.servlet.Servlet;
 
 
@@ -76,15 +82,15 @@ public class ServerApp {
 
     servletMap.put("/lesson/list", new LessonListServlet(lessonDao));
     servletMap.put("/lesson/add", new LessonAddServlet(lessonDao));
-    // servletMap.put("/lesson/detail", new LessonDetailServlet(lessonDao));
-    // servletMap.put("/lesson/update", new LessonUpdateServlet(lessonDao));
-    // servletMap.put("/lesson/delete", new LessonDeleteServlet(lessonDao));
+    servletMap.put("/lesson/detail", new LessonDetailServlet(lessonDao));
+    servletMap.put("/lesson/update", new LessonUpdateServlet(lessonDao));
+    servletMap.put("/lesson/delete", new LessonDeleteServlet(lessonDao));
 
     servletMap.put("/member/list", new MemberListServlet(memberDao));
     servletMap.put("/member/add", new MemberAddServlet(memberDao));
-    // servletMap.put("/member/detail", new MemberDetailServlet(memberDao));
-    // servletMap.put("/member/update", new MemberUpdateServlet(memberDao));
-    // servletMap.put("/member/delete", new MemberDeleteServlet(memberDao));
+    servletMap.put("/member/detail", new MemberDetailServlet(memberDao));
+    servletMap.put("/member/update", new MemberUpdateServlet(memberDao));
+    servletMap.put("/member/delete", new MemberDeleteServlet(memberDao));
 
     try (ServerSocket serverSocket = new ServerSocket(9999)) {
 
