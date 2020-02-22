@@ -1,25 +1,21 @@
-# 37_3 - Application Server 구조로 변경: 통신 규칙2 추가 및 Servlet, DAO에 적용 
+# 37_3 - Application Server 구조로 변경: 규칙2에 따라 통신하는 클라이언트 만들기
 
 ## 학습목표
 
 - Application Server 아키텍처의 구성과 특징을 이해한다.
-- 통신 프로토콜 규칙에 따라 동작하는 서버를 만들 수 있다.
+- 통신 프로토콜 규칙에 따라 동작하는 클라이언트를 만들 수 있다.
 
 ## 실습 소스 및 결과
 
-- src/main/java/com/eomcs/lms/dao/mariadb 디렉토리 생성
-- src/main/java/com/eomcs/lms/dao/mariadb/BoardDaoImpl.java 추가
-- src/main/java/com/eomcs/lms/dao/mariadb/LessonDaoImpl.java 추가
-- src/main/java/com/eomcs/lms/dao/mariadb/MemberDaoImpl.java 추가
-- src/main/java/com/eomcs/lms/DataLoaderListener.java 변경
-- src/main/java/com/eomcs/lms/servlet/BoardListServlet.java 변경
-- src/main/java/com/eomcs/lms/servlet/LessonListServlet.java 변경
-- src/main/java/com/eomcs/lms/servlet/MemberListServlet.java 변경
-- src/main/java/com/eomcs/lms/ServerApp.java 변경
+- src/main/java/com/eomcs/lms/ClientApp.java 변경
+- src/main/java/com/eomcs/lms/handler/ 폴더 삭제
+- src/main/java/com/eomcs/lms/dao/ 폴더 삭제
+- src/main/java/com/eomcs/lms/domain/ 폴더 삭제
 
 ## 실습  
 
-### 훈련1: 서버가 클라이언트에게 추가 데이터 입력을 요구할 수 있도록 통신 규칙을 변경하라. 
+### 훈련1: 서버의 추가 데이터 입력 요구에 응답할 수 있도록 통신 규칙을 변경하라. 
+
 규칙2) 사용자 입력을 포함하는 경우
 ```
 [클라이언트]                                        [서버]
@@ -35,29 +31,7 @@
 서버와 연결 끊기
 ```
 
-### 훈련2: '통신 규칙2'에 따라 게시글 번호를 입력 받을 수 있도록 BoardDetailServlet을 변경하라. 
+### 훈련2: '통신 규칙2'에 따라 서버 요청에 응답하라.
 
-- com.eomcs.lms.servlet.BoardDetailServlet 변경
-  - Servlet 인터페이스에 추가한 service(Scanner in, PrintStream out)을 구현한다.
-  - '통신 규칙2'에 따라 클라이언트에게 상세 조회할 게시글의 번호를 요구한다.
-  - '통신 규칙1'에 따라 응답한다.
-- com.eomcs.lms.ServerApp 변경
-  - '/board/detail' 명령을 처리할 서블릿을 맵에 추가한다.
+- com.eomcs.lms.ClientApp 변경
 
-### 훈련3: '통신 규칙2'에 따라 게시글을 입력 받을 수 있도록 BoardAddServlet을 변경하라. 
-
-- com.eomcs.lms.servlet.BoardAddServlet 변경
-  - Servlet 인터페이스에 추가한 service(Scanner in, PrintStream out)을 구현한다.
-  - '통신 규칙2'에 따라 클라이언트에게 게시글을 요구한다.
-  - '통신 규칙1'에 따라 응답한다.
-- com.eomcs.lms.ServerApp 변경
-  - '/board/add' 명령을 처리할 서블릿을 맵에 추가한다.
-
-### 훈련4: '통신 규칙2'에 따라 게시글을 변경할 수 있도록 BoardUpdateServlet을 변경하라. 
-
-- com.eomcs.lms.servlet.BoardUpdateServlet 변경
-  - Servlet 인터페이스에 추가한 service(Scanner in, PrintStream out)을 구현한다.
-  - '통신 규칙2'에 따라 클라이언트에게 게시글 변경을 요구한다.
-  - '통신 규칙1'에 따라 응답한다.
-- com.eomcs.lms.ServerApp 변경
-  - '/board/update' 명령을 처리할 서블릿을 맵에 추가한다.
