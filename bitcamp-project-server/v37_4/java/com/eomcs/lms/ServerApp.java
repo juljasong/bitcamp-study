@@ -2,6 +2,7 @@
 package com.eomcs.lms;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -43,7 +44,6 @@ public class ServerApp {
   Set<ApplicationContextListener> listeners = new HashSet<>();
   Map<String, Object> context = new HashMap<>();
   Map<String, Servlet> servletMap = new HashMap<>();
-  boolean serverStop = false;
 
   ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -107,70 +107,63 @@ public class ServerApp {
           System.out.println("--------------------------------------");
         });
 
-        if (serverStop) {
-          break;
-        }
       }
     } catch (Exception e) {
       System.out.println("서버 준비 중 오류 발생!");
     }
 
-    executorService.shutdown(); // 즉시 작업을 멈추는 것이 아닌, 스레드풀 소속 스레드들의 작업이 모두 끝나면 동작 종료.
+    notifyApplicationDestroyed();
 
-    while (true) {
-      if (executorService.isTerminated()) {
-        break;
-      }
-      try {
-        Thread.sleep(500); // 0.5초마다 스레드 종료 여부 검사
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-
-    notifyApplicationDestroyed(); // 클라이언트 요청 처리하는 스레드 모두 종료 후 DB 커넥션을 닫도록 함
-
-    System.out.println("서버 종료.");
+    executorService.shutdown();
 
   }
 
-  void processRequest(Socket clientSocket) {
+  int processRequest(Socket clientSocket) {
 
     try (Socket socket = clientSocket;
         Scanner in = new Scanner(socket.getInputStream());
         PrintStream out = new PrintStream(socket.getOutputStream())) {
 
+      // 클라이언트가 보낸 명령을 읽는다.
       String request = in.nextLine();
       System.out.printf("=> %s\n", request);
 
-      if (request.equalsIgnoreCase("/server/stop")) {
-        quit(out);
-        return;
-      }
+      // 클라이언트에게 응답한다.
+      // if (request.equalsIgnoreCase("/server/stop")) {
+      // return 9; // 서버를 종료한다. }
+      // }
 
+      // 클라이언트의 요청을 처리할 객체를 찾는다.
       Servlet servlet = servletMap.get(request);
 
       if (servlet != null) {
         try {
+          // 클라이언트 요청을 처리할 객체를 찾았으면 작업을 실행시킨다.
           servlet.service(in, out);
 
         } catch (Exception e) {
+          // 요청한 작업을 수행하다가 오류 발생할 경우
+          // 그 이유를 간단히 응답한다.
           out.println("요청 처리 중 오류 발생!");
           out.println(e.getMessage());
 
+          // 서버쪽 화면에는 더 자세하게 오류 내용을 출력한다.
           System.out.println("클라이언트 요청 처리 중 오류 발생:");
           e.printStackTrace();
         }
-      } else {
+      } else { // 없다면? 간단한 안내 메시지를 응답한다.
         notFound(out);
       }
       out.println("!end!");
       out.flush();
       System.out.println("클라이언트에게 응답하였음!");
 
+      return 0;
+
     } catch (Exception e) {
       System.out.println("예외 발생:");
       e.printStackTrace();
+      return -1;
     }
   }
 
@@ -181,10 +174,8 @@ public class ServerApp {
     out.println("요청한 명령을 처리할 수 없습니다.");
   }
 
-  private void quit(PrintStream out) throws IOException {
-    serverStop = true;
-    out.println("OK");
-    out.println("!end!");
+  private void quit(ObjectOutputStream out) throws IOException {
+    out.writeUTF("OK");
     out.flush();
   }
 
