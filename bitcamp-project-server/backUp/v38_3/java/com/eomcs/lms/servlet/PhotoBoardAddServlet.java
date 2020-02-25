@@ -15,8 +15,8 @@ import com.eomcs.util.Prompt;
 public class PhotoBoardAddServlet implements Servlet {
 
   PhotoBoardDao photoBoardDao;
-  LessonDao lessonDao;
   PhotoFileDao photoFileDao;
+  LessonDao lessonDao;
 
   public PhotoBoardAddServlet(PhotoBoardDao photoBoardDao, LessonDao lessonDao,
       PhotoFileDao photoFileDao) {
@@ -42,7 +42,6 @@ public class PhotoBoardAddServlet implements Servlet {
     photoBoard.setLesson(lesson);
 
     if (photoBoardDao.insert(photoBoard) > 0) {
-
 
       List<PhotoFile> photoFiles = inputPhotoFiles(in, out);
 
