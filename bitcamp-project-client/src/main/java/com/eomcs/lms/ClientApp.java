@@ -61,7 +61,7 @@ public class ClientApp {
     int port = 9999;
     String servletPath = null;
 
-    // bitcamp://localhost:9999/board/list
+    // bitcamp://localhost:9999/photoboard/list
     try {
       if (!command.startsWith("bitcamp://")) {
         throw new Exception("명령어 형식이 옳지 않습니다.");
