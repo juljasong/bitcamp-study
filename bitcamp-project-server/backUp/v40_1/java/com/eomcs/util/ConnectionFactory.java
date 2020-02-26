@@ -2,7 +2,6 @@ package com.eomcs.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import com.eomcs.sql.ConnectionProxy;
 
 public class ConnectionFactory {
 
@@ -26,18 +25,16 @@ public class ConnectionFactory {
       return con;
     }
 
-    con = new ConnectionProxy(DriverManager.getConnection(jdbcUrl, userName, password));
+    con = DriverManager.getConnection(jdbcUrl, userName, password);
     connectionLocal.set(con);
     return con;
   }
 
-  public Connection removeConnection() {
+  public void removeConnection() {
     Connection con = connectionLocal.get();
     if (con != null) {
       connectionLocal.remove();
-      System.out.println("스레드에 보관된 Connection 객체 제거 완료");
     }
-    return con;
   }
 
 }

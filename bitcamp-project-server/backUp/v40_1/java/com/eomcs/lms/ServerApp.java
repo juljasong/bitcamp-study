@@ -43,8 +43,6 @@ import com.eomcs.lms.servlet.PhotoBoardDetailServlet;
 import com.eomcs.lms.servlet.PhotoBoardListServlet;
 import com.eomcs.lms.servlet.PhotoBoardUpdateServlet;
 import com.eomcs.lms.servlet.Servlet;
-import com.eomcs.sql.ConnectionProxy;
-import com.eomcs.util.ConnectionFactory;
 
 
 public class ServerApp {
@@ -79,8 +77,6 @@ public class ServerApp {
   public void service() {
 
     notifyApplicationInitialized();
-
-    ConnectionFactory conFactory = (ConnectionFactory) context.get("connectionFactory");
 
     BoardDao boardDao = (BoardDaoImpl) context.get("boardDao");
     LessonDao lessonDao = (LessonDaoImpl) context.get("lessonDao");
@@ -124,14 +120,6 @@ public class ServerApp {
 
         executorService.submit(() -> {
           processRequest(socket);
-          ConnectionProxy con = (ConnectionProxy) conFactory.removeConnection();
-          if (con != null) {
-            try {
-              con.realClose();
-            } catch (Exception e) {
-              // DB 커넥션을 닫다가 예외가 발생한 것은 무시
-            }
-          }
           System.out.println("--------------------------------------");
         });
 

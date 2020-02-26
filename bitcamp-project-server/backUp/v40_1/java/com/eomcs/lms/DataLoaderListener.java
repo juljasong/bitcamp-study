@@ -2,11 +2,6 @@ package com.eomcs.lms;
 
 import java.util.Map;
 import com.eomcs.lms.context.ApplicationContextListener;
-import com.eomcs.lms.dao.mariadb.BoardDaoImpl;
-import com.eomcs.lms.dao.mariadb.LessonDaoImpl;
-import com.eomcs.lms.dao.mariadb.MemberDaoImpl;
-import com.eomcs.lms.dao.mariadb.PhotoBoardDaoImpl;
-import com.eomcs.lms.dao.mariadb.PhotoFileDaoImpl;
 import com.eomcs.util.ConnectionFactory;
 
 // 애플리케이션이 시작되거나 종료될 때
@@ -25,14 +20,14 @@ public class DataLoaderListener implements ApplicationContextListener {
 
       ConnectionFactory conFactory = new ConnectionFactory(jdbcUrl, userName, password);
 
-      context.put("connectionFactory", conFactory);
       // 이 메서드를 호출한 쪽(App)에서 DAO 객체를 사용할 수 있도록 Map 객체에 담아둔다.
-      context.put("boardDao", new BoardDaoImpl(conFactory));
-      context.put("lessonDao", new LessonDaoImpl(conFactory));
-      context.put("memberDao", new MemberDaoImpl(conFactory));
-      context.put("photoBoardDao", new PhotoBoardDaoImpl(conFactory));
-      context.put("photoFileDao", new PhotoFileDaoImpl(conFactory));
+      context.put("boardDao", conFactory);
+      context.put("lessonDao", conFactory);
+      context.put("memberDao", conFactory);
+      context.put("photoBoardDao", conFactory);
+      context.put("photoFileDao", conFactory);
 
+      context.put("connectionFactory", conFactory);
 
     } catch (Exception e) {
       e.printStackTrace();

@@ -20,6 +20,7 @@ public class BoardDaoImpl implements BoardDao {
   @Override
   public int insert(Board board) throws Exception {
 
+
     try (Connection con = conFactory.getConnection(); Statement stmt = con.createStatement()) {
 
       int result =

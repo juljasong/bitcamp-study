@@ -124,13 +124,10 @@ public class ServerApp {
 
         executorService.submit(() -> {
           processRequest(socket);
-          ConnectionProxy con = (ConnectionProxy) conFactory.removeConnection();
-          if (con != null) {
-            try {
-              con.realClose();
-            } catch (Exception e) {
-              // DB 커넥션을 닫다가 예외가 발생한 것은 무시
-            }
+          try (ConnectionProxy con = (ConnectionProxy) conFactory.removeConnection()) {
+            con.realClose();
+          } catch (Exception e) {
+            // DB close 예외 무시
           }
           System.out.println("--------------------------------------");
         });
