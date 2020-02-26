@@ -3,7 +3,8 @@
 ## 학습목표
 
 - Connection을 close() 하면 DBMS와의 연결이 끊어짐을 이해한다.
-- 
+- Proxy 설계 기법(design pattern)을 이용하여 Connection의 close()를 커스터마이징 한다.
+- Proxy 디자인 패턴의 구원 원리와 목적을 이해한다.
 
 ### 변경하기 전의 문제점 및 테스트
 
@@ -38,9 +39,9 @@
 
 ## 실습 소스 및 결과
 
-- src/main/java/com/eomcs/util/ConnectionFactory.java 추가
-- src/main/java/com/eomcs/lms/DataLoaderListener.java 변경
-- src/main/java/com/eomcs/lms/dao/mariadb/XxxDaoImpl.java 변경
+- src/main/java/com/eomcs/sql/ConnectionProxy.java 추가
+- src/main/java/com/eomcs/util/ConnectionFactory.java 변경
+- src/main/java/com/eomcs/lms/ServletApp.java 변경
 
 ## 실습  
 
