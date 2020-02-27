@@ -10,6 +10,7 @@ import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
 import com.eomcs.sql.DataSource;
 import com.eomcs.sql.PlatformTransactionManager;
+import com.eomcs.sql.TransactionTemplate;
 import com.eomcs.util.Prompt;
 
 public class PhotoBoardUpdateServlet implements Servlet {
@@ -17,16 +18,15 @@ public class PhotoBoardUpdateServlet implements Servlet {
   PhotoBoardDao photoBoardDao;
   PhotoFileDao photoFileDao;
   DataSource conFactory;
-  PlatformTransactionManager txManager;
+  TransactionTemplate transactionTemplate;
 
   public PhotoBoardUpdateServlet(PhotoBoardDao photoBoardDao, PhotoFileDao photoFileDao,
       DataSource conFactory, PlatformTransactionManager txManager) {
     this.photoBoardDao = photoBoardDao;
     this.photoFileDao = photoFileDao;
     this.conFactory = conFactory;
-    this.txManager = txManager;
+    this.transactionTemplate = new TransactionTemplate(txManager);
   }
-
 
   @Override
   public void service(Scanner in, PrintStream out) throws Exception {
@@ -45,10 +45,11 @@ public class PhotoBoardUpdateServlet implements Servlet {
     photoBoard.setTitle(
         Prompt.getString(in, out, String.format("제목(%s)? ", old.getTitle()), old.getTitle()));
     photoBoard.setNo(no);
-    txManager.beginTransaction();
 
-    if (photoBoardDao.update(photoBoard) > 0) {
-
+    transactionTemplate.execute(() -> {
+      if (photoBoardDao.update(photoBoard) == 0) {
+        throw new Exception("사진 게시글 변경에 실패했습니다.");
+      }
       printPhotoFiles(out, no);
 
       out.println();
@@ -59,25 +60,17 @@ public class PhotoBoardUpdateServlet implements Servlet {
       if (response.equalsIgnoreCase("y")) {
         photoFileDao.deleteAll(no);
 
-        try {
-          List<PhotoFile> photoFiles = inputPhotoFiles(in, out);
+        List<PhotoFile> photoFiles = inputPhotoFiles(in, out);
 
-          for (PhotoFile photoFile : photoFiles) {
-            photoFile.setBoardNo(no);
-            photoFileDao.insert(photoFile);
-          }
-          txManager.commit();
-          out.println("사진 게시글을 변경했습니다.");
-        } catch (Exception e) {
-          txManager.rollback();
-          out.println("사진 게시글 변경에 실패했습니다.");
-          out.println(e.getMessage());
+        for (PhotoFile photoFile : photoFiles) {
+          photoFile.setBoardNo(no);
+          photoFileDao.insert(photoFile);
         }
       }
+      out.println("사진 게시글을 변경했습니다.");
+      return null;
+    });
 
-    } else {
-      out.println("사진 게시글 변경에 실패했습니다.");
-    }
   }
 
   private void printPhotoFiles(PrintStream out, int no) throws Exception {
