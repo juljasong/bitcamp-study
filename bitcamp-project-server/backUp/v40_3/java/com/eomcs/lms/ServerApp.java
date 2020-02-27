@@ -44,6 +44,7 @@ import com.eomcs.lms.servlet.PhotoBoardListServlet;
 import com.eomcs.lms.servlet.PhotoBoardUpdateServlet;
 import com.eomcs.lms.servlet.Servlet;
 import com.eomcs.sql.ConnectionProxy;
+import com.eomcs.sql.PlatformTransactionManager;
 import com.eomcs.util.ConnectionFactory;
 
 
@@ -87,6 +88,7 @@ public class ServerApp {
     MemberDao memberDao = (MemberDaoImpl) context.get("memberDao");
     PhotoBoardDao photoBoardDao = (PhotoBoardDao) context.get("photoBoardDao");
     PhotoFileDao photoFileDao = (PhotoFileDao) context.get("photoFileDao");
+    PlatformTransactionManager txManager = (PlatformTransactionManager) context.get("txManager");
 
     servletMap.put("/board/list", new BoardListServlet(boardDao));
     servletMap.put("/board/add", new BoardAddServlet(boardDao));
@@ -110,11 +112,11 @@ public class ServerApp {
     servletMap.put("/photoboard/list", new PhotoBoardListServlet(photoBoardDao, lessonDao));
     servletMap.put("/photoboard/detail", new PhotoBoardDetailServlet(photoBoardDao, photoFileDao));
     servletMap.put("/photoboard/add",
-        new PhotoBoardAddServlet(photoBoardDao, lessonDao, photoFileDao, conFactory));
+        new PhotoBoardAddServlet(photoBoardDao, lessonDao, photoFileDao, conFactory, txManager));
     servletMap.put("/photoboard/update",
-        new PhotoBoardUpdateServlet(photoBoardDao, photoFileDao, conFactory));
+        new PhotoBoardUpdateServlet(photoBoardDao, photoFileDao, conFactory, txManager));
     servletMap.put("/photoboard/delete",
-        new PhotoBoardDeleteServlet(photoBoardDao, photoFileDao, conFactory));
+        new PhotoBoardDeleteServlet(photoBoardDao, photoFileDao, conFactory, txManager));
 
     try (ServerSocket serverSocket = new ServerSocket(9999)) {
 

@@ -1,7 +1,6 @@
 package com.eomcs.lms.servlet;
 
 import java.io.PrintStream;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +8,7 @@ import com.eomcs.lms.dao.PhotoBoardDao;
 import com.eomcs.lms.dao.PhotoFileDao;
 import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
+import com.eomcs.sql.PlatformTransactionManager;
 import com.eomcs.util.ConnectionFactory;
 import com.eomcs.util.Prompt;
 
@@ -17,12 +17,14 @@ public class PhotoBoardUpdateServlet implements Servlet {
   PhotoBoardDao photoBoardDao;
   PhotoFileDao photoFileDao;
   ConnectionFactory conFactory;
+  PlatformTransactionManager txManager;
 
   public PhotoBoardUpdateServlet(PhotoBoardDao photoBoardDao, PhotoFileDao photoFileDao,
-      ConnectionFactory conFactory) {
+      ConnectionFactory conFactory, PlatformTransactionManager txManager) {
     this.photoBoardDao = photoBoardDao;
     this.photoFileDao = photoFileDao;
     this.conFactory = conFactory;
+    this.txManager = txManager;
   }
 
 
@@ -43,8 +45,7 @@ public class PhotoBoardUpdateServlet implements Servlet {
     photoBoard.setTitle(
         Prompt.getString(in, out, String.format("제목(%s)? ", old.getTitle()), old.getTitle()));
     photoBoard.setNo(no);
-    Connection con = conFactory.getConnection();
-    con.setAutoCommit(false);
+    txManager.beginTransaction();
 
     if (photoBoardDao.update(photoBoard) > 0) {
 
@@ -65,14 +66,12 @@ public class PhotoBoardUpdateServlet implements Servlet {
             photoFile.setBoardNo(no);
             photoFileDao.insert(photoFile);
           }
-          con.commit();
+          txManager.commit();
           out.println("사진 게시글을 변경했습니다.");
         } catch (Exception e) {
-          con.rollback();
+          txManager.rollback();
           out.println("사진 게시글 변경에 실패했습니다.");
           out.println(e.getMessage());
-        } finally {
-          con.setAutoCommit(true);
         }
       }
 
