@@ -12,7 +12,7 @@
           #{content} ==> getContent()의 리턴 값을 의미한다.
         -->
   <insert id="insertBoard" parameterType="Board">
-    insert into ex_board(titl,cont,rdt) 
+    insert into x_board(title,contents,created_date) 
     values(#{title},#{content},now())
   </insert>  
 </mapper>

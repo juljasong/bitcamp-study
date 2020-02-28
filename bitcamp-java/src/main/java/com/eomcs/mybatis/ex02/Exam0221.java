@@ -1,4 +1,4 @@
-// Mybatis - 자바 객체의 프로퍼티 이름과 컬럼명을 일치시키기 II
+// Mybatis - SQL에 파라미터 지정하기 : ${}의 쓰임
 package com.eomcs.mybatis.ex02;
 
 import java.io.InputStream;
@@ -8,20 +8,22 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-public class Exam0130 {
+public class Exam0221 {
 
   public static void main(String[] args) throws Exception {
     InputStream inputStream =
-        Resources.getResourceAsStream("com/eomcs/mybatis/ex02/mybatis-config03.xml");
+        Resources.getResourceAsStream("com/eomcs/mybatis/ex02/mybatis-config05.xml");
     SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
 
     SqlSession sqlSession = factory.openSession();
 
-    List<Board> list = sqlSession.selectList("BoardMapper.selectBoard");
+    // mybatis에 SQL문을 만들어 전달할 수 있다.
+    // => SQL 삽입 공격에 노출되기 때문에 이 방식을 사용하지 말라!
+    List<Board> list = sqlSession.selectList("BoardMapper.selectBoard2", "board_id");
 
     for (Board board : list) {
-      System.out.printf("%d, %s, %s, %s, %d \n", board.getNo(), board.getTitle(),
-          board.getContent(), board.getRegisteredDate(), board.getViewcount());
+      System.out.printf("%d, %s, %s, %s, %d\n", board.getNo(), board.getTitle(), board.getContent(),
+          board.getRegisteredDate(), board.getViewcount());
     }
 
     sqlSession.close();

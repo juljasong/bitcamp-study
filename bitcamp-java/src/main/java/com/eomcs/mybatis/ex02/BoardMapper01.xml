@@ -36,11 +36,12 @@
    -->
   <select id="selectBoard" resultType="Board">
     select 
-        bno, <!-- Board.setBno() 호출 -->
-        titl, <!-- Board.setTitl() 호출 -->
-        cont, <!-- Board.setCont() 호출 -->
-        rdt  <!-- Board.setRdt() 호출 -->
-    from ex_board
+      board_id,
+      title,
+      contents,
+      created_date,
+      view_count
+    from x_board
   </select>
   
   <!-- 위의 SQL문을 mybatis 다음과 같은 코드로 실행한다.

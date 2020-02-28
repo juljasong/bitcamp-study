@@ -12,11 +12,12 @@
        select 문에서 컬럼의 별명을 프로퍼티명과 같게 하라! --> 
   <select id="selectBoard" resultType="Board">
     select 
-      bno as no, <!-- Board.setNo() 호출 -->
-      titl as title, <!-- Board.setTitle() 호출 -->
-      cont as content, <!-- Board.setContent() 호출 -->
-      rdt as registeredDate <!-- Board.setRegisteredDate() -->
-    from ex_board
+      board_id AS no,
+      title,
+      contents AS content,
+      created_date AS registeredDate,
+      view_count AS viewcount
+    from x_board
   </select>
   
 </mapper>

@@ -20,7 +20,7 @@
     from x_board
   </select>
   
-    <select id="selectBoard2" resultType="com.eomcs.mybatis.ex01.Board">
+  <select id="selectBoard2" resultType="com.eomcs.mybatis.ex01.Board">
     select 
       board_id AS no,
       title,

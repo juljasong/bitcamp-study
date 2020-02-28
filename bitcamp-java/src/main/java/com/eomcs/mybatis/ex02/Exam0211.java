@@ -1,25 +1,35 @@
-// Mybatis - SQL에 파라미터 지정하기 : #{}의 한계
+// Mybatis - SQL에 파라미터 지정하기 : 맵에 값을 담아 넘기기
 package com.eomcs.mybatis.ex02;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-public class Exam0220 {
+public class Exam0211 {
 
   public static void main(String[] args) throws Exception {
     InputStream inputStream =
-        Resources.getResourceAsStream("com/eomcs/mybatis/ex02/mybatis-config05.xml");
+        Resources.getResourceAsStream("com/eomcs/mybatis/ex02/mybatis-config04.xml");
     SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
 
     SqlSession sqlSession = factory.openSession();
 
-    // 파라미터로 칼럼 이름 넘겨주면 해당 컬럼 값을 오름차순으로 정렬
+    // SQL을 실행할 때 파라미터 값을 전달하려면
+    // 두 번째 파라미터로 전달해야 한다.
+    // 여러 개의 값을 전달해야 한다면,
+    // Map 객체에 담아 전달하라!
 
-    List<Board> list = sqlSession.selectList("BoardMapper.selectBoard1", "title");
+    // 예) 페이징 처리 위한 시작 인덱스와 개수를 파라미터로 넘기기
+
+    HashMap<String, Object> params = new HashMap<>();
+    params.put("startIndex", 0);
+    params.put("size", 10);
+
+    List<Board> list = sqlSession.selectList("BoardMapper.selectBoard3", params);
 
     for (Board board : list) {
       System.out.printf("%d, %s, %s, %s, %d\n", board.getNo(), board.getTitle(), board.getContent(),
