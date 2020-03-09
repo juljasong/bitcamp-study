@@ -37,7 +37,7 @@ public class Exam0120 {
     // - SQL 문장 아이디 : <select id ="SQL문장 아이디"> ... </select>
     // - 파라미터 값 = primitive type 및 모든 자바 객체가 가능하다.
     // 여러 개의 값을 전달할 때는 Map에 담아 넘겨라!
-    List<Board> list = sqlSession.selectList("BoardMapper.selectBoard");
+    List<Board> list = sqlSession.selectList("BoardMapper.selectBoard"); // 그룹이름.id
 
     for (Board board : list) {
       System.out.printf("%d, %s, %s, %s, %d\n", board.getNo(), board.getTitle(), board.getContent(),
@@ -48,13 +48,13 @@ public class Exam0120 {
   }
   /*
    * ResultType에 지정한 클래스의 인스턴스 생성 칼럼 이름과 일치하는 프로퍼티 찾아 값을 입력
-   * 
+   *
    * <mapper namespace="BoardMapper">
-   * 
+   *
    * <select id="selectBoard" resultType="com.eomcs.mybatis.ex01.Board"> select board_id, ->
    * setBoard_id title, -> setTitle contents, -> setContents created_date, -> setCreated_date
    * view_count -> setView_count from x_board </select>
-   * 
+   *
    * </mapper>
    */
 
