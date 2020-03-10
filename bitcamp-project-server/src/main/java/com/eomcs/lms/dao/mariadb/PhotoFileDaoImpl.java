@@ -1,67 +1,42 @@
 package com.eomcs.lms.dao.mariadb;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import com.eomcs.lms.dao.PhotoFileDao;
 import com.eomcs.lms.domain.PhotoFile;
-import com.eomcs.sql.DataSource;
 
 public class PhotoFileDaoImpl implements PhotoFileDao {
 
-  DataSource dataSource;
+  SqlSessionFactory sqlSessionFactory;
 
-  public PhotoFileDaoImpl(DataSource dataSource) {
-    this.dataSource = dataSource;
+  public PhotoFileDaoImpl(SqlSessionFactory sqlSessionFactory) {
+    this.sqlSessionFactory = sqlSessionFactory;
   }
 
   @Override
   public int insert(PhotoFile photoFile) throws Exception {
 
-    try (Connection con = dataSource.getConnection();
-        PreparedStatement stmt =
-            con.prepareStatement("INSERT INTO lms_photo_file(photo_id, file_path) VALUES(?, ?)")) {
-
-      stmt.setInt(1, photoFile.getBoardNo());
-      stmt.setString(2, photoFile.getFilepath());
-      return stmt.executeUpdate();
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      int count = sqlSession.insert("PhotoFileMapper.insertPhotoFile", photoFile);
+      sqlSession.commit();
+      return count;
     }
   }
 
   @Override
   public List<PhotoFile> findAll(int boardNo) throws Exception {
-    try (Connection con = dataSource.getConnection();
-        PreparedStatement stmt = con.prepareStatement(
-            "select photo_file_id, photo_id, file_path from lms_photo_file where photo_id=? order by photo_id ASC")) {
-      stmt.setInt(1, boardNo);
-      ResultSet rs = stmt.executeQuery();
-
-      ArrayList<PhotoFile> list = new ArrayList<>();
-
-      while (rs.next()) {
-        // PhotoFile photoFile = new PhotoFile(rs.getInt("photo_file_id"),
-        // rs.getString("file_path"), rs.getInt("photo_id"));
-        // photoFile.setNo(rs.getInt("photo_file_id"));
-        // photoFile.setBoardNo(rs.getInt("photo_id"));
-        // photoFile.setFilepath(rs.getString("file_path"));
-        list.add(new PhotoFile().setNo(rs.getInt("photo_file_id"))
-            .setFilepath(rs.getString("file_path")).setBoardNo(rs.getInt("photo_id")));
-      }
-      return list;
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      return sqlSession.selectList("PhotoFileMapper.selectPhotoFile", boardNo);
     }
   }
 
   @Override
   public int deleteAll(int boardNo) throws Exception {
-    try (Connection con = dataSource.getConnection();
-        PreparedStatement stmt =
-            con.prepareStatement("DELETE FROM lms_photo_file WHERE photo_id=?")) {
-
-      stmt.setInt(1, boardNo);
-
-      return stmt.executeUpdate();
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      int count = sqlSession.delete("PhotoFileMapper.deletePhotoFile");
+      sqlSession.commit();
+      return count;
     }
   }
 

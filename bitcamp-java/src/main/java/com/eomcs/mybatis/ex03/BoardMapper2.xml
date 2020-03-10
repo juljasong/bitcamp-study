@@ -181,6 +181,7 @@
       </if>
     </where>
   </select>  
+  
   <select id="select23" resultMap="BoardMap" parameterType="map">
     <include refid="sql1"/>
     <where>
@@ -189,6 +190,7 @@
       </foreach>
     </where>
   </select>
+  
   <select id="select24" resultMap="BoardMap" parameterType="map">
     <include refid="sql1"/>
     <where>
@@ -198,6 +200,7 @@
       </foreach>
     </where>
   </select>
+  
   <select id="select25" resultMap="BoardMap" parameterType="map">
     <include refid="sql1"/>
     <where>
@@ -206,6 +209,7 @@
       </foreach>
     </where>
   </select>
+  
   <select id="select26" resultMap="BoardMap" parameterType="map">
     <bind name="titlePattern" value="'%' + _parameter.title + '%'"/>
     <include refid="sql1"/>

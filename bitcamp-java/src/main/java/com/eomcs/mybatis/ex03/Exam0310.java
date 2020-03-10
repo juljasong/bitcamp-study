@@ -20,10 +20,6 @@ public class Exam0310 {
 
     SqlSession sqlSession = factory.openSession();
 
-    // 실행 예:
-    // => 게시물 번호를 여러 개 지정하여 조회하기
-    //
-
     HashMap<String, Object> params = new HashMap<>();
 
     Scanner keyScan = new Scanner(System.in);
