@@ -1,124 +1,88 @@
-# 43_2 - MyBatis + 트랜잭션 적용
+# 44_1 - MyBatis의 dynamic sql 문법 사용하기
 
 ## 학습목표
 
-- Mybatis로 트랜잭션을 제어할 수 있다.
+- Mybatis에서 동적 SQL 생성하는 방법을 안다.
 
 ## 실습 소스 및 결과
 
-- build.gradle 변경
-- src/main/java/com/eomcs/lms/domain/PhotoBoard.java 변경
-- src/main/java/com/eomcs/lms/dao/mariadb/BoardDaoImpl.java 변경
+- src/main/java/com/eomcs/util/Prompt.java 변경
+- src/main/java/com/eomcs/lms/ServerApp.java 변경
+- src/main/java/com/eomcs/lms/mapper/XxxDaoImpl.java 변경
+- src/main/java/com/eomcs/lms/dao/PhotoFileDao.java 변경
+- src/main/java/com/eomcs/lms/dao/LessonDao.java 변경
 - src/main/java/com/eomcs/lms/dao/mariadb/LessonDaoImpl.java 변경
 - src/main/java/com/eomcs/lms/dao/mariadb/MemberDaoImpl.java 변경
 - src/main/java/com/eomcs/lms/dao/mariadb/PhotoBoardDaoImpl.java 변경
 - src/main/java/com/eomcs/lms/dao/mariadb/PhotoFileDaoImpl.java 변경
-- src/main/java/com/eomcs/lms/servlet/PhotoBoardDetailServlet.java 변경
-- src/main/java/com/eomcs/lms/DataLoaderListener.java 변경
-- src/main/java/com/eomcs/lms/ServerApp.java 변경
-- src/main/resources/com/eomcs/lms/conf/mybatis-config.xml 추가
-- src/main/resources/com/eomcs/lms/conf/jdbc.properties 추가
-- src/main/resources/com/eomcs/lms/mapper/BoardMapper.xml 추가
-- src/main/resources/com/eomcs/lms/mapper/LessonMapper.xml 추가
-- src/main/resources/com/eomcs/lms/mapper/MemberMapper.xml 추가
-- src/main/resources/com/eomcs/lms/mapper/PhotoBoardMapper.xml 추가
-- src/main/resources/com/eomcs/lms/mapper/PhotoFileMapper.xml 추가
+- src/main/java/com/eomcs/lms/servlet/PhotoBoardAddServlet.java 변경
+- src/main/java/com/eomcs/lms/servlet/PhotoBoardUpdateServlet.java 변경
+- src/main/java/com/eomcs/lms/servlet/MemberUpdateServlet.java 변경
+- src/main/java/com/eomcs/lms/servlet/LessonUpdateServlet.java 변경
+- src/main/java/com/eomcs/lms/servlet/LessonSearchServlet.java 변경
 
 ## 실습  
 
-### 훈련1: 프로젝트에 MyBatis 라이브러리를 추가한다.
+### 훈련1: `sql` 태그를 사용하여 공통 SQL 코드를 분리한다.
 
-- build.gradle   
-  - 의존 라이브러리 블록에서 `mybatis` 라이브러리를 등록한다.
-- gradle을 이용하여 eclipse 설정 파일을 갱신한다.
-  - `$ gradle eclipse`
-- 이클립스에서 프로젝트를 갱신한다.
+- src/main/resources/com/eomcs/lms/mapper/*Mapper.xml
   
-### 훈련2: `MyBatis` 설정 파일을 준비한다.
+### 훈련2: `foreach` 태그를를 사용하여 insert 문 생성하기
 
-- com/eomcs/lms/conf/jdbc.properties
-    - `MyBatis` 설정 파일에서 참고할 DBMS 접속 정보를 등록한다.
-- com/eomcs/lms/conf/mybatis-config.xml
-    - `MyBatis` 설정 파일이다.
-    - DBMS 서버의 접속 정보를 갖고 있는 jdbc.properties 파일의 경로를 등록한다.
-    - DBMS 서버 정보를 설정한다.
-    - DB 커넥션 풀을 설정한다.
+사진 게시글의 첨부파일을 입력할 때, 여러 값들을 한 번에 입력하기 
 
-### 훈련3: BoardDaoImpl 에 Mybatis를 적용한다.
+- com.eomcs.lms.servlet.PhotoBoardAddServlet 변경
+  - 파일 목록을 한 번에 insert 하기
+- com.eomcs.lms.servlet.PhotoBoardUpdateServlet 변경
+  - 파일 목록을 한 번에 insert 하기  
+- com.eomcs.lms.dao.PhotoFileDao 변경
+  - insert(PhotoFile) 메서드를 insert(PhotoBoard) 로 변경한다.
+- com.eomcs.lms.dao.mariadb.PhotoFileDaoImpl 변경
+  - insert()를 변경한다.
+- src/main/resources/com/eomcs/lms/mapper/PhotoFileMapper.xml 변경
+  - insertPhotoFile SQL 변경한다.
+  - `foreach` 태그를 적용하여 여러 개의 값을 한 번에 insert 한다.
+  
+### 훈련3: `set` 태그를 사용하여 update할 때 일부 컬럼만 변경한다.
 
-- com.eomcs.lms.dao.mariadb.BoardDaoImpl 클래스 변경
-  - SQL을 뜯어내어 BoardMapper.xml로 옮긴다.
-  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-- com/eomcs/lms/mapper/BoardMapper.xml 추가
-  - BoardDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
-- com/eomcs/lms/conf/mybatis-config.xml 변경 
-  - BoardMapper 파일의 경로를 등록한다.
-- com.eomcs.lms.DataLoaderListener 변경
-  - SqlSessionFactory 객체를 준비한다.
-  - BoardDaoImpl 에 주입한다.
+데이터를 변경할 때 일부 컬럼의 값만 변경하기
 
-### 훈련4: MemberDaoImpl 에 Mybatis를 적용한다.
+- src/main/resources/com/eomcs/lms/mapper/LessonMapper.xml 변경
+  - updateLesson SQL을 변경한다.
+- com.eomcs.util.Prompt 변경
+  - 클라이언트가 보낸 값을 지정된 타입으로 변경할 수 없을 때의 예외를 처리한다.
+- com.eomcs.lms.servlet.LessonUpdateServlet 변경
+  - 클라이언트가 값을 보내지 않은 항목은 빈문자열이나 null, 0으로 설정한다.
+  - 이 경우 update 대상 컬럼에서 제외된다.
+- src/main/resources/com/eomcs/lms/mapper/MemberMapper.xml 변경
+  - updateMember SQL을 변경한다.
+- com.eomcs.lms.servlet.MemberUpdateServlet 변경
+  - 클라이언트가 값을 보내지 않은 항목은 빈문자열이나 null, 0으로 설정한다.
+  - 이 경우 update 대상 컬럼에서 제외된다.
+  
+### 훈련4: `where` 태그를 사용하여 검색 조건을 변경한다. 
 
-- com.eomcs.lms.dao.mariadb.MemberDaoImpl 클래스 변경
-  - SQL을 뜯어내어 MemberMapper.xml로 옮긴다.
-  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-- com/eomcs/lms/mapper/MemberMapper.xml 추가
-  - MemberDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
-- com/eomcs/lms/conf/mybatis-config.xml 변경 
-  - MemberMapper 파일의 경로를 등록한다.
-- com.eomcs.lms.DataLoaderListener 변경
-  - SqlSessionFactory 객체를 준비한다.
-  - MemberDaoImpl 에 주입한다.
+수업을 검색(수업명, 시작일, 종료일, 총강의시간, 일강의시간)하는 기능을 추가한다.
+검색 조건은 AND 연산으로 처리한다.
 
-### 훈련5: LessonDaoImpl 에 Mybatis를 적용한다.
-
-- com.eomcs.lms.dao.mariadb.LessonDaoImpl 클래스 변경
-  - SQL을 뜯어내어 LessonMapper.xml로 옮긴다.
-  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-- com/eomcs/lms/mapper/LessonMapper.xml 추가
-  - LessonDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
-- com/eomcs/lms/conf/mybatis-config.xml 변경 
-  - LessonMapper 파일의 경로를 등록한다.
-- com.eomcs.lms.DataLoaderListener 변경
-  - SqlSessionFactory 객체를 준비한다.
-  - LessonDaoImpl 에 주입한다.
-
-### 훈련6: PhotoBoardDaoImpl 에 Mybatis를 적용한다.
-
-- com.eomcs.lms.domain.PhotoBoard 클래스 변경
-  - PhotoFile 목록 필드를 추가한다.
-- com.eomcs.lms.dao.mariadb.PhotoBoardDaoImpl 클래스 변경
-  - SQL을 뜯어내어 PhotoBoardMapper.xml로 옮긴다.
-  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-- com/eomcs/lms/mapper/PhotoBoardMapper.xml 추가
-  - PhotoBoardDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
-- com/eomcs/lms/conf/mybatis-config.xml 변경 
-  - PhotoBoardMapper 파일의 경로를 등록한다.
-- com.eomcs.lms.DataLoaderListener 변경
-  - SqlSessionFactory 객체를 준비한다.
-  - PhotoBoardDaoImpl 에 주입한다.
-- com.eomcs.lms.servlet.PhotoBoardDetailServlet 변경
-  - PhotoFileDao 주입을 제거한다.
-  - PHotoBoardDao로 첨부파일까지 모두 가져온다.
+- src/main/resources/com/eomcs/lms/mapper/LessonMapper.xml 변경
+  - selectLesson SQL문을 변경한다.
+  - `where` 태그를 적용하여 조건을 만족하는 데이터를 찾는다. 
+- com.eomcs.lms.dao.LessonDao 변경
+  - findByKeyword() 메서드를 추가한다.
+- com.eomcs.lms.servlet.LessonSearchServlet 추가 
+  - 검색 요청을 처리한다.
 - com.eomcs.lms.ServerApp 변경
-  - PhotoBoardDetailServlet에 PhotoFileDao 주입을 제거한다.
+  - LessonSearchServlet 객체 등록 
+
+
+
+
+
   
-### 훈련7: PhotoFileDaoImpl 에 Mybatis를 적용한다.
-
-- com.eomcs.lms.dao.mariadb.PhotoFileDaoImpl 클래스 변경
-  - SQL을 뜯어내어 PhotoFileMapper.xml로 옮긴다.
-  - JDBC 코드를 뜯어내고 그 자리에 Mybatis 클래스로 대체한다.
-- com/eomcs/lms/mapper/PhotoFileMapper.xml 추가
-  - PhotoFileDaoImpl 에 있던 SQL문을 이 파일로 옮긴다.
-- com/eomcs/lms/conf/mybatis-config.xml 변경 
-  - PhotoFileMapper 파일의 경로를 등록한다.
-- com.eomcs.lms.DataLoaderListener 변경
-  - SqlSessionFactory 객체를 준비한다.
-  - PhotoFileDaoImpl 에 주입한다.
-
-### 훈련8: 기존의 트랜잭션이 작동하지 않음을 확인한다.
-
-- 사진 게시글을 등록한다.
-- 사진 파일을 등록할 때, 오류가 발생하도록 긴 파일명을 입력한다.
-- 오류가 발생한 후에 사진 게시글이 등록되었는지 취소되었는지 확인한다.
-- 취소되지 않은 이유는 Mybatis의 SqlSession이 자체적으로 커넥션을 관리하기 때문이다.
+  
+  
+  
+  
+  
+  
