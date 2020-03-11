@@ -3,55 +3,61 @@ package com.eomcs.lms.dao.mariadb;
 import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import com.eomcs.lms.dao.PhotoBoardDao;
-import com.eomcs.lms.domain.PhotoBoard;
+import com.eomcs.lms.dao.LessonDao;
+import com.eomcs.lms.domain.Lesson;
 
-public class PhotoBoardDaoImpl implements PhotoBoardDao {
+public class LessonDaoImpl implements LessonDao {
 
   SqlSessionFactory sqlSessionFactory;
 
-  public PhotoBoardDaoImpl(SqlSessionFactory sqlSessionFactory) {
+  public LessonDaoImpl(SqlSessionFactory sqlSessionFactory) {
     this.sqlSessionFactory = sqlSessionFactory;
   }
 
   @Override
-  public int insert(PhotoBoard photoBoard) throws Exception {
+  public int insert(Lesson lesson) throws Exception {
+
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      int count = sqlSession.insert("PhotoBoardMapper.insertPhotoBoard", photoBoard);
+      int count = sqlSession.insert("LessonMapper.insertLesson", lesson);
       sqlSession.commit();
       return count;
     }
   }
 
   @Override
-  public List<PhotoBoard> findAllByLessonNo(int lessonNo) throws Exception {
+  public List<Lesson> findAll() throws Exception {
+
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      return sqlSession.selectList("PhotoBoardMapper.selectPhotoBoard", lessonNo);
+      return sqlSession.selectList("LessonMapper.selectLesson");
     }
   }
 
   @Override
-  public PhotoBoard findByNo(int no) throws Exception {
+  public Lesson findByNo(int no) throws Exception {
+
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      return sqlSession.selectOne("PhotoBoardMapper.selectDetail", no);
+      return sqlSession.selectOne("LessonMapper.selectDetail", no);
     }
   }
 
   @Override
-  public int update(PhotoBoard photoBoard) throws Exception {
+  public int update(Lesson lesson) throws Exception {
+
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      int count = sqlSession.update(//
-          "PhotoBoardMapper.updatePhotoBoard", photoBoard);
+      int count = sqlSession.update("LessonMapper.updateLesson", lesson);
       sqlSession.commit();
+
       return count;
     }
   }
 
   @Override
   public int delete(int no) throws Exception {
+
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-      int count = sqlSession.delete("PhotoBoardMapper.deletePhotoBoard", no);
+      int count = sqlSession.delete("LessonMapper.deleteLesson", no);
       sqlSession.commit();
+
       return count;
     }
   }
