@@ -2,15 +2,15 @@ package com.eomcs.lms.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import com.eomcs.lms.dao.BoardDao;
+import com.eomcs.lms.service.BoardService;
 import com.eomcs.util.Prompt;
 
 public class BoardDeleteServlet implements Servlet {
 
-  BoardDao boardDao;
+  BoardService boardService;
 
-  public BoardDeleteServlet(BoardDao boardDao) {
-    this.boardDao = boardDao;
+  public BoardDeleteServlet(BoardService boardService) {
+    this.boardService = boardService;
   }
 
 
@@ -19,7 +19,7 @@ public class BoardDeleteServlet implements Servlet {
 
     int no = Prompt.getInt(in, out, "번호? ");
 
-    if (boardDao.delete(no) > 0) {
+    if (boardService.delete(no) > 0) {
       out.println("삭제했습니다.");
     } else {
       out.println("해당 번호의 게시물이 없습니다.");

@@ -2,16 +2,16 @@ package com.eomcs.lms.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import com.eomcs.lms.dao.MemberDao;
 import com.eomcs.lms.domain.Member;
+import com.eomcs.lms.service.MemberService;
 import com.eomcs.util.Prompt;
 
 public class MemberAddServlet implements Servlet {
 
-  MemberDao memberDao;
+  MemberService memberService;
 
-  public MemberAddServlet(MemberDao memberDao) {
-    this.memberDao = memberDao;
+  public MemberAddServlet(MemberService memberService) {
+    this.memberService = memberService;
   }
 
 
@@ -26,7 +26,7 @@ public class MemberAddServlet implements Servlet {
     member.setTel(Prompt.getString(in, out, "전화? "));
     out.flush();
 
-    if (memberDao.insert(member) > 0) {
+    if (memberService.add(member) > 0) {
       out.println("새 회원을 등록했습니다.");
 
     } else {

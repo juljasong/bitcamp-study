@@ -2,16 +2,16 @@ package com.eomcs.lms.servlet;
 
 import java.io.PrintStream;
 import java.util.Scanner;
-import com.eomcs.lms.dao.BoardDao;
 import com.eomcs.lms.domain.Board;
+import com.eomcs.lms.service.BoardService;
 import com.eomcs.util.Prompt;
 
 public class BoardDetailServlet implements Servlet {
 
-  BoardDao boardDao;
+  BoardService boardService;
 
-  public BoardDetailServlet(BoardDao boardDao) {
-    this.boardDao = boardDao;
+  public BoardDetailServlet(BoardService boardService) {
+    this.boardService = boardService;
   }
 
 
@@ -19,7 +19,7 @@ public class BoardDetailServlet implements Servlet {
   public void service(Scanner in, PrintStream out) throws Exception {
     int no = Prompt.getInt(in, out, "번호? ");
 
-    Board board = boardDao.findByNo(no);
+    Board board = boardService.get(no);
 
     if (board != null) {
       out.printf("번호: %d\n", board.getNo());

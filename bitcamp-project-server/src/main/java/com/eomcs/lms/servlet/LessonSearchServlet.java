@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import com.eomcs.lms.dao.LessonDao;
 import com.eomcs.lms.domain.Lesson;
+import com.eomcs.lms.service.LessonService;
 import com.eomcs.util.Prompt;
 
 public class LessonSearchServlet implements Servlet {
 
-  LessonDao lessonDao;
+  LessonService lessonService;
 
-  public LessonSearchServlet(LessonDao lessonDao) {
-    this.lessonDao = lessonDao;
+  public LessonSearchServlet(LessonService lessonService) {
+    this.lessonService = lessonService;
   }
 
   @Override
@@ -45,7 +45,7 @@ public class LessonSearchServlet implements Servlet {
 
     out.println("------------------------------------------------");
     out.println("[검색결과]");
-    List<Lesson> lessons = lessonDao.findByKeyword(params);
+    List<Lesson> lessons = lessonService.search(params);
     for (Lesson l : lessons) {
       out.printf("%d, %s, %s ~ %s, %d\n", l.getNo(), l.getTitle(), l.getStartDate(), l.getEndDate(),
           l.getTotalHours());

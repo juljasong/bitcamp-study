@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="BoardMapper">
+
+  <resultMap type="Board" id="BoardMap">
+    <id column="board_id" property="no"/>
+    <result column="conts" property="title"/>
+    <result column="cdt" property="date"/>
+    <result column="vw_cnt" property="viewCount"/>
+  </resultMap>
+  
+  <sql id="select1">
+    SELECT 
+    * 
+    FROM lms_board 
+  </sql>
+  
+  <select id="selectBoard" resultMap="BoardMap" >
+    <include refid="select1"/>
+    ORDER BY 
+      board_id DESC
+  </select>
+  
+  <insert id="insertBoard" parameterType="Board">
+    INSERT INTO lms_board(conts) 
+    VALUES (#{title})
+  </insert>
+  
+  <select id="selectDetail" resultMap="BoardMap" parameterType="int">
+    <include refid="select1"/>
+    WHERE board_id=#{no}
+  </select>
+  
+  <update id="updateBoard" parameterType="Board">
+    UPDATE lms_board 
+    SET conts=#{title}
+    WHERE board_id=#{no}
+  </update>
+  
+  <delete id="deleteBoard" parameterType="int">
+    DELETE FROM lms_board 
+    WHERE board_id=#{no}
+  </delete>
+  
+</mapper>
+
+
+
+
+
+
+

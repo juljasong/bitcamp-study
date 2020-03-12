@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="MemberMapper">
+
+  <resultMap type="Member" id="MemberMap">
+    <id column="member_id" property="no"/>
+    <result column="name" property="name"/>
+    <result column="email" property="email"/>
+    <result column="pwd" property="password"/>
+    <result column="cdt" property="registeredDate"/>
+    <result column="tel" property="tel"/>
+    <result column="photo" property="photo"/>
+  </resultMap> 
+  
+  <sql id="select1">
+    SELECT * 
+    FROM lms_member
+  </sql>
+  
+  <select id="selectMember" resultMap="MemberMap" >
+    <include refid="select1"/>
+  </select>
+  
+  <insert id="insertMember" parameterType="Member">
+    INSERT INTO lms_member(name, email, pwd, tel, photo) 
+    VALUES(#{name}, #{email}, password(#{password}), #{tel}, #{photo})
+  </insert>
+  
+  <select id="selectDetail" resultMap="MemberMap" parameterType="int">
+    <include refid="select1"/>
+    WHERE member_id=#{no}
+  </select>
+  
+  <update id="updateMember" parameterType="Member">
+    UPDATE lms_member 
+      <set>
+        <if test="name!=null and name != ''">name=#{name},</if>
+        <if test="email!=null and email != ''">email=#{email},</if>
+        <if test="password!=null and password != ''">pwd=password(#{password}), </if>
+        <if test="tel!=null and tel != ''">tel=#{tel},</if>
+        <if test="photo!=null and photo != ''">photo=#{photo}</if>
+	    </set>
+    WHERE member_id=#{no}
+  </update>
+  
+  <delete id="deleteMember" parameterType="int">
+    DELETE FROM lms_member 
+    WHERE member_id=#{no}
+  </delete>
+  
+  <select id="findByKeyword" resultMap="MemberMap" parameterType="string">
+	  <include refid="select1"/>
+	  WHERE name LIKE #{key} OR email LIKE #{key} OR tel LIKE #{key}
+  </select>
+  
+   <select id="findByEmailAndPassword" resultMap="MemberMap" parameterType="map">
+    <include refid="select1"/>
+    WHERE email=#{email} AND pwd=password(#{password})
+  </select>
+  
+</mapper>
+

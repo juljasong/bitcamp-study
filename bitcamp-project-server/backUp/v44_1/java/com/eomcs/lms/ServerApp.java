@@ -14,11 +14,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.apache.ibatis.session.SqlSessionFactory;
 import com.eomcs.lms.context.ApplicationContextListener;
-import com.eomcs.lms.dao.BoardDao;
-import com.eomcs.lms.dao.LessonDao;
-import com.eomcs.lms.dao.MemberDao;
-import com.eomcs.lms.dao.PhotoBoardDao;
-import com.eomcs.lms.dao.PhotoFileDao;
+import com.eomcs.lms.service.BoardService;
+import com.eomcs.lms.service.LessonService;
+import com.eomcs.lms.service.MemberService;
+import com.eomcs.lms.service.PhotoBoardService;
 import com.eomcs.lms.servlet.BoardAddServlet;
 import com.eomcs.lms.servlet.BoardDeleteServlet;
 import com.eomcs.lms.servlet.BoardDetailServlet;
@@ -43,7 +42,6 @@ import com.eomcs.lms.servlet.PhotoBoardDetailServlet;
 import com.eomcs.lms.servlet.PhotoBoardListServlet;
 import com.eomcs.lms.servlet.PhotoBoardUpdateServlet;
 import com.eomcs.lms.servlet.Servlet;
-import com.eomcs.sql.PlatformTransactionManager;
 import com.eomcs.sql.SqlSessionFactoryProxy;
 
 public class ServerApp {
@@ -87,48 +85,40 @@ public class ServerApp {
     notifyApplicationInitialized();
 
     SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) context.get("sqlSessionFactory");
-    // DataLoaderListener가 준비한 DAO 객체를 꺼내 변수에 저장한다.
-    BoardDao boardDao = (BoardDao) context.get("boardDao");
-    LessonDao lessonDao = (LessonDao) context.get("lessonDao");
-    MemberDao memberDao = (MemberDao) context.get("memberDao");
-    PhotoBoardDao photoBoardDao = (PhotoBoardDao) context.get("photoBoardDao");
-    PhotoFileDao photoFileDao = (PhotoFileDao) context.get("photoFileDao");
-
-    // 트랜잭션 관리자를 꺼내 변수에 저장한다.
-    PlatformTransactionManager txManager =
-        (PlatformTransactionManager) context.get("transactionManager");
+    // DataLoaderListener가 준비한 DAO, Service 객체를 꺼내 변수에 저장한다.
+    LessonService lessonService = (LessonService) context.get("lessonService");
+    PhotoBoardService photoBoardService = (PhotoBoardService) context.get("photoBoardService");
+    BoardService boardService = (BoardService) context.get("boardService");
+    MemberService memberService = (MemberService) context.get("memberService");
 
     // 커맨드 객체 역할을 수행하는 서블릿 객체를 맵에 보관한다.
-    servletMap.put("/board/list", new BoardListServlet(boardDao));
-    servletMap.put("/board/add", new BoardAddServlet(boardDao));
-    servletMap.put("/board/detail", new BoardDetailServlet(boardDao));
-    servletMap.put("/board/update", new BoardUpdateServlet(boardDao));
-    servletMap.put("/board/delete", new BoardDeleteServlet(boardDao));
+    servletMap.put("/board/list", new BoardListServlet(boardService));
+    servletMap.put("/board/add", new BoardAddServlet(boardService));
+    servletMap.put("/board/detail", new BoardDetailServlet(boardService));
+    servletMap.put("/board/update", new BoardUpdateServlet(boardService));
+    servletMap.put("/board/delete", new BoardDeleteServlet(boardService));
 
-    servletMap.put("/lesson/list", new LessonListServlet(lessonDao));
-    servletMap.put("/lesson/add", new LessonAddServlet(lessonDao));
-    servletMap.put("/lesson/detail", new LessonDetailServlet(lessonDao));
-    servletMap.put("/lesson/update", new LessonUpdateServlet(lessonDao));
-    servletMap.put("/lesson/delete", new LessonDeleteServlet(lessonDao));
-    servletMap.put("/lesson/search", new LessonSearchServlet(lessonDao));
+    servletMap.put("/lesson/list", new LessonListServlet(lessonService));
+    servletMap.put("/lesson/add", new LessonAddServlet(lessonService));
+    servletMap.put("/lesson/detail", new LessonDetailServlet(lessonService));
+    servletMap.put("/lesson/update", new LessonUpdateServlet(lessonService));
+    servletMap.put("/lesson/delete", new LessonDeleteServlet(lessonService));
+    servletMap.put("/lesson/search", new LessonSearchServlet(lessonService));
 
-    servletMap.put("/member/list", new MemberListServlet(memberDao));
-    servletMap.put("/member/add", new MemberAddServlet(memberDao));
-    servletMap.put("/member/detail", new MemberDetailServlet(memberDao));
-    servletMap.put("/member/update", new MemberUpdateServlet(memberDao));
-    servletMap.put("/member/delete", new MemberDeleteServlet(memberDao));
-    servletMap.put("/member/search", new MemberSearchServlet(memberDao));
+    servletMap.put("/member/list", new MemberListServlet(memberService));
+    servletMap.put("/member/add", new MemberAddServlet(memberService));
+    servletMap.put("/member/detail", new MemberDetailServlet(memberService));
+    servletMap.put("/member/update", new MemberUpdateServlet(memberService));
+    servletMap.put("/member/delete", new MemberDeleteServlet(memberService));
+    servletMap.put("/member/search", new MemberSearchServlet(memberService));
 
-    servletMap.put("/photoboard/list", new PhotoBoardListServlet(photoBoardDao, lessonDao));
-    servletMap.put("/photoboard/detail", new PhotoBoardDetailServlet(photoBoardDao));
-    servletMap.put("/photoboard/add",
-        new PhotoBoardAddServlet(txManager, photoBoardDao, lessonDao, photoFileDao));
-    servletMap.put("/photoboard/update",
-        new PhotoBoardUpdateServlet(txManager, photoBoardDao, photoFileDao));
-    servletMap.put("/photoboard/delete",
-        new PhotoBoardDeleteServlet(txManager, photoBoardDao, photoFileDao));
+    servletMap.put("/photoboard/list", new PhotoBoardListServlet(photoBoardService, lessonService));
+    servletMap.put("/photoboard/detail", new PhotoBoardDetailServlet(photoBoardService));
+    servletMap.put("/photoboard/add", new PhotoBoardAddServlet(lessonService, photoBoardService));
+    servletMap.put("/photoboard/update", new PhotoBoardUpdateServlet(photoBoardService));
+    servletMap.put("/photoboard/delete", new PhotoBoardDeleteServlet(photoBoardService));
 
-    servletMap.put("/auth/login", new LoginServlet(memberDao));
+    servletMap.put("/auth/login", new LoginServlet(memberService));
 
     try (ServerSocket serverSocket = new ServerSocket(9999)) {
 
@@ -145,9 +135,6 @@ public class ServerApp {
 
           System.out.println("--------------------------------------");
         });
-
-        // 현재 '서버 멈춤' 상태라면,
-        // 다음 클라이언트 요청을 받지 않고 종료한다.
         if (serverStop) {
           break;
         }
@@ -157,33 +144,18 @@ public class ServerApp {
     } catch (Exception e) {
       System.out.println("서버 준비 중 오류 발생!");
     }
-
-
-    // 스레드풀을 다 사용했으면 종료하라고 해야 한다.
     executorService.shutdown();
-    // => 스레드풀을 당장 종료시키는 것이 아니다.
-    // => 스레드풀에 소속된 스레드들의 작업이 모두 끝나면
-    // 스레드풀의 동작을 종료하라는 뜻이다.
-    // => 따라서 shutdown()을 호출했다고 해서
-    // 모든 스레드가 즉시 작업을 멈추는 것이 아니다.
-    // => 즉 스레드풀 종료를 예약한 다음에 바로 리턴한다.
-
-    // 모든 스레드가 끝날 때까지 DB 커넥션을 종료하고 싶지 않다면,
-    // 스레드가 끝났는지 검사하며 기다려야 한다.
     while (true) {
       if (executorService.isTerminated()) {
         break;
       }
       try {
-        // 0.5초 마다 깨어나서 스레드 종료 여부를 검사한다.
         Thread.sleep(500);
       } catch (Exception e) {
         e.printStackTrace();
       }
     }
 
-    // 클라이언트 요청을 처리하는 스레드가 모두 종료된 후에
-    // DB 커넥션을 닫도록 한다.
     notifyApplicationDestroyed();
 
     System.out.println("서버 종료!");
