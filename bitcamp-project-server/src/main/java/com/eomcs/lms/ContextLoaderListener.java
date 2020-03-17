@@ -1,6 +1,7 @@
 package com.eomcs.lms;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.ibatis.io.Resources;
@@ -16,6 +17,10 @@ import com.eomcs.sql.MybatisDaoFactory;
 import com.eomcs.sql.PlatformTransactionManager;
 import com.eomcs.sql.SqlSessionFactoryProxy;
 import com.eomcs.util.ApplicationContext;
+import com.eomcs.util.Component;
+import com.eomcs.util.RequestHandler;
+import com.eomcs.util.RequestMapping;
+import com.eomcs.util.RequestMappingHandlerMapping;
 
 // 애플리케이션이 시작되거나 종료될 때
 // 데이터를 로딩하고 저장하는 일을 한다.
@@ -56,9 +61,41 @@ public class ContextLoaderListener implements ApplicationContextListener {
       // appCtx.printBeans();
       // ServerApp이 사용할 수 있게 context 맵에 담아 둔다.
       context.put("iocContainer", appCtx);
+      System.out.println("------------------------------------------");
+
+      RequestMappingHandlerMapping handlerMapper = new RequestMappingHandlerMapping();
+      String[] beanNames = appCtx.getBeanNamesForAnnotation(Component.class);
+      for (String beanName : beanNames) {
+        Object component = appCtx.getBean(beanName);
+        // @RequestHandler
+        Method method = getRequestHandler(component.getClass());
+        if (method != null) {
+          // System.out.printf("%s.%s()\n", beanName, requestHandler.getName());
+          RequestHandler requestHandler = new RequestHandler(method, component);
+          // 명령 처리할 메서드 찾을 수 있도록 명령이름으로 메서드 정보 저장
+          handlerMapper.addHandler(requestHandler.getPath(), requestHandler);
+        }
+      }
+
+      context.put("handlerMapper", handlerMapper);
+
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+
+  private Method getRequestHandler(Class<?> type) {
+    // 클라이언트 명령을 처리할 메서드는 public 이기 때문에 클래스에서 public 메서드만 조사
+    Method[] methods = type.getMethods();
+    for (Method m : methods) {
+      // @RequestMapping 붙은 메서드 조사
+      RequestMapping anno = m.getAnnotation(RequestMapping.class);
+      if (anno != null) {
+        return m;
+      }
+    }
+    return null;
   }
 
 

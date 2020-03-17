@@ -10,9 +10,10 @@ import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.service.LessonService;
 import com.eomcs.util.Component;
 import com.eomcs.util.Prompt;
+import com.eomcs.util.RequestMapping;
 
-@Component("/lesson/search")
-public class LessonSearchServlet implements Servlet {
+@Component
+public class LessonSearchServlet {
 
   LessonService lessonService;
 
@@ -20,7 +21,7 @@ public class LessonSearchServlet implements Servlet {
     this.lessonService = lessonService;
   }
 
-  @Override
+  @RequestMapping("/lesson/search")
   public void service(Scanner in, PrintStream out) throws Exception {
 
     Map<String, Object> params = new HashMap<>();

@@ -1,6 +1,7 @@
 package com.eomcs.util;
 
 import java.io.File;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
@@ -38,10 +39,28 @@ public class ApplicationContext {
       try {
         createObject(clazz);
       } catch (Exception e) {
-        System.out.printf("%s 클래스의 객체를 생성할 수 없습니다.\n", //
-            clazz.getName());
+        System.out.printf("%s 클래스의 객체를 생성할 수 없습니다.\n", clazz.getName());
       }
     }
+  }
+
+  public String[] getBeanNamesForAnnotation(Class<? extends Annotation> annotationType) {
+
+    // 객체 이름 저장할 목록
+    ArrayList<String> beanNames = new ArrayList<>();
+
+    // 객체 풀에서 전체 객체의 이름 꺼냄
+    Set<String> beanNameSet = objPool.keySet();
+    for (String beanName : beanNameSet) {
+      Object obj = objPool.get(beanName);
+
+      if (obj.getClass().getAnnotation(annotationType) != null) {
+        beanNames.add(beanName);
+      }
+    }
+    String[] names = new String[beanNames.size()];
+    beanNames.toArray(names);
+    return names; // ArrayList에서 문자열을 배열로 받을 때
   }
 
   public void printBeans() {
