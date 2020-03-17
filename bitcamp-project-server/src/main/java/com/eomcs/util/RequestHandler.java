@@ -11,6 +11,18 @@ public class RequestHandler {
     // TODO Auto-generated constructor stub
   }
 
+  public RequestHandler(Method method, Object bean) {
+    this.method = method;
+    this.path = getMappingName(method);
+    this.bean = bean;
+  }
+
+  private String getMappingName(Method method) {
+    RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
+    return requestMapping.value();
+
+  }
+
   public String getPath() {
     return path;
   }
@@ -31,19 +43,8 @@ public class RequestHandler {
     this.bean = bean;
   }
 
-  public RequestHandler(Method method, Object bean) {
-    this.method = method;
-    this.path = getMappingName(method);
-    this.bean = bean;
-  }
-
-  private String getMappingName(Method method) {
-    RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-    return requestMapping.value();
-  }
-
   public Object getBean() {
-    return null;
+    return bean;
   }
 
 }
