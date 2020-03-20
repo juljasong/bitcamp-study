@@ -1,4 +1,4 @@
-// 프로퍼티 값 확인
+// 프로퍼티 값이 제대로 설정되었는지 확인하기
 package com.eomcs.spring.ioc.ex04.a;
 
 import org.springframework.context.ApplicationContext;
@@ -10,7 +10,8 @@ public class Exam02 {
     ApplicationContext iocContainer =
         new ClassPathXmlApplicationContext("com/eomcs/spring/ioc/ex04/a/application-context.xml");
 
-    // 객체가 생성될 떄 생성자와 세터가 호출되는 것 확인
+    // 객체의 프로퍼티 값이 제대로 설정되었는지 확인한다.
+
     System.out.println(iocContainer.getBean("c1"));
     System.out.println(iocContainer.getBean("c2"));
     System.out.println(iocContainer.getBean("c3"));
