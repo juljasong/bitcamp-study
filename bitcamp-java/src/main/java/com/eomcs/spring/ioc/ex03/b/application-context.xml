@@ -32,6 +32,6 @@
          즉 다음에서 value="aaa"는 cc 파라미터의 int 값으로 바꿀 수 없기 때문에 오류 발생! -->
     <bean id="c4" class="com.eomcs.spring.ioc.ex03.Car">
         <constructor-arg index="0" value="티코"/>
-        <constructor-arg index="1" value="aaa"/>
+        <constructor-arg index="1" value="890"/>
     </bean>
 </beans>
