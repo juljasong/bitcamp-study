@@ -1,5 +1,5 @@
-// 클래스를 이용하여 스프링 설정하기 - @ComponentScan 사용법
-package com.eomcs.spring.ioc.ex11;
+// 클래스를 이용하여 스프링 설정하기
+package com.eomcs.spring.ioc.ex10.a;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -12,7 +12,6 @@ public class Exam01 {
         new AnnotationConfigApplicationContext(AppConfig.class);
 
     SpringUtils.printBeanList(iocContainer);
-
   }
 
 }
