@@ -1,6 +1,8 @@
 package com.eomcs.lms;
 
 import javax.sql.DataSource;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource("classpath:com/eomcs/lms/conf/jdbc.properties")
 public class DatabaseConfig {
 
+  static Logger logger = LogManager.getLogger(AppConfig.class);
+
   // @PropertySource로 로딩한 파일을 사용하기 위해서는, @Value
   @Value("${jdbc.driver}")
   String jdbcDriver;
@@ -29,7 +33,7 @@ public class DatabaseConfig {
   String jdbcPassword;
 
   public DatabaseConfig() {
-    System.out.println("DataBaseConfig 객체 생성!");
+    DatabaseConfig.logger.info("DataBaseConfig 객체 생성!");
   }
 
   // Spring IoC 컨테이너에 수동으로 등록할 객체는 메서드를 만들어 리턴

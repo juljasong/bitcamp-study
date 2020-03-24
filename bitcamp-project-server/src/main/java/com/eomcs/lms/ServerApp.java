@@ -3,6 +3,8 @@ package com.eomcs.lms;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -12,12 +14,16 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.context.ApplicationContextListener;
 import com.eomcs.util.RequestHandler;
 import com.eomcs.util.RequestMappingHandlerMapping;
 
 public class ServerApp {
+
+  static Logger logger = LogManager.getLogger(ServerApp.class);
 
   // 옵저버 관련 코드
   Set<ApplicationContextListener> listeners = new HashSet<>();
@@ -68,16 +74,15 @@ public class ServerApp {
 
     try (ServerSocket serverSocket = new ServerSocket(9999)) {
 
-      System.out.println("클라이언트 연결 대기중...");
+      ServerApp.logger.info("클라이언트 연결 대기중...");
 
       while (true) {
         Socket socket = serverSocket.accept();
-        System.out.println("클라이언트와 연결되었음!");
+        ServerApp.logger.info("클라이언트와 연결되었음!");
 
         executorService.submit(() -> {
           processRequest(socket);
-
-          System.out.println("--------------------------------------");
+          ServerApp.logger.info("--------------------------------------");
         });
 
         // 현재 '서버 멈춤' 상태라면,
@@ -89,7 +94,7 @@ public class ServerApp {
       }
 
     } catch (Exception e) {
-      System.out.println("서버 준비 중 오류 발생!");
+      ServerApp.logger.error(String.format("서버 준비 중 오류 발생!: %s", e.getMessage()));
     }
 
 
@@ -120,7 +125,7 @@ public class ServerApp {
     // DB 커넥션을 닫도록 한다.
     notifyApplicationDestroyed();
 
-    System.out.println("서버 종료!");
+    ServerApp.logger.info("서버 종료!");
   } // service()
 
 
@@ -131,7 +136,7 @@ public class ServerApp {
         PrintStream out = new PrintStream(socket.getOutputStream())) {
 
       String request = in.nextLine();
-      System.out.printf("=> %s\n", request);
+      ServerApp.logger.info(String.format("=> %s\n", request));
 
       if (request.equalsIgnoreCase("/server/stop")) {
         quit(out);
@@ -148,19 +153,25 @@ public class ServerApp {
           out.println("요청 처리 중 오류 발생!");
           out.println(e.getMessage());
 
-          System.out.println("클라이언트 요청 처리 중 오류 발생:");
-          e.printStackTrace();
+          ServerApp.logger.info("클라이언트 요청 처리 중 오류 발생:");
+          ServerApp.logger.info(e.getMessage());
+          StringWriter strWriter = new StringWriter();
+          e.printStackTrace(new PrintWriter(strWriter));
+          ServerApp.logger.debug(strWriter.toString());
         }
       } else {
         notFound(out);
+        ServerApp.logger.info("해당 명령을 지원하지 않습니다.");
       }
       out.println("!end!");
       out.flush();
-      System.out.println("클라이언트에게 응답하였음!");
+      ServerApp.logger.info("클라이언트에게 응답하였음!");
 
     } catch (Exception e) {
-      System.out.println("예외 발생:");
-      e.printStackTrace();
+      ServerApp.logger.error(String.format("예외 발생: %s", e.getMessage()));
+      StringWriter strWriter = new StringWriter();
+      e.printStackTrace(new PrintWriter(strWriter));
+      ServerApp.logger.debug(strWriter.toString());
     }
   }
 
@@ -176,7 +187,7 @@ public class ServerApp {
   }
 
   public static void main(String[] args) {
-    System.out.println("서버 수업 관리 시스템입니다.");
+    ServerApp.logger.info("서버 수업 관리 시스템입니다.");
 
     ServerApp app = new ServerApp();
     app.addApplicationContextListener(new ContextLoaderListener());

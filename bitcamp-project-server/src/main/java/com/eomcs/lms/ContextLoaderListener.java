@@ -2,6 +2,8 @@ package com.eomcs.lms;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
@@ -12,22 +14,20 @@ import com.eomcs.util.RequestMappingHandlerMapping;
 
 // 애플리케이션이 시작되거나 종료될 때
 // 데이터를 로딩하고 저장하는 일을 한다.
-//
+
 public class ContextLoaderListener implements ApplicationContextListener {
+
+  static Logger logger = LogManager.getLogger(ContextLoaderListener.class);
 
   @Override
   public void contextInitialized(Map<String, Object> context) {
 
     try {
-      // 트랜잭션 관리자 준비
-      // PlatformTransactionManager txManager = new PlatformTransactionManager(sqlSessionFactory);
-      // beans.put("transactionManager", txManager);
-      // beans.put("sqlSessionFactory", sqlSessionFactory);
 
       ApplicationContext appCtx = new AnnotationConfigApplicationContext(AppConfig.class);
-      printbeans(appCtx);
+      // printbeans(appCtx);
       context.put("iocContainer", appCtx);
-      System.out.println("------------------------------------------");
+      ContextLoaderListener.logger.debug("----------------------------");
 
       RequestMappingHandlerMapping handlerMapper = new RequestMappingHandlerMapping();
       String[] beanNames = appCtx.getBeanNamesForAnnotation(Component.class);
@@ -51,15 +51,14 @@ public class ContextLoaderListener implements ApplicationContextListener {
   }
 
 
-  private void printbeans(ApplicationContext appCtx) {
-    System.out.println("---- Spring IoC 컨테이너에 들어있는 객체들 ----");
-    String[] beanNames = appCtx.getBeanDefinitionNames();
-    for (String beanName : beanNames) {
-      System.out.printf("%s =======> %s\n", beanName,
-          appCtx.getBean(beanName).getClass().getName());
-    }
-
-  }
+  // private void printbeans(ApplicationContext appCtx) {
+  // System.out.println("---- Spring IoC 컨테이너에 들어있는 객체들 ----");
+  // String[] beanNames = appCtx.getBeanDefinitionNames();
+  // for (String beanName : beanNames) {
+  // System.out.printf("%s =======> %s\n", beanName,
+  // appCtx.getBean(beanName).getClass().getName());
+  // }
+  // }
 
 
   private Method getRequestHandler(Class<?> type) {
