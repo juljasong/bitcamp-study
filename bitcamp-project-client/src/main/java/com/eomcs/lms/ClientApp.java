@@ -22,7 +22,6 @@ public class ClientApp {
   public ClientApp() throws Exception {
     commandStack = new ArrayDeque<>();
     commandQueue = new LinkedList<>();
-
   }
 
   public void service() {

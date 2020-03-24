@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource("classpath:com/eomcs/lms/conf/jdbc.properties")
 public class DatabaseConfig {
 
-  static Logger logger = LogManager.getLogger(AppConfig.class);
+  static Logger logger = LogManager.getLogger(DatabaseConfig.class);
 
   // @PropertySource로 로딩한 파일을 사용하기 위해서는, @Value
   @Value("${jdbc.driver}")
@@ -33,7 +33,7 @@ public class DatabaseConfig {
   String jdbcPassword;
 
   public DatabaseConfig() {
-    DatabaseConfig.logger.info("DataBaseConfig 객체 생성!");
+    logger.info("DataBaseConfig 객체 생성!");
   }
 
   // Spring IoC 컨테이너에 수동으로 등록할 객체는 메서드를 만들어 리턴

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @MapperScan("com.eomcs.lms.dao")
 public class MybatisConfig {
 
-  static Logger logger = LogManager.getLogger(AppConfig.class);
+  static Logger logger = LogManager.getLogger(MybatisConfig.class);
 
   public MybatisConfig() {
     MybatisConfig.logger.info("MybatisConfig 객체 생성!");
