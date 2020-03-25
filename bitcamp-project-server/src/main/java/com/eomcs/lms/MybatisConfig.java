@@ -1,6 +1,7 @@
 package com.eomcs.lms;
 
 import javax.sql.DataSource;
+import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -27,6 +28,8 @@ public class MybatisConfig {
   @Bean
   public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ApplicationContext appCtx)
       throws Exception {
+    // log4j 활성화
+    LogFactory.useLog4JLogging();
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
     sqlSessionFactoryBean.setDataSource(dataSource);
     sqlSessionFactoryBean.setTypeAliasesPackage("com.eomcs.lms.domain");
