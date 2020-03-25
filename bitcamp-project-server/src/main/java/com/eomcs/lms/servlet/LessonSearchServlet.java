@@ -5,11 +5,9 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import org.springframework.stereotype.Component;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.service.LessonService;
-import com.eomcs.util.Prompt;
 import com.eomcs.util.RequestMapping;
 
 @Component
@@ -22,36 +20,51 @@ public class LessonSearchServlet {
   }
 
   @RequestMapping("/lesson/search")
-  public void service(Scanner in, PrintStream out) throws Exception {
+  public void service(Map<String, String> params, PrintStream out) throws Exception {
 
-    Map<String, Object> params = new HashMap<>();
-    String keyword = Prompt.getString(in, out, "강의명 검색: ");
+    Map<String, Object> params2 = new HashMap<String, Object>();
+
+    String keyword = params.get("title");
     if (keyword.length() > 0) {
-      params.put("title", keyword);
+      params2.put("title", keyword);
     }
-    Date date = Prompt.getDate(in, out, "시작일 검색: ");
+    keyword = params.get("title");
+    if (keyword.length() > 0) {
+      params2.put("description", keyword);
+    }
+    Date date = Date.valueOf(params.get("startDate"));
     if (date != null) {
-      params.put("startDate", date);
+      params2.put("startDate", date.toString());
     }
-    date = Prompt.getDate(in, out, "종료일 검색: ");
+    date = Date.valueOf(params.get("endDate"));
     if (date != null) {
-      params.put("endDate", date);
+      params2.put("endDate", date.toString());
     }
-    int value = Prompt.getInt(in, out, "총강의시간 검색: ");
+    int value = Integer.parseInt(params.get("dayHours"));
     if (value > 0) {
-      params.put("totalHours", value);
+      params2.put("dayHours", String.valueOf(value));
     }
-    value = Prompt.getInt(in, out, "일강의시간 검색: ");
+    value = Integer.parseInt(params.get("totalHours"));
     if (value > 0) {
-      params.put("dayHours", value);
+      params2.put("totalHours", String.valueOf(value));
     }
 
-    out.println("------------------------------------------------");
-    out.println("[검색결과]");
-    List<Lesson> lessons = lessonService.search(params);
+    out.println("<!DOCTYPE html>");
+    out.println("<html>");
+    out.println("<head>");
+    out.println("<meta charset='UTF-8'>");
+    out.println("<title>수업 검색 결과</title>");
+    out.println("</head>");
+    out.println("<body>");
+    out.println("<h1>수업 검색 결과</h1>");
+
+    List<Lesson> lessons = lessonService.search(params2);
+
     for (Lesson l : lessons) {
-      out.printf("%d, %s, %s ~ %s, %d\n", l.getNo(), l.getTitle(), l.getStartDate(), l.getEndDate(),
-          l.getTotalHours());
+      out.printf(
+          "<tr><td>%d</td> <td><a href='/lesson/detail?no=%d'>%s</a></td> <td>%s ~ %s</td> <td>%d</td></tr>\n",
+          l.getNo(), l.getNo(), l.getTitle(), l.getStartDate(), l.getEndDate(), l.getTotalHours());
     }
+
   }
 }
