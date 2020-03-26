@@ -53,7 +53,7 @@
   
   <select id="findByKeyword" resultMap="MemberMap" parameterType="string">
 	  <include refid="select1"/>
-	  WHERE name LIKE #{key} OR email LIKE #{key} OR tel LIKE #{key}
+	  WHERE name LIKE CONCAT('%', #{key}, '%') OR email LIKE CONCAT('%', #{key}, '%') OR tel LIKE CONCAT('%', #{key}, '%')
   </select>
   
    <select id="findByEmailAndPassword" resultMap="MemberMap" parameterType="map">

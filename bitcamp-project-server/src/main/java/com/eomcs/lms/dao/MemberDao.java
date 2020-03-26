@@ -16,13 +16,9 @@ public interface MemberDao {
 
   int delete(int no) throws Exception;
 
-  default List<Member> findByKeyword(String keyword) throws Exception {
-    return null;
-  }
+  List<Member> findByKeyword(String keyword) throws Exception;
 
-  default Member findByEmailAndPassword(HashMap<String, Object> params) throws Exception {
-    return null;
-  }
+  Member findByEmailAndPassword(HashMap<String, Object> params) throws Exception;
 
 }
 

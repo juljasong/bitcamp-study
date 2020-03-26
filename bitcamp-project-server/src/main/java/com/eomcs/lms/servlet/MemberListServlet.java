@@ -24,10 +24,12 @@ public class MemberListServlet {
 
     out.println("<!DOCTYPE html>");
     out.println("<html>");
+
     out.println("<head>");
     out.println("   <meta charset='UTF-8'>");
     out.println("   <title>회원 목록</title>");
     out.println("</head>");
+
     out.println("<body>");
     out.println("   <h1>회원</h1>");
     out.println("   <a href='/member/addForm'>회원 등록</a><br>");
@@ -45,6 +47,15 @@ public class MemberListServlet {
           "<tr><td>%d</td> <td><a href='/member/detail?no=%d'>%s</a></td> <td>%s</td> <td>%s</td> <td>%s</td></tr>\n",
           m.getNo(), m.getNo(), m.getName(), m.getEmail(), m.getTel(), m.getRegisteredDate());
     }
+    out.println("    </table>");
+
+    out.println("<hr>");
+
+    out.println("<form action='/member/search'>");
+    out.println("검색어: <input name='keyword' type='text'>\n");
+    out.println("<button>검색</button>");
+    out.println("</form>");
+
     out.println("</body>");
     out.println("</html>");
   }
