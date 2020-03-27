@@ -7,11 +7,11 @@ import com.eomcs.lms.service.MemberService;
 import com.eomcs.util.RequestMapping;
 
 @Component
-public class LoginformServlet {
+public class LoginFormServlet {
 
   MemberService memberService;
 
-  public LoginformServlet(MemberService memberService) {
+  public LoginFormServlet(MemberService memberService) {
     this.memberService = memberService;
   }
 
@@ -27,8 +27,8 @@ public class LoginformServlet {
     out.println("<body>");
     out.println("<h1>로그인</h1>");
     out.println("<form action='/auth/login'>");
-    out.println("email: <input name='email' type='type'><br>\n");
-    out.println("password: <input name='password' type='text'><br>\n");
+    out.println("email: <input name='email' type='email'><br>\n");
+    out.println("password: <input name='password' type='password'><br>\n");
     out.println("<button>로그인</button>");
     out.println("</form>");
     out.println("</body>");

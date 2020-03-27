@@ -17,7 +17,8 @@ dependencies {
     implementation 'org.mybatis:mybatis:3.5.4'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.5.4'
     implementation 'com.google.guava:guava:28.0-jre'
-    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.11'
+    //implementation 'org.apache.httpcomponents.client5:httpclient5:5.0' //Apache HttpComponents
+    implementation 'org.apache.httpcomponents.client5:httpclient5-fluent:5.0'
     testImplementation 'junit:junit:4.12'
     implementation group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.5'
 }
