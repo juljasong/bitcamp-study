@@ -1,48 +1,62 @@
 package com.eomcs.lms.servlet;
 
+import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.service.LessonService;
-import com.eomcs.util.RequestMapping;
 
 @Component
-public class LessonDetailServlet {
+public class LessonDetailServlet extends GenericServlet {
+  private static final long serialVersionUID = 1L;
 
-  LessonService lessonService;
+  @Override
+  public void service(ServletRequest req, ServletResponse res)
+      throws ServletException, IOException {
+    try {
 
-  public LessonDetailServlet(LessonService lessonService) {
-    this.lessonService = lessonService;
-  }
+      res.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = res.getWriter();
 
-  @RequestMapping("/lesson/detail")
-  public void service(Map<String, String> params, PrintWriter out) throws Exception {
-    int no = Integer.parseInt(params.get("no"));
+      ServletContext servletContext = req.getServletContext();
+      ApplicationContext iocContainer =
+          (ApplicationContext) servletContext.getAttribute("iocContainer");
 
-    Lesson lesson = lessonService.get(no);
+      LessonService lessonService = iocContainer.getBean(LessonService.class);
+      int no = Integer.parseInt(req.getParameter("no"));
 
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
-    out.println("<title>수업 상세정보</title>");
-    out.println("</head>");
-    out.println("<body>");
-    out.println("<h1>수업 상세정보</h1>");
+      Lesson lesson = lessonService.get(no);
 
-    if (lesson != null) {
-      out.printf("수업명: %s<br>\n", lesson.getTitle());
-      out.printf("설명: %s<br>\n", lesson.getDescription());
-      out.printf("시작일: %s<br>\n", lesson.getStartDate());
-      out.printf("종료일: %s<br>\n", lesson.getEndDate());
-      out.printf("일수업시간: %d<br>\n", lesson.getDayHours());
-      out.printf("총수업시간: %d<br>\n", lesson.getTotalHours());
-      out.printf("<p><a href='/lesson/delete?no=%d'>삭제</a>\n", lesson.getNo());
-      out.printf("<a href='/lesson/updateForm?no=%d'>변경</a>\n", lesson.getNo());
-      out.printf("<a href='/photoboard/list?no=%d'>사진 게시판</a></p>\n", lesson.getNo());
-    } else {
-      out.println("해당 번호의 수업이 없습니다.");
+      out.println("<!DOCTYPE html>");
+      out.println("<html>");
+      out.println("<head>");
+      out.println("<meta charset='UTF-8'>");
+      out.println("<title>수업 상세정보</title>");
+      out.println("</head>");
+      out.println("<body>");
+      out.println("<h1>수업 상세정보</h1>");
+
+      if (lesson != null) {
+        out.printf("수업명: %s<br>\n", lesson.getTitle());
+        out.printf("설명: %s<br>\n", lesson.getDescription());
+        out.printf("시작일: %s<br>\n", lesson.getStartDate());
+        out.printf("종료일: %s<br>\n", lesson.getEndDate());
+        out.printf("일수업시간: %d<br>\n", lesson.getDayHours());
+        out.printf("총수업시간: %d<br>\n", lesson.getTotalHours());
+        out.printf("<p><a href='delete?no=%d'>삭제</a>\n", lesson.getNo());
+        out.printf("<a href='updateForm?no=%d'>변경</a>\n", lesson.getNo());
+        out.printf("<a href='list?no=%d'>사진 게시판</a></p>\n", lesson.getNo());
+      } else {
+        out.println("해당 번호의 수업이 없습니다.");
+      }
+    } catch (Exception e) {
+      throw new ServletException(e);
     }
   }
 }

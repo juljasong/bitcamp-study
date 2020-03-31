@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'eclipse'
+    id 'war'
 }
 
 tasks.withType(JavaCompile) { 
@@ -26,4 +27,8 @@ dependencies {
     // implementation 'log4j:log4j:1.2.17' // log4j
     implementation 'org.apache.logging.log4j:log4j-core:2.13.1' //log4j2
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.0' //Apache HttpComponents
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1' // Servlet-API : 컴파일 할 때만 사용, 배치할 때는 서버에 이미 존재
+    //의존 라이브러리 옵션
+    // > implements
+    // > dom
 }
