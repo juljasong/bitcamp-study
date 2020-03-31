@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.service.LessonService;
 
-@WebServlet("/photoboard/addForm")
+@WebServlet("/photoBoard/addForm")
 public class PhotoBoardAddFormServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 

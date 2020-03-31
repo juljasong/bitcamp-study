@@ -13,7 +13,7 @@ import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
 import com.eomcs.lms.service.PhotoBoardService;
 
-@WebServlet("/photoboard/detail")
+@WebServlet("/photoBoard/detail")
 public class PhotoBoardDetailServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 

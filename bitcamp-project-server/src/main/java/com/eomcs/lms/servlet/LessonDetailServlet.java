@@ -7,12 +7,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import com.eomcs.lms.domain.Lesson;
 import com.eomcs.lms.service.LessonService;
 
-@Component
+@WebServlet("/lesson/detail")
 public class LessonDetailServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 

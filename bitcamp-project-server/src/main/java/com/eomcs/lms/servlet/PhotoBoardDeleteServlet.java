@@ -11,7 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.service.PhotoBoardService;
 
-@WebServlet("/photoboard/delete")
+@WebServlet("/photoBoard/delete")
 public class PhotoBoardDeleteServlet extends GenericServlet {
   private static final long serialVersionUID = 1L;
 
