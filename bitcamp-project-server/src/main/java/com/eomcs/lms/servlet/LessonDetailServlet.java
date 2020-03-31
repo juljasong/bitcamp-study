@@ -51,7 +51,7 @@ public class LessonDetailServlet extends GenericServlet {
         out.printf("총수업시간: %d<br>\n", lesson.getTotalHours());
         out.printf("<p><a href='delete?no=%d'>삭제</a>\n", lesson.getNo());
         out.printf("<a href='updateForm?no=%d'>변경</a>\n", lesson.getNo());
-        out.printf("<a href='list?no=%d'>사진 게시판</a></p>\n", lesson.getNo());
+        out.printf("<a href='../photoBoard/list?no=%d'>사진 게시판</a></p>\n", lesson.getNo());
       } else {
         out.println("해당 번호의 수업이 없습니다.");
       }
