@@ -1,0 +1,28 @@
+plugins {
+
+    id 'java'
+    id 'eclipse-wtp'
+    id 'war'
+
+}
+
+tasks.withType(JavaCompile) { 
+
+    options.encoding = 'UTF-8' // 프로젝트 소스파일 인코딩 
+    sourceCompatibility = '1.8' // 소스파일을 작성할 때 사용할 자바 버전
+    targetCompatibility = '1.8' // 자바 클래스 실행시킬 JVM의 최소 버전
+
+}
+
+repositories {
+
+    jcenter()
+}
+
+dependencies {
+
+    implementation 'com.google.guava:guava:28.0-jre'
+    testImplementation 'junit:junit:4.12'
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1' // Servlet-API : 컴파일 할 때만 사용, 배치할 때는 서버에 이미 존재
+
+}
