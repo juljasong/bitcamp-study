@@ -24,5 +24,6 @@ dependencies {
     implementation 'com.google.guava:guava:28.0-jre'
     testImplementation 'junit:junit:4.12'
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1' // Servlet-API : 컴파일 할 때만 사용, 배치할 때는 서버에 이미 존재
+    implementation 'commons-fileupload:commons-fileupload:1.4'
 
 }
