@@ -22,7 +22,7 @@ public class Servlet02 extends GenericServlet {
     // - 웹 페이지의 폼(method='POST' 일 때)에서 전송 버튼을 클릭하면 POST 요청을 보낸다.
     //
     // 테스트
-    // - http://localhost:9999/java-web/ex04/test02.html 실행
+    // - http://localhost:8080/java-web/ex04/test02.html 실행
     //
 
     // 웹 브라우저가 보낸 데이터 읽기
@@ -62,12 +62,11 @@ public class Servlet02 extends GenericServlet {
     PrintWriter out = res.getWriter();
     out.printf("이름=%s\n", name);
     out.printf("나이=%s\n", age);
-    out.println("--------------------------");
+    out.println("-------------------");
 
     char[] chars = name.toCharArray();
-
     for (char c : chars) {
-      out.printf("%x ", (int) c);
+      out.printf("%x\n", (int) c);
     }
   }
 }
@@ -83,12 +82,12 @@ public class Servlet02 extends GenericServlet {
 // => 데이터 형식과 URL 인코딩은 GET 요청과 같다.
 // => 예)
 /*
- * POST /java-web/ex04/s2 HTTP/1.1 Host: localhost:9999 Connection: keep-alive Content-Length: 33
- * Pragma: no-cache Cache-Control: no-cache Origin: http://localhost:9999 Upgrade-Insecure-Requests:
+ * POST /java-web/ex04/s2 HTTP/1.1 Host: localhost:8080 Connection: keep-alive Content-Length: 33
+ * Pragma: no-cache Cache-Control: no-cache Origin: http://localhost:8080 Upgrade-Insecure-Requests:
  * 1 Content-Type: application/x-www-form-urlencoded User-Agent: Mozilla/5.0 (Macintosh; Intel Mac
  * OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36 Accept:
  * text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng, Referer:
- * http://localhost:9999/java-web/ex04/test02.html Accept-Encoding: gzip, deflate, br
+ * http://localhost:8080/java-web/ex04/test02.html Accept-Encoding: gzip, deflate, br
  * Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,la;q=0.6 빈 줄
  * name=ABC%EA%B0%80%EA%B0%81&age=20
  */

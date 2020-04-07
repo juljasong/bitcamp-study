@@ -40,16 +40,26 @@ public class Servlet01 extends GenericServlet {
   }
 }
 
+// 웹브라우저에서 웹서버의 자원을 요청하는 방법
 // 1) 서블릿 클래스를 실행하고 싶을 때
 // => 서블릿 클래스의 실제 위치:
-// 톰캣배치폴더/wtpwebapps/bitcamp-java-web/WEB-INF/classes/com/eomcs/web/ex04/Servlet01.class
-
-// 2)
-
-// 3) /WEB-INF/ 폴더에 있는 정적 파일 받아오기
-// => 정적 파일 실제 위치
+// 톰캣배치폴더/wtpwebapps/eomcs-java-web/WEB-INF/classes/com/eomcs/web/ex04/Servlet01.class
+// => 요청:
+// 해당 서블릿을 서버에 등록할 때 사용한 URL을 지정해야 한다.
+// http://localhost:9999/eomcs-java-web/ex04/s1
+//
+// 2) HTML, CSS, JavaScript, JPEG 등 정적 파일을 받고 싶을 때
+// => 정적 파일의 실제 위치:
+// 톰캣배치폴더/wtpwebapps/eomcs-java-web/ex04/test01.html
+// => 요청:
+// http://localhost:9999/eomcs-java-web/ex04/test01.html
+//
+// 3) /WEB-INF/ 폴더에 있는 정적 파일을 받고 싶을 때
+// => 정적 파일의 실제 위치:
 // 톰캣배치폴더/wtpwebapps/eomcs-java-web/WEB-INF/ex04/test01.html
-// => 요청: /WEB-INF 폴더 아래 파일은 앱 어플리케이션의 정보를 두는 폴더 -> 클라이언트 요청 불가
+// => 요청:
+// /WEB-INF 폴더 아래에 있는 파일은 클라이언트에서 요청할 수 없다!
+// 웹 애플리케이션의 정보를 두는 폴더이기 때문이다.
 
 // HTTP 요청 형식
 // method sp request-URI sp http_version CRLF

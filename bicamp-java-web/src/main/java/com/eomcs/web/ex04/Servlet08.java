@@ -12,6 +12,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
+import net.coobird.thumbnailator.ThumbnailParameter;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
 
@@ -68,18 +69,29 @@ public class Servlet08 extends GenericServlet {
     // 2) 썸네일 이미지 만들기
     // => 원본 이미지 파일이 저장된 경로를 알려주고
     // 어떤 썸네일 이미지를 만들어야 하는지 설정한다.
-    Thumbnails.of(this.uploadDir + "/" + filename).size(20, 20).outputFormat("jpg")
-        .toFiles(Rename.PREFIX_DOT_THUMBNAIL);
+    // Thumbnails.of(this.uploadDir + "/" + filename).size(20, 20).outputFormat("jpg")
+    // .toFiles(Rename.PREFIX_DOT_THUMBNAIL);
+
+    Thumbnails.of(this.uploadDir + "/" + filename)//
+        .size(20, 20)//
+        .outputFormat("jpg")//
+        .toFiles(new Rename() {
+
+          @Override
+          public String apply(String name, ThumbnailParameter param) {
+            return name + "_20x20";
+          }
+        });
 
     /*
      * Thumbnails.of(this.uploadDir + "/" + filename) .size(80, 80) .outputFormat("jpg")
      * .toFiles(Rename.PREFIX_DOT_THUMBNAIL);
-     * 
+     *
      * Thumbnails.of(this.uploadDir + "/" + filename) .size(160, 160) .outputFormat("jpg")
      * .toFiles(Rename.PREFIX_DOT_THUMBNAIL);
      */
     out.printf("사진=%s<br>\n", filename);
-    out.printf("<img src='../upload/thumbnail.%s.jpg'><br>\n", filename);
+    out.printf("<img src='../upload/%s_20x20.jpg'><br>\n", filename);
     out.printf("<img src='../upload/%s' height='80'><br>\n", filename);
     out.printf("<img src='../upload/%s'><br>\n", filename);
     out.println("</body></html>");

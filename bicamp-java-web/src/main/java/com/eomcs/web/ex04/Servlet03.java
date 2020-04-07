@@ -29,33 +29,98 @@ public class Servlet03 extends GenericServlet {
 
     req.setCharacterEncoding("UTF-8");
 
-    int age = Integer.parseInt(req.getParameter("age"));
+    String age = req.getParameter("age");
     String name = req.getParameter("name");
     String photo = req.getParameter("photo");
 
     res.setContentType("text/plain;charset=UTF-8");
     PrintWriter out = res.getWriter();
     out.printf("이름=%s\n", name);
-    out.printf("나이=%d\n", age);
-
-    // test03.html에서 파일을 전송할 때 multipart/form-data 형식이 아니기 때문에
-    // 첨파 파일의 데이터를 받을 수 없다.
+    out.printf("나이=%s\n", age);
     out.printf("사진=%s\n", photo);
+
+    // GET 요청이나 일반 POST 요청을 한 경우에는
+    // 파일이 이름만 넘어오고 파일 데이터는 넘어오지 않는다.
+    //
+    // 파일의 데이터를 전송하려면,
+    // <form> 태그에 enctype 속성을 "multipart/form-data"로 설정해야 한다.
+    //
+    // 단 멀티파트 형식으로 데이터가 넘어온 경우에는
+    // getParameter()로 그 값을 꺼낼 수 없다.
   }
 }
 
+// 1) GET 요청 예:
+//
+// GET /eomcs-java-web/ex04/s3?name=ABC%EA%B0%80%EA%B0%81&age=20&photo=actors.jpg HTTP/1.1
+// Host: 192.168.1.10:9999
+// Pragma: no-cache
+// Cache-Control: no-cache
+// Upgrade-Insecure-Requests: 1
+// User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like
+// Gecko) Chrome/80.0.3987.149 Safari/537.36
+// Accept:
+// text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+// Referer: http://192.168.1.10:9999/eomcs-java-web/ex04/test03.html
+// Accept-Encoding: gzip, deflate
+// Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,la;q=0.6,cs;q=0.5
+// Connection: keep-alive
+//
+// 2) 일반 POST 요청 예:
 // form의 기본 데이터 전송 형식은 "application/x-www-form-urlencoded"이다.
 // 즉 "이름=값&이름=값" 형태로 전송한다.
 // 다음 요청 프로토콜에서 "Content-Type" 헤더를 확인해 보라!
-/*
- * POST /java-web/ex04/s3 HTTP/1.1 Host: localhost:8080 Connection: keep-alive Content-Length: 57
- * Pragma: no-cache Cache-Control: no-cache Origin: http://localhost:8080 Upgrade-Insecure-Requests:
- * 1 Content-Type: application/x-www-form-urlencoded User-Agent: Mozilla/5.0 (Macintosh; Intel Mac
- * OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36 Accept:
- * text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng, Referer:
- * http://localhost:8080/java-web/ex04/test03.html Accept-Encoding: gzip, deflate, br
- * Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,la;q=0.6 빈 줄
- * name=%ED%99%8D%EA%B8%B8%EB%8F%99&age=20&photo=images.jpeg
- */
+//
+// POST /eomcs-java-web/ex04/s3 HTTP/1.1
+// Host: 192.168.1.10:9999
+// Content-Length: 50
+// Pragma: no-cache
+// Cache-Control: no-cache
+// Origin: http://192.168.1.10:9999
+// Upgrade-Insecure-Requests: 1
+// Content-Type: application/x-www-form-urlencoded
+// User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like
+// Gecko) Chrome/80.0.3987.149 Safari/537.36
+// Accept:
+// text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+// Referer: http://192.168.1.10:9999/eomcs-java-web/ex04/test03.html
+// Accept-Encoding: gzip, deflate
+// Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,la;q=0.6,cs;q=0.5
+// Connection: keep-alive
+//
+// name=ABC%EA%B0%80%EA%B0%81&age=20&photo=actors.jpg
+//
+// 3) 멀티파트 POST 요청 예:
+//
+// POST /eomcs-java-web/ex04/s3 HTTP/1.1
+// Host: 192.168.1.10:9999
+// Content-Length: 248900
+// Pragma: no-cache
+// Cache-Control: no-cache
+// Origin: http://192.168.1.10:9999
+// Upgrade-Insecure-Requests: 1
+// Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryT1G23U6fYMK0zZxx
+// User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like
+// Gecko) Chrome/80.0.3987.149 Safari/537.36
+// Accept:
+// text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+// Referer: http://192.168.1.10:9999/eomcs-java-web/ex04/test03.html
+// Accept-Encoding: gzip, deflate
+// Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,la;q=0.6,cs;q=0.5
+// Connection: keep-alive
+//
+// ------WebKitFormBoundaryT1G23U6fYMK0zZxx
+// Content-Disposition: form-data; name="name"
+//
+// ABC가각
+// ------WebKitFormBoundaryT1G23U6fYMK0zZxx
+// Content-Disposition: form-data; name="age"
+//
+// 20
+// ------WebKitFormBoundaryT1G23U6fYMK0zZxx
+// Content-Disposition: form-data; name="photo"; filename="actors.jpg"
+// Content-Type: image/jpeg
+//
+// ...
 
 
