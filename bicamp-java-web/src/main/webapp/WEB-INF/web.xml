@@ -128,7 +128,10 @@
     <url-pattern>/ex06/s4</url-pattern>
   </servlet-mapping>
   
- 
+  <!-- 서버 타임아웃 설정. 단위는 1분 -->
+  <!-- <session-config>
+    <session-timeout>1</session-timeout>
+  </session-config>  -->
 
 
  
