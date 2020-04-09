@@ -20,31 +20,27 @@ public class MemberAddServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
 
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      out.println("<title>회원 등록</title>");
-      out.println("</head>");
-      out.println("<body>");
-      out.println("<h1>회원 등록</h1>");
+      request.getRequestDispatcher("/header").include(request, response);
+
+      out.println("<h1>회원 입력</h1>");
       out.println("<form action='add' method='post'>");
-      out.println("이름: <input name='name' type='text'><br>\n");
-      out.println("이메일: <input name='email' type='text'><br>\n");
-      out.println("암호: <input name='password' type='text'><br>\n");
-      out.println("사진: <input name='photo' type='text'><br>\n");
-      out.println("전화번호: <input name='tel' type='text'><br>\n");
+      out.println("이름: <input name='name' type='text'><br>");
+      out.println("이메일: <input name='email' type='email'><br>");
+      out.println("암호: <input name='password' type='password'><br>");
+      out.println("사진: <input name='photo' type='text'><br>");
+      out.println("전화: <input name='tel' type='tel'><br>");
       out.println("<button>제출</button>");
       out.println("</form>");
-      out.println("</body>");
-      out.println("</html>");
+
+      request.getRequestDispatcher("/footer").include(request, response);
 
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 
@@ -54,13 +50,12 @@ public class MemberAddServlet extends HttpServlet {
     try {
       request.setCharacterEncoding("UTF-8");
 
-      ServletContext servletContext = request.getServletContext();
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       MemberService memberService = iocContainer.getBean(MemberService.class);
-      Member member = new Member();
 
+      Member member = new Member();
       member.setName(request.getParameter("name"));
       member.setEmail(request.getParameter("email"));
       member.setPassword(request.getParameter("password"));
@@ -70,14 +65,12 @@ public class MemberAddServlet extends HttpServlet {
       if (memberService.add(member) > 0) {
         response.sendRedirect("list");
       } else {
-        request.getSession().setAttribute("errorMessage", "회원 가입 실패.");
-        request.getSession().setAttribute("url", "member/list");
-        response.sendRedirect("../error");
+        throw new Exception("회원을 추가할 수 없습니다.");
       }
-
-
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }

@@ -6,14 +6,20 @@ import java.util.List;
 
 public class PhotoBoard implements Serializable {
 
-  private static final long serialVersionUID = 7726598698007351227L;
+  private static final long serialVersionUID = 1L;
 
-  int no, viewCount;
+  int no;
   String title;
   Date createdDate;
+  int viewCount;
+  Lesson lesson;
   List<PhotoFile> files;
 
-  Lesson lesson;
+  @Override
+  public String toString() {
+    return "PhotoBoard [no=" + no + ", title=" + title + ", createdDate=" + createdDate
+        + ", viewCount=" + viewCount + ", lesson=" + lesson + ", files=" + files + "]";
+  }
 
   public List<PhotoFile> getFiles() {
     return files;
@@ -39,14 +45,6 @@ public class PhotoBoard implements Serializable {
     this.no = no;
   }
 
-  public int getViewCount() {
-    return viewCount;
-  }
-
-  public void setViewCount(int viewCount) {
-    this.viewCount = viewCount;
-  }
-
   public String getTitle() {
     return title;
   }
@@ -63,12 +61,13 @@ public class PhotoBoard implements Serializable {
     this.createdDate = createdDate;
   }
 
-  @Override
-  public String toString() {
-    return "PhotoBoard [no=" + no + ", viewCount=" + viewCount + ", title=" + title
-        + ", createdDate=" + createdDate + ", lesson=" + lesson + "]";
+  public int getViewCount() {
+    return viewCount;
   }
 
+  public void setViewCount(int viewCount) {
+    this.viewCount = viewCount;
+  }
 
 
 }

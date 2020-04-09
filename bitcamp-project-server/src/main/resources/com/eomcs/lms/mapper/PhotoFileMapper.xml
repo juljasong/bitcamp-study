@@ -37,3 +37,10 @@
     where photo_id=#{boardNo}
   </delete>
 </mapper>
+
+
+
+
+
+
+

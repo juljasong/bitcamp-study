@@ -46,7 +46,7 @@ public class ContextLoaderListener implements ServletContextListener {
       // => Spring IoC 컨테이너는 모든 서블릿이 사용해야 하는 객체이다.
       servletContext.setAttribute("iocContainer", iocContainer);
 
-      ContextLoaderListener.logger.debug("----------------------------");
+      logger.debug("----------------------------");
 
       // 서블릿 객체는 더이상 'Spring IoC 컨테이너'에서 관리하지 않는다.
       // 서블릿 객체의 관리 주체가 서블릿 컨테이너로 넘어갔다.
@@ -57,10 +57,10 @@ public class ContextLoaderListener implements ServletContextListener {
   }
 
   private void printBeans(ApplicationContext appCtx) {
-    ContextLoaderListener.logger.debug("Spring IoC 컨테이너에 들어있는 객체들:");
+    logger.debug("Spring IoC 컨테이너에 들어있는 객체들:");
     String[] beanNames = appCtx.getBeanDefinitionNames();
     for (String beanName : beanNames) {
-      ContextLoaderListener.logger.debug(String.format("%s =======> %s", //
+      logger.debug(String.format("%s =======> %s", //
           beanName, //
           appCtx.getBean(beanName).getClass().getName()));
     }

@@ -1,6 +1,7 @@
 package com.eomcs.lms.servlet;
 
 import java.io.IOException;
+import java.sql.Date;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,11 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationContext;
-import com.eomcs.lms.domain.Member;
-import com.eomcs.lms.service.MemberService;
+import com.eomcs.lms.domain.Lesson;
+import com.eomcs.lms.service.LessonService;
 
-@WebServlet("/member/update")
-public class MemberUpdateServlet extends HttpServlet {
+@WebServlet("/lesson/update")
+public class LessonUpdateServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
@@ -21,23 +22,24 @@ public class MemberUpdateServlet extends HttpServlet {
     try {
       request.setCharacterEncoding("UTF-8");
 
-      ServletContext servletContext = request.getServletContext();
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-      MemberService memberService = iocContainer.getBean(MemberService.class);
+      LessonService lessonService = iocContainer.getBean(LessonService.class);
 
-      Member member = new Member();
-      member.setNo(Integer.parseInt(request.getParameter("no")));
-      member.setName(request.getParameter("name"));
-      member.setEmail(request.getParameter("email"));
-      member.setPassword(request.getParameter("password"));
-      member.setPhoto(request.getParameter("photo"));
-      member.setTel(request.getParameter("tel"));
+      Lesson lesson = new Lesson();
+      lesson.setNo(Integer.parseInt(request.getParameter("no")));
+      lesson.setTitle(request.getParameter("title"));
+      lesson.setDescription(request.getParameter("description"));
+      lesson.setStartDate(Date.valueOf(request.getParameter("startDate")));
+      lesson.setEndDate(Date.valueOf(request.getParameter("endDate")));
+      lesson.setTotalHours(Integer.parseInt(request.getParameter("totalHours")));
+      lesson.setDayHours(Integer.parseInt(request.getParameter("dayHours")));
 
-      if (memberService.update(member) > 0) {
+      if (lessonService.update(lesson) > 0) {
         response.sendRedirect("list");
       } else {
-        throw new Exception("변경할 회원 번호가 유효하지 않습니다.");
+        throw new Exception("변경할 수업 번호가 유효하지 않습니다.");
       }
 
     } catch (Exception e) {

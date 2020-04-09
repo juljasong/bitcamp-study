@@ -2,10 +2,8 @@ package com.eomcs.lms.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,41 +22,38 @@ public class LessonSearchServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
 
-      ServletContext servletContext = request.getServletContext();
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       LessonService lessonService = iocContainer.getBean(LessonService.class);
 
-      Map<String, Object> map = new HashMap<String, Object>();
-
-      String keyword = request.getParameter("title");
-      if (keyword.length() > 0) {
-        map.put("title", keyword);
+      HashMap<String, Object> map = new HashMap<>();
+      String value = request.getParameter("title");
+      if (value.length() > 0) {
+        map.put("title", value);
       }
 
-      keyword = request.getParameter("startDate");
-      if (keyword.length() > 0) {
-        map.put("startDate", Date.valueOf(keyword));
+      value = request.getParameter("startDate");
+      if (value.length() > 0) {
+        map.put("startDate", value);
       }
 
-      keyword = request.getParameter("endDate");
-      if (keyword.length() > 0) {
-        map.put("endDate", Date.valueOf(keyword));
+      value = request.getParameter("endDate");
+      if (value.length() > 0) {
+        map.put("endDate", value);
       }
 
-      keyword = request.getParameter("dayHours");
-      if (keyword.length() > 0) {
-        map.put("dayHours", Integer.parseInt(keyword));
+      value = request.getParameter("totalHours");
+      if (value.length() > 0) {
+        map.put("totalHours", Integer.parseInt(value));
       }
 
-      keyword = request.getParameter("totalHours");
-      if (keyword.length() > 0) {
-        map.put("totalHours", Integer.parseInt(keyword));
+      value = request.getParameter("dayHours");
+      if (value.length() > 0) {
+        map.put("dayHours", Integer.parseInt(value));
       }
 
       out.println("<!DOCTYPE html>");
@@ -78,18 +73,31 @@ public class LessonSearchServlet extends HttpServlet {
       out.println("  </tr>");
 
       List<Lesson> lessons = lessonService.search(map);
-
       for (Lesson l : lessons) {
-        out.printf(
-            "<tr><td>%d</td> <td><a href='detail?no=%d'>%s</a></td> <td>%s ~ %s</td> <td>%d</td></tr>\n",
-            l.getNo(), l.getNo(), l.getTitle(), l.getStartDate(), l.getEndDate(),
-            l.getTotalHours());
+        out.printf("  <tr>"//
+            + "<td>%d</td> "//
+            + "<td><a href='detail?no=%d'>%s</a></td> "//
+            + "<td>%s ~ %s</td> "//
+            + "<td>%d</td>"//
+            + "</tr>\n", //
+            l.getNo(), //
+            l.getNo(), //
+            l.getTitle(), //
+            l.getStartDate(), //
+            l.getEndDate(), //
+            l.getTotalHours() //
+        );
       }
-      out.println("</body>");
-      out.println("</html>");
+      out.println("</table>");
+
+      request.getRequestDispatcher("/footer").include(request, response);
 
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }
+
+

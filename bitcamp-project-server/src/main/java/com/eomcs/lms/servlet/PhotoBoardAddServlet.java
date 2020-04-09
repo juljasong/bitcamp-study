@@ -16,33 +16,29 @@ import com.eomcs.lms.domain.PhotoFile;
 import com.eomcs.lms.service.LessonService;
 import com.eomcs.lms.service.PhotoBoardService;
 
-@WebServlet("/photoBoard/add")
+@WebServlet("/photoboard/add")
 public class PhotoBoardAddServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    try {
 
+    int lessonNo = Integer.parseInt(request.getParameter("lessonNo"));
+    try {
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
 
-      ServletContext servletContext = request.getServletContext();
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       LessonService lessonService = iocContainer.getBean(LessonService.class);
-      int lessonNo = Integer.parseInt(request.getParameter("lessonNo"));
+
       Lesson lesson = lessonService.get(lessonNo);
 
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      out.println("<title>사진 입력</title>");
-      out.println("</head>");
-      out.println("<body>");
+
+      request.getRequestDispatcher("/header").include(request, response);
+
       out.println("<h1>사진 입력</h1>");
       out.println("<form action='add' method='post'>");
       out.printf("강의번호: <input name='lessonNo' type='text' value='%d' readonly><br>\n", //
@@ -58,24 +54,28 @@ public class PhotoBoardAddServlet extends HttpServlet {
       out.println("사진: <input name='photo5' type='file'><br>");
       out.println("<button>제출</button>");
       out.println("</form>");
-      out.println("</body>");
-      out.println("</html>");
+
+      request.getRequestDispatcher("/footer").include(request, response);
+
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list?lessonNo=" + lessonNo);
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    int lessonNo = Integer.parseInt(request.getParameter("lessonNo"));
-    try {
-      request.setCharacterEncoding("UTF-8");
 
-      ServletContext servletContext = request.getServletContext();
+    request.setCharacterEncoding("UTF-8");
+    int lessonNo = Integer.parseInt(request.getParameter("lessonNo"));
+
+    try {
+
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       LessonService lessonService = iocContainer.getBean(LessonService.class);
       PhotoBoardService photoBoardService = iocContainer.getBean(PhotoBoardService.class);
 
@@ -103,13 +103,12 @@ public class PhotoBoardAddServlet extends HttpServlet {
       photoBoard.setFiles(photoFiles);
       photoBoardService.add(photoBoard);
 
-      response.sendRedirect("list?no=" + lessonNo);
+      response.sendRedirect("list?lessonNo=" + lessonNo);
 
     } catch (Exception e) {
-      request.getSession().setAttribute("errorMessage", e.getMessage());
-      request.getSession().setAttribute("url", "photoBoard/list?no=" + lessonNo);
-      response.sendRedirect("../error");
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list?lessonNo=" + lessonNo);
+      request.getRequestDispatcher("/error").forward(request, response);
     }
-
   }
 }

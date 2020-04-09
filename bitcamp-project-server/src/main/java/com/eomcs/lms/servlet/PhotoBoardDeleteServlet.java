@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.service.PhotoBoardService;
 
-@WebServlet("/photoBoard/delete")
+@WebServlet("/photoboard/delete")
 public class PhotoBoardDeleteServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
@@ -18,22 +18,22 @@ public class PhotoBoardDeleteServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
+    int lessonNo = Integer.parseInt(request.getParameter("lessonNo"));
+    int no = Integer.parseInt(request.getParameter("no"));
+
     try {
       ServletContext servletContext = request.getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       PhotoBoardService photoBoardService = iocContainer.getBean(PhotoBoardService.class);
 
-      int no = Integer.parseInt(request.getParameter("no"));
       photoBoardService.delete(no);
-      response.sendRedirect("list?no=" + Integer.parseInt(request.getParameter("lessonNo")));
-    } catch (Exception e) {
-      request.getSession().setAttribute("errorMessage", e.getMessage());
-      request.getSession().setAttribute("url",
-          "photoBoard/list?no=" + Integer.parseInt(request.getParameter("lessonNo")));
-      response.sendRedirect("../error");
-    }
+      response.sendRedirect("list?lessonNo=" + lessonNo);
 
+    } catch (Exception e) {
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list?lessonNo=" + lessonNo);
+      request.getRequestDispatcher("/error").forward(request, response);
+    }
   }
 }

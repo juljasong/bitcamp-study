@@ -69,3 +69,10 @@
     where photo_id=#{no}
   </delete>
 </mapper>
+
+
+
+
+
+
+

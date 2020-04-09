@@ -18,48 +18,52 @@ public class BoardListServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  public void doGet(HttpServletRequest requset, HttpServletResponse response)
+  protected void service(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
 
       ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       BoardService boardService = iocContainer.getBean(BoardService.class);
 
+      request.getRequestDispatcher("/header").include(request, response);
+
+      out.println("  <h1>게시글</h1>");
+      out.println("  <a href='add'>새 글</a><br>");
+      out.println("  <table border='1'>");
+      out.println("  <tr>");
+      out.println("    <th>번호</th>");
+      out.println("    <th>제목</th>");
+      out.println("    <th>등록일</th>");
+      out.println("    <th>조회수</th>");
+      out.println("  </tr>");
+
       List<Board> boards = boardService.list();
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("   <meta charset='UTF-8'>");
-      out.println("   <title>게시글 목록</title>");
-      out.println("</head>");
-      out.println("<body>");
-      out.println("   <h1>게시글</h1>");
-      out.println("   <a href='add'>새 글</a><br>");
-      out.println("   <table border='1'>");
-      out.println("       <tr>");
-      out.println("           <th>번호</th>");
-      out.println("            <th>제목</th>");
-      out.println("           <th>등록일</th>");
-      out.println("           <th>조회수</th>");
-      out.println("       </tr>");
-
-      for (Board b : boards) {
-        out.printf(
-            "  <tr><td>%d</td> <td><a href='detail?no=%d'>%s</a></td> <td>%s</td> <td>%d</td></tr>\n",
-            b.getNo(), b.getNo(), b.getTitle(), b.getDate(), b.getViewCount());
+      for (Board board : boards) {
+        out.printf("  <tr>"//
+            + "<td>%d</td> "//
+            + "<td><a href='detail?no=%d'>%s</a></td> "//
+            + "<td>%s</td> "//
+            + "<td>%d</td>"//
+            + "</tr>\n", //
+            board.getNo(), //
+            board.getNo(), //
+            board.getTitle(), //
+            board.getDate(), //
+            board.getViewCount() //
+        );
       }
+      out.println("</table>");
 
-      out.println("</body>");
-      out.println("</html>");
+      request.getRequestDispatcher("/footer").include(request, response);
+
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }
-

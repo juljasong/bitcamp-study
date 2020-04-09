@@ -13,5 +13,4 @@ public class RequestMappingHandlerMapping {
   public RequestHandler getHandler(String name) {
     return handlerMap.get(name);
   }
-
 }

@@ -13,34 +13,29 @@ import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
 import com.eomcs.lms.service.PhotoBoardService;
 
-@WebServlet("/photoBoard/detail")
+@WebServlet("/photoboard/detail")
 public class PhotoBoardDetailServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+    int lessonNo = 0;
     try {
-
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
 
-      ServletContext servletContext = request.getServletContext();
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       PhotoBoardService photoBoardService = iocContainer.getBean(PhotoBoardService.class);
       int no = Integer.parseInt(request.getParameter("no"));
 
       PhotoBoard photoBoard = photoBoardService.get(no);
 
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      out.println("<title>사진 상세정보</title>");
-      out.println("</head>");
-      out.println("<body>");
+
+      request.getRequestDispatcher("/header").include(request, response);
+
       out.println("<h1>사진 상세정보</h1>");
 
       if (photoBoard != null) {
@@ -67,17 +62,23 @@ public class PhotoBoardDetailServlet extends HttpServlet {
         out.println("사진: <input name='photo4' type='file'><br>");
         out.println("사진: <input name='photo5' type='file'><br>");
 
+        lessonNo = photoBoard.getLesson().getNo();
         out.println("<p><button>변경</button>");
         out.printf("<a href='delete?no=%d&lessonNo=%d'>삭제</a></p>\n", //
             photoBoard.getNo(), //
-            photoBoard.getLesson().getNo());
+            lessonNo);
         out.println("</form>");
+
+      } else {
+        out.println("<p>해당 번호의 사진 게시글이 없습니다.</p>");
       }
+
+      request.getRequestDispatcher("/footer").include(request, response);
+
     } catch (Exception e) {
-      request.getSession().setAttribute("errorMessage", "해당 사진 게시글이 존재하지 않습니다.");
-      request.getSession().setAttribute("url",
-          "photoBoard/list?no=" + Integer.parseInt(request.getParameter("lessonNo")));
-      response.sendRedirect("../error");
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list?lessonNo=" + lessonNo);
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }

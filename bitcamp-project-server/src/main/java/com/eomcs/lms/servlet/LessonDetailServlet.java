@@ -20,45 +20,56 @@ public class LessonDetailServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
 
-      ServletContext servletContext = request.getServletContext();
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       LessonService lessonService = iocContainer.getBean(LessonService.class);
-      int no = Integer.parseInt(request.getParameter("no"));
 
+      int no = Integer.parseInt(request.getParameter("no"));
       Lesson lesson = lessonService.get(no);
 
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      out.println("<title>수업 상세정보</title>");
-      out.println("</head>");
-      out.println("<body>");
+      request.getRequestDispatcher("/header").include(request, response);
+
       out.println("<h1>수업 상세정보</h1>");
 
       if (lesson != null) {
-        out.printf("수업명: %s<br>\n", lesson.getTitle());
-        out.printf("설명: %s<br>\n", lesson.getDescription());
-        out.printf("시작일: %s<br>\n", lesson.getStartDate());
-        out.printf("종료일: %s<br>\n", lesson.getEndDate());
-        out.printf("일수업시간: %d<br>\n", lesson.getDayHours());
-        out.printf("총수업시간: %d<br>\n", lesson.getTotalHours());
-        out.printf("<p><a href='delete?no=%d'>삭제</a>\n", lesson.getNo());
-        out.printf("<a href='update?no=%d'>변경</a>\n", lesson.getNo());
-        out.printf("<a href='../photoBoard/list?no=%d'>사진 게시판</a></p>\n", lesson.getNo());
+        out.println("<form action='update' method='post'>");
+        out.printf("번호: <input name='no' readonly type='text' value='%d'><br>\n", //
+            lesson.getNo());
+        out.printf("강의명: <input name='title' type='text' value='%s'><br>\n", //
+            lesson.getTitle());
+        out.println("내용:<br>");
+        out.printf("<textarea name='description' rows='5' cols='60'>%s</textarea><br>\n", //
+            lesson.getDescription());
+        out.printf("강의 시작일: <input name='startDate' type='date' value='%s'><br>\n", //
+            lesson.getStartDate());
+        out.printf("강의 종료일: <input name='endDate' type='date' value='%s'><br>\n", //
+            lesson.getEndDate());
+        out.printf("총 강의시간: <input name='totalHours' type='number' value='%d'><br>\n", //
+            lesson.getTotalHours());
+        out.printf("일 강의시간: <input name='dayHours' type='number' value='%d'><br>\n", //
+            lesson.getDayHours());
+        out.println("<p>");
+        out.println("<button>변경</button>");
+        out.printf("<a href='delete?no=%d'>삭제</a>\n", //
+            lesson.getNo());
+        out.printf("<a href='../photoboard/list?lessonNo=%d'>사진게시판</a>\n", //
+            lesson.getNo());
+        out.println("</p>");
+        out.println("</form>");
       } else {
-        request.getSession().setAttribute("errorMessage", "해당 번호의 강의가 없습니다.");
-        request.getSession().setAttribute("url", "lesson/list");
-        response.sendRedirect("../error");
+        out.println("<p>해당 번호의 강의가 없습니다.</p>");
       }
+
+      request.getRequestDispatcher("/footer").include(request, response);
+
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }

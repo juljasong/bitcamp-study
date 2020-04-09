@@ -17,26 +17,30 @@ public class PhotoBoardServiceImpl implements PhotoBoardService {
   PhotoBoardDao photoBoardDao;
   PhotoFileDao photoFileDao;
 
-  public PhotoBoardServiceImpl(PlatformTransactionManager txManager, PhotoBoardDao photoBoardDao,
+  public PhotoBoardServiceImpl( //
+      PlatformTransactionManager txManager, //
+      PhotoBoardDao photoBoardDao, //
       PhotoFileDao photoFileDao) {
     this.transactionTemplate = new TransactionTemplate(txManager);
     this.photoBoardDao = photoBoardDao;
     this.photoFileDao = photoFileDao;
   }
 
-  @Transactional // 메서드 전체를 트랜잭션으로 묶기
-  // 예외 없이 실행하면 자동으로 commit(), 예외 발생시 rollback()
+  // @Transactional
+  // => 메서드 전체를 트랜잭션으로 묶는다.
+  // => 예외 없이 실행하면 자동으로 commit() 한다.
+  // => 예외가 발생하면 자동으로 rollback() 한다.
+  @Transactional
   @Override
   public void add(PhotoBoard photoBoard) throws Exception {
     if (photoBoardDao.insert(photoBoard) == 0) {
       throw new Exception("사진 게시글 등록에 실패했습니다.");
     }
     photoFileDao.insert(photoBoard);
-
   }
 
   @Override
-  public List<PhotoBoard> listOfLesson(int lessonNo) throws Exception {
+  public List<PhotoBoard> listLessonPhoto(int lessonNo) throws Exception {
     return photoBoardDao.findAllByLessonNo(lessonNo);
   }
 
@@ -51,23 +55,18 @@ public class PhotoBoardServiceImpl implements PhotoBoardService {
     if (photoBoardDao.update(photoBoard) == 0) {
       throw new Exception("사진 게시글 변경에 실패했습니다.");
     }
-
     if (photoBoard.getFiles() != null) {
-      // 첨부파일을 변경한다면,
       photoFileDao.deleteAll(photoBoard.getNo());
       photoFileDao.insert(photoBoard);
     }
-
   }
 
   @Transactional
   @Override
   public void delete(int no) throws Exception {
     photoFileDao.deleteAll(no);
-
     if (photoBoardDao.delete(no) == 0) {
       throw new Exception("해당 번호의 사진 게시글이 없습니다.");
     }
   }
-
 }

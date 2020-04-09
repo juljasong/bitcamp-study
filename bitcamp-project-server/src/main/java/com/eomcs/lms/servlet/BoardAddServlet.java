@@ -19,13 +19,11 @@ public class BoardAddServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
-    out.println("<!DOCTYPE html>");
-    out.println("<html>");
-    out.println("<head>");
-    out.println("<meta charset='UTF-8'>");
+
+    request.getRequestDispatcher("/header").include(request, response);
+
     out.println("<title>게시글 입력</title>");
     out.println("</head>");
     out.println("<body>");
@@ -35,36 +33,33 @@ public class BoardAddServlet extends HttpServlet {
     out.println("<textarea name='title' rows='5' cols='60'></textarea><br>");
     out.println("<button>등록</button>");
     out.println("</form>");
-    out.println("</body>");
-    out.println("</html>");
+
+    request.getRequestDispatcher("/footer").include(request, response);
+
   }
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
+  protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
       request.setCharacterEncoding("UTF-8");
 
-      ServletContext servletContext = request.getServletContext();
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       BoardService boardService = iocContainer.getBean(BoardService.class);
 
       Board board = new Board();
       board.setTitle(request.getParameter("title"));
-      if (boardService.add(board) > 0) {
-        // 리다이렉트: 작업 완료 후 다른 페이지로 이동. URL은 웹브라우저가 사용-> /로 시작하면 서버루트.
-        // /로 시작하지 않으면 상대경로(리다이렉트 메시지 받기 전 URL 기준으로 계산한 경로). 맨 마지막 /의 앞 주소에 이은 경로
-        response.sendRedirect("list");
-      } else {
-        request.getSession().setAttribute("errorMessage", "게시물 등록 실패.");
-        request.getSession().setAttribute("url", "board/list");
-        response.sendRedirect("../error");
-      }
+
+      boardService.add(board);
+
+      response.sendRedirect("list");
 
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }

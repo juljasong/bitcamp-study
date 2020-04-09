@@ -15,26 +15,25 @@ public class BoardDeleteServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-
       ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       BoardService boardService = iocContainer.getBean(BoardService.class);
-      int no = Integer.parseInt(request.getParameter("no"));
 
+      int no = Integer.parseInt(request.getParameter("no"));
       if (boardService.delete(no) > 0) {
         response.sendRedirect("list");
       } else {
-        request.getSession().setAttribute("errorMessage", "삭제할 게시물 번호가 유효하지 않습니다.");
-        request.getSession().setAttribute("url", "board/list");
-        response.sendRedirect("../error");
+        throw new Exception("삭제할 게시물 번호가 유효하지 않습니다.");
       }
+
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }

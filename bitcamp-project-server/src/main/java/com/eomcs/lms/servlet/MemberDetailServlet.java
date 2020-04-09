@@ -20,43 +20,50 @@ public class MemberDetailServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
 
-      ServletContext servletContext = request.getServletContext();
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       MemberService memberService = iocContainer.getBean(MemberService.class);
+
       int no = Integer.parseInt(request.getParameter("no"));
 
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("   <meta charset='UTF-8'>");
-      out.println("   <title>회원 상세정보</title>");
-      out.println("</head>");
-      out.println("<body>");
-      out.println("<h1>회원 상세정보</h1>");
       Member member = memberService.get(no);
+
+
+      request.getRequestDispatcher("/header").include(request, response);
+
+      out.println("<h1>회원 상세정보</h1>");
+
       if (member != null) {
-        out.printf("이름: %s\n<br>", member.getName());
-        out.printf("이메일: %s\n<br>", member.getEmail());
-        out.printf("암호: %s\n<br>", member.getPassword());
-        out.printf("사진: %s\n<br>", member.getPhoto());
-        out.printf("전화: %s\n<br>", member.getTel());
-        out.printf("<p><a href='delete?no=%d'>삭제</a>\n", member.getNo());
-        out.printf("<a href='update?no=%d'>변경</a></p>\n", member.getNo());
+        out.println("<form action='update' method='post'>");
+        out.printf("번호: <input name='no' type='text' readonly value='%d'><br>\n", //
+            member.getNo());
+        out.printf("이름: <input name='name' type='text' value='%s'><br>\n", //
+            member.getName());
+        out.printf("이메일: <input name='email' type='email' value='%s'><br>\n", //
+            member.getEmail());
+        out.println("암호: <input name='password' type='password'><br>");
+        out.printf("사진: <input name='photo' type='text' value='%s'><br>\n", //
+            member.getPhoto());
+        out.printf("전화: <input name='tel' type='tel' value='%s'><br>\n", //
+            member.getTel());
+        out.println("<p><button>변경</button>");
+        out.printf("<a href='delete?no=%d'>삭제</a></p>\n", //
+            member.getNo());
+        out.println("</form>");
       } else {
-        request.getSession().setAttribute("errorMessage", "해당 번호의 회원이 없습니다.");
-        request.getSession().setAttribute("url", "member/list");
-        response.sendRedirect("../error");
+        out.println("<p>해당 번호의 회원이 없습니다.</p>");
       }
-      out.println("</body>");
-      out.println("</html>");
+
+      request.getRequestDispatcher("/footer").include(request, response);
+
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }

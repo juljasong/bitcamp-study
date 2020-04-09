@@ -13,7 +13,7 @@ import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.domain.PhotoFile;
 import com.eomcs.lms.service.PhotoBoardService;
 
-@WebServlet("/photoBoard/update")
+@WebServlet("/photoboard/update")
 public class PhotoBoardUpdateServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
@@ -50,14 +50,13 @@ public class PhotoBoardUpdateServlet extends HttpServlet {
       }
 
       lessonNo = photoBoard.getLesson().getNo();
-
       photoBoardService.update(photoBoard);
-      response.sendRedirect("list?no=" + lessonNo);
+      response.sendRedirect("list?lessonNo=" + lessonNo);
 
     } catch (Exception e) {
-      request.getSession().setAttribute("errorMessage", e.getMessage());
-      request.getSession().setAttribute("url", "photoboard/list?no=" + lessonNo);
-      response.sendRedirect("../error");
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list?lessonNo=" + lessonNo);
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }

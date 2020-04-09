@@ -18,25 +18,22 @@ public class MemberDeleteServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-
-      ServletContext servletContext = request.getServletContext();
+      ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       MemberService memberService = iocContainer.getBean(MemberService.class);
 
-
       int no = Integer.parseInt(request.getParameter("no"));
-      if (memberService.delete(no) > 0) {
+      if (memberService.delete(no) > 0) { // 삭제했다면,
         response.sendRedirect("list");
       } else {
-        request.getSession().setAttribute("errorMessage", "해당 번호의 회원이 없습니다");
-        request.getSession().setAttribute("url", "member/list");
-        response.sendRedirect("../error");
+        throw new Exception("삭제할 회원 번호가 유효하지 않습니다.");
       }
 
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list");
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }

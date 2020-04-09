@@ -15,42 +15,35 @@ import com.eomcs.lms.domain.PhotoBoard;
 import com.eomcs.lms.service.LessonService;
 import com.eomcs.lms.service.PhotoBoardService;
 
-@WebServlet("/photoBoard/list")
+@WebServlet("/photoboard/list")
 public class PhotoBoardListServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    try {
 
+    int lessonNo = Integer.parseInt(request.getParameter("lessonNo"));
+    try {
       response.setContentType("text/html;charset=UTF-8");
       PrintWriter out = response.getWriter();
 
       ServletContext servletContext = request.getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
-
       LessonService lessonService = iocContainer.getBean(LessonService.class);
       PhotoBoardService photoBoardService = iocContainer.getBean(PhotoBoardService.class);
 
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("  <meta charset='UTF-8'>");
-      out.println("  <title>강의 사진 목록</title>");
-      out.println("</head>");
-      out.println("<body>");
+      request.getRequestDispatcher("/header").include(request, response);
+
       try {
-        int lessonNo = Integer.parseInt(request.getParameter("no"));
         Lesson lesson = lessonService.get(lessonNo);
         if (lesson == null) {
           throw new Exception("수업 번호가 유효하지 않습니다.");
         }
 
-        out.printf("  <h1>강의 사진 -%s</h1>\n", lesson.getTitle());
-        out.println("<hr>");
-
+        out.printf("  <h1>강의 사진 - <a href='../lesson/detail?no=%d'>%s</a></h1>", //
+            lessonNo, lesson.getTitle());
         out.printf("  <a href='add?lessonNo=%d'>새 사진</a><br>\n", //
             lessonNo);
         out.println("  <table border='1'>");
@@ -61,7 +54,7 @@ public class PhotoBoardListServlet extends HttpServlet {
         out.println("    <th>조회수</th>");
         out.println("  </tr>");
 
-        List<PhotoBoard> photoBoards = photoBoardService.listOfLesson(lessonNo);
+        List<PhotoBoard> photoBoards = photoBoardService.listLessonPhoto(lessonNo);
         for (PhotoBoard photoBoard : photoBoards) {
           out.printf("  <tr>"//
               + "<td>%d</td> "//
@@ -81,10 +74,14 @@ public class PhotoBoardListServlet extends HttpServlet {
       } catch (Exception e) {
         out.printf("<p>%s</p>\n", e.getMessage());
       }
-      out.println("</body>");
-      out.println("</html>");
+
+      request.getRequestDispatcher("/footer").include(request, response);
+
+
     } catch (Exception e) {
-      throw new ServletException(e);
+      request.setAttribute("error", e);
+      request.setAttribute("url", "list?lessonNo=" + lessonNo);
+      request.getRequestDispatcher("/error").forward(request, response);
     }
   }
 }
