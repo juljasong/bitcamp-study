@@ -29,20 +29,9 @@ public class LoginServlet extends HttpServlet {
             email = cookie.getValue();
         }
       }
+      request.setAttribute("email", email);
       response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
-
-      request.getRequestDispatcher("/header").include(request, response);
-
-      out.println("<h1>로그인</h1>");
-      out.println("<form action='login' method='post'>");
-      out.printf("이메일: <input name='email' type='email' value='%s'>\n", email);
-      out.println("<input type='checkbox' name='saveEmail'>이메일 저장하기<br>");
-      out.println("암호: <input name='password' type='password'><br>");
-      out.println("<button>로그인</button>");
-      out.println("</form>");
-
-      request.getRequestDispatcher("/footer").include(request, response);
+      request.getRequestDispatcher("/member/login.jsp").include(request, response);
 
     } catch (Exception e) {
       request.setAttribute("error", e);
@@ -82,7 +71,7 @@ public class LoginServlet extends HttpServlet {
       out.println("<head>");
       out.println("<meta charset='UTF-8'>");
       if (member != null) {
-        out.println("<meta http-equiv='refresh' content='2;url=../index.html'>");
+        out.println("<meta http-equiv='refresh' content='2;url=../index.jsp'>");
       } else {
         out.println("<meta http-equiv='refresh' content='2;url=login'>");
       }

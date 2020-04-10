@@ -1,7 +1,6 @@
 package com.eomcs.lms.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +19,6 @@ public class LessonDetailServlet extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-      response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
 
       ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
@@ -30,41 +27,11 @@ public class LessonDetailServlet extends HttpServlet {
 
       int no = Integer.parseInt(request.getParameter("no"));
       Lesson lesson = lessonService.get(no);
+      response.setContentType("text/html;charset=UTF-8");
 
-      request.getRequestDispatcher("/header").include(request, response);
+      request.setAttribute("lesson", lesson);
 
-      out.println("<h1>수업 상세정보</h1>");
-
-      if (lesson != null) {
-        out.println("<form action='update' method='post'>");
-        out.printf("번호: <input name='no' readonly type='text' value='%d'><br>\n", //
-            lesson.getNo());
-        out.printf("강의명: <input name='title' type='text' value='%s'><br>\n", //
-            lesson.getTitle());
-        out.println("내용:<br>");
-        out.printf("<textarea name='description' rows='5' cols='60'>%s</textarea><br>\n", //
-            lesson.getDescription());
-        out.printf("강의 시작일: <input name='startDate' type='date' value='%s'><br>\n", //
-            lesson.getStartDate());
-        out.printf("강의 종료일: <input name='endDate' type='date' value='%s'><br>\n", //
-            lesson.getEndDate());
-        out.printf("총 강의시간: <input name='totalHours' type='number' value='%d'><br>\n", //
-            lesson.getTotalHours());
-        out.printf("일 강의시간: <input name='dayHours' type='number' value='%d'><br>\n", //
-            lesson.getDayHours());
-        out.println("<p>");
-        out.println("<button>변경</button>");
-        out.printf("<a href='delete?no=%d'>삭제</a>\n", //
-            lesson.getNo());
-        out.printf("<a href='../photoboard/list?lessonNo=%d'>사진게시판</a>\n", //
-            lesson.getNo());
-        out.println("</p>");
-        out.println("</form>");
-      } else {
-        out.println("<p>해당 번호의 강의가 없습니다.</p>");
-      }
-
-      request.getRequestDispatcher("/footer").include(request, response);
+      request.getRequestDispatcher("/lesson/detail.jsp").include(request, response);
 
     } catch (Exception e) {
       request.setAttribute("error", e);

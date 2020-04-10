@@ -4,11 +4,11 @@
     pageEncoding="UTF-8"
     trimDirectiveWhitespaces="true"%>
 
-<jsp:include page="/header.jsp"/>
+<jsp:include page="/header.jsp" />
 
-  <h1>게시글</h1>
-  <a href='add'>새 글</a><br>
-  <table border='1'>
+<h1>게시글</h1>
+<a href='add'>새 글</a><br>
+<table border='1'>
   <tr>
     <th>번호</th>
     <th>제목</th>
@@ -20,14 +20,14 @@
   for(Board item : list) {
 %>
   <tr>
-    <td><%=item.getNo()%></td> 
-    <td><a href='detail?no=<%=item.getNo()%>'><%=item.getTitle()%></a></td> 
-    <td><%=item.getDate()%></td> 
+    <td><%=item.getNo()%></td>
+    <td><a href='detail?no=<%=item.getNo()%>'><%=item.getTitle()%></a></td>
+    <td><%=item.getDate()%></td>
     <td><%=item.getViewCount()%></td>
   </tr>
 <%
   }
-%>  
+%>
 </table>
 
-<jsp:include page="/footer.jsp"/>
+<jsp:include page="/footer.jsp" />
