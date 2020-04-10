@@ -12,8 +12,8 @@ import org.springframework.context.ApplicationContext;
 import com.eomcs.lms.domain.Member;
 import com.eomcs.lms.service.MemberService;
 
-@WebServlet("/auth/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/member/add")
+public class MemberAddServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   @Override
@@ -25,11 +25,14 @@ public class LoginServlet extends HttpServlet {
 
       request.getRequestDispatcher("/header").include(request, response);
 
-      out.println("<h1>로그인</h1>");
-      out.println("<form action='login' method='post'>");
+      out.println("<h1>회원 입력</h1>");
+      out.println("<form action='add' method='post'>");
+      out.println("이름: <input name='name' type='text'><br>");
       out.println("이메일: <input name='email' type='email'><br>");
       out.println("암호: <input name='password' type='password'><br>");
-      out.println("<button>로그인</button>");
+      out.println("사진: <input name='photo' type='text'><br>");
+      out.println("전화: <input name='tel' type='tel'><br>");
+      out.println("<button>제출</button>");
       out.println("</form>");
 
       request.getRequestDispatcher("/footer").include(request, response);
@@ -45,45 +48,28 @@ public class LoginServlet extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-      response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
+      request.setCharacterEncoding("UTF-8");
 
       ServletContext servletContext = getServletContext();
       ApplicationContext iocContainer =
           (ApplicationContext) servletContext.getAttribute("iocContainer");
       MemberService memberService = iocContainer.getBean(MemberService.class);
 
-      String email = request.getParameter("email");
-      String password = request.getParameter("password");
+      Member member = new Member();
+      member.setName(request.getParameter("name"));
+      member.setEmail(request.getParameter("email"));
+      member.setPassword(request.getParameter("password"));
+      member.setPhoto(request.getParameter("photo"));
+      member.setTel(request.getParameter("tel"));
 
-      Member member = memberService.get(email, password);
-
-      out.println("<!DOCTYPE html>");
-      out.println("<html>");
-      out.println("<head>");
-      out.println("<meta charset='UTF-8'>");
-      if (member != null) {
-        out.println("<meta http-equiv='refresh' content='2;url=../index.html'>");
+      if (memberService.add(member) > 0) {
+        response.sendRedirect("list");
       } else {
-        out.println("<meta http-equiv='refresh' content='2;url=login'>");
+        throw new Exception("회원을 추가할 수 없습니다.");
       }
-      out.println("<title>로그인</title>");
-      out.println("</head>");
-      out.println("<body>");
-      out.println("<h1>로그인 결과</h1>");
-
-      if (member != null) {
-        out.printf("<p>'%s'님 환영합니다.</p>\n", member.getName());
-        request.getSession().setAttribute("loginUser", member);
-      } else {
-        out.println("<p>사용자 정보가 유효하지 않습니다.</p>");
-      }
-
-      out.println("</body>");
-      out.println("</html>");
     } catch (Exception e) {
       request.setAttribute("error", e);
-      request.setAttribute("url", "login");
+      request.setAttribute("url", "list");
       request.getRequestDispatcher("/error").forward(request, response);
     }
   }
