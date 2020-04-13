@@ -3,7 +3,6 @@
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     trimDirectiveWhitespaces="true"%>
-<%@ page import="bitcamp.vo.Board"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -26,8 +25,11 @@ pageContext.setAttribute("s4", "윤봉길");
   String s1 = (String)application.getAttribute("s1");
  --%>
 <jsp:useBean id="s2" type="java.lang.String" scope="session"/>
+<!-- String s2 = (String)session.getAttribute("s2"); -->
 <jsp:useBean id="s3" type="java.lang.String" scope="request"/>
+<!-- String s3 = (String)request.getAttribute("s3"); -->
 <jsp:useBean id="s4" type="java.lang.String" scope="page"/>
+<!-- String s4 = (String)pageContext.getAttribute("s4"); -->
 
 <%=s1%><br>
 <%=s2%><br>
@@ -40,8 +42,22 @@ pageContext.setAttribute("s4", "윤봉길");
 </body>
 </html>
 <%--
-jsp:useBean (계속)
+jsp:useBean 문법
 
+<jsp:useBean id="레퍼런스명" type="레퍼런스타입" scope="보관소"/>
+=> id
+  - 보관소에서 값을 꺼낼 때 사용하는 이름
+  - 꺼낸 값을 저장하는 변수의 이름으로 사용
+=> type
+  - 보관소에서 꺼낸 객체의 타입 지정
+=> scope
+  - 값을 꺼내는 보관소
+  
+=> <jsp:useBean id="s4" type="java.land.String" scope="page"/>
+  -> String s4 = (String)pageContext.getAttribute("s4");
+     if (s4 == null)
+       throw new Exception("객체 꺼내기 오류");
+         
 1) type 속성 
    - 보관소에서 꺼낸 객체의 타입을 지정할 때 사용한다.
 

@@ -5,7 +5,7 @@
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     trimDirectiveWhitespaces="true"%>
-<%@ page import="bitcamp.vo.Board"%>
+<%@ page import="com.eomcs.web.vo.Board"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -27,8 +27,7 @@ pageContext.setAttribute("list", names);
 %>
 
 <jsp:useBean id="list" type="java.util.List<String>" scope="page"/>
-<%-- 자바코드로 표현해보면,
-  type 속성에 인터페이스를 지정해도 된다. 위 태그는 다음의 자바 코드와 같다.
+<%-- type 속성에 인터페이스 지정 가능. 위 태그는 다음의 자바 코드와 같다.
   java.util.List<String> list = 
     (java.util.List<String>) pageContext.getAttribute("list");
  --%>

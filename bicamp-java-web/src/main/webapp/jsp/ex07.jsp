@@ -23,6 +23,7 @@ for (int i = 0; i < 1000; i++) {
   out.print(". "); 
 }
 %>
+<p>출력완료</p>
 </body>
 </html>
 <%--

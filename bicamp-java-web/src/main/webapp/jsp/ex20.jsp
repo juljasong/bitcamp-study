@@ -13,7 +13,8 @@
 </head>
 <body>
 <h1>errorPage 속성과 isErrorPage 속성</h1>
-10 / 0 = <%=10 / 0%>
+<%int value = Integer.parseInt(request.getParameter("value")); %>
+10 / <%=value%> = <%=10 / value%>
 </body>
 </html>
 <%--

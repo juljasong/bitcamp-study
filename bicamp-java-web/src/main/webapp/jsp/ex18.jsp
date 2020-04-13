@@ -4,7 +4,7 @@
     contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     trimDirectiveWhitespaces="true"%>
-<%@ page import="bitcamp.vo.Board"%>
+<%@ page import="com.eomcs.web.vo.Board"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -37,6 +37,9 @@
 
 <%
 // type 속성에서 제레릭으로 String을 지정했기 때문에 항목의 타입을 String으로 선언할 수 있다.
+list.add("Hello");
+list.add("I want");
+list.add("1ho");
 for (String n : list) {
   out.println(n + "<br>");
 }
