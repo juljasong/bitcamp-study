@@ -2,6 +2,7 @@ package com.eomcs.lms;
 
 import java.lang.reflect.Method;
 import java.util.Map;
+import javax.servlet.annotation.WebListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -15,6 +16,7 @@ import com.eomcs.util.RequestMappingHandlerMapping;
 // 애플리케이션이 시작되거나 종료될 때
 // 데이터를 로딩하고 저장하는 일을 한다.
 
+@WebListener
 public class ContextLoaderListener implements ApplicationContextListener {
 
   static Logger logger = LogManager.getLogger(ContextLoaderListener.class);
