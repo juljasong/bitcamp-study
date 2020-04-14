@@ -65,7 +65,7 @@ pageContext.setAttribute("names3", names3);
 <%-- Map 객체에 대해 반복문을 돌리면 var로 저장하는 것은 
      key와 value를 갖고 있는 Entry 객체이다. --%>
 <c:forEach items="${pageScope.names3}" var="n">
-    <li>${n.key} : ${n.value}</li>
+    <li>${n.getKey()} : ${n.getValue()}</li>
 </c:forEach>
 </ul>
 

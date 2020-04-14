@@ -33,7 +33,7 @@ request.setAttribute("name1", "홍길동");
 3: ${name3}<br>
 
 <h2>객체의 프로퍼티 값 설정하기</h2>
-<jsp:useBean id="m1" class="bitcamp.vo.Member"/>
+<jsp:useBean id="m1" class="com.eomcs.web.vo.Member"/>
 <%--
 Member m1 = (Member) pageContext.getAttribute("m1");
 if (m1 == null) {

@@ -22,6 +22,7 @@
     <c:param name="age" value="20"/>
     <c:param name="gender" value="woman"/>
 </c:url>
+<pre>${url1}</pre>
 
 <%-- 지정된 URL을 요청하고 서버로부터 받은 콘텐트를 contents라는 이름으로 
      PageContext 보관소에 저장한다. --%>
