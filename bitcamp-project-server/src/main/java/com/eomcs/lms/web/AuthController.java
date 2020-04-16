@@ -1,9 +1,9 @@
 package com.eomcs.lms.web;
 
 import java.util.ArrayList;
+import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.eomcs.lms.domain.Member;
@@ -11,31 +11,30 @@ import com.eomcs.lms.service.MemberService;
 import com.eomcs.util.RequestMapping;
 
 @Component
-public class LoginController {
+public class AuthController {
 
   @Autowired
   MemberService memberService;
 
-  @RequestMapping("/auth/login")
-  public String login(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    if (request.getMethod().equals("GET")) {
-      String email = "";
-      Cookie[] cookies = request.getCookies();
-      if (cookies != null) {
-        for (Cookie cookie : cookies) {
-          if (cookie.getName().equals("email")) {
-            email = cookie.getValue();
-            break;
-          }
+  @RequestMapping("/auth/form")
+  public String form(HttpServletRequest request, Map<String, Object> model) {
+    String email = "";
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if (cookie.getName().equals("email")) {
+          email = cookie.getValue();
+          break;
         }
       }
-      request.setAttribute("email", email);
-      return "/auth/form.jsp";
     }
+    model.put("email", email);
+    return "/auth/form.jsp";
+  }
 
-    String email = request.getParameter("email");
-    String password = request.getParameter("password");
-    String saveEmail = request.getParameter("saveEmail");
+  @RequestMapping("/auth/login")
+  public String login(HttpServletRequest request, //
+      String email, String password, String saveEmail) throws Exception {
 
     Cookie cookie = new Cookie("email", email);
     if (saveEmail != null) {
@@ -62,5 +61,11 @@ public class LoginController {
     }
 
     return "/auth/login.jsp";
+  }
+
+  @RequestMapping("/auth/logout")
+  public String logout(HttpServletRequest request) {
+    request.getSession().invalidate();
+    return "redirect:../../index.html";
   }
 }
