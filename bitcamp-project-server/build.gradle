@@ -35,4 +35,6 @@ dependencies {
     // > implements
     // > dom
     implementation 'jstl:jstl:1.2'
+    implementation 'commons-fileupload:commons-fileupload:1.4' //multipart 데이터 처리 라이브러리
+    //=> Servlet 3.0의 multipart 사용하지 않는다면 다음과 같이 apache의 multipart 처리 라이브러리 추가해야 함
 }
